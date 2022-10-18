@@ -1,0 +1,38 @@
+#spring:
+#  profiles:
+#    active: dev  #指定激活，还可使用文档块模式
+#  config:
+#    location:  默认配置文件路径
+
+server:
+  port: 8081
+
+logging:
+  level:
+    root: info
+  pattern:
+    console: "%d{yyyy-MM-dd} [%thread] %-5level %logger{50} - %msg%n"
+#    file:
+#    com.scuec: trace
+#  path: springbootlog
+#  file: D:/springboot.log
+
+swagger:
+  title: "项目服务说明"
+  description: "律师管理系统"
+  version: "1.0"
+  author: "zc"
+
+person:
+  lastName: zhangsan
+  age: ${random.int}
+  boss: false
+  birth: 2017/12/12
+  maps: {k1: v1,k2: v2}
+  lists:
+    - lisi
+    - ${person.hello:default}
+  dog:
+    name: ${person.lastName}的狗
+    age: ${random.int}}
+

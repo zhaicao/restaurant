@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.UserMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.demo.entity.User">
+        <result column = "id"  property="id"/>
+        <result column = "name"  property="name"/>
+        <result column = "phone"  property="phone"/>
+    </resultMap>
+
+    <select id = "getAllUser" resultType="com.example.demo.entity.User">
+        select * from user
+    </select>
+
+    <select id = "getUserById" parameterType="long" resultType="com.example.demo.entity.User">
+        select * from user where id = #{sId}
+    </select>
+
+    <select id="getUserByFields" resultType="com.example.demo.entity.User">
+        select * from user
+        <where>
+            <if test="sId != 0 ">
+                and id = #{sId}
+            </if>
+            <if test="sName != null and sName != ''">
+                and name = #{sName}
+            </if>
+            <if test="sPhone != null and sPhone != ''">
+                and phone = #{sPhone}
+            </if>
+        </where>
+
+    </select>
+
+    <select id="querySSS" resultType="String">
+        select "1111" from dual
+    </select>
+
+</mapper>
