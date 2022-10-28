@@ -1,22 +1,16 @@
+server:
+  port: 8090
+
 spring:
-  web:
-    resources:
-      static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,classpath:/templates/
-  # 国际化文件配置
-  messages:
-    basename: i18n.login
   # 数据库配置
   datasource:
     username: root
     password: root
-    url: jdbc:mysql://192.168.31.237:3306/test?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mysql://192.168.31.237:3306/restaurantsys?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
     driver-class-name: com.mysql.cj.jdbc.Driver
-#  profiles:
-#    active: dev  #指定激活，还可使用文档块模式
-#  config:
-#    location:  默认配置文件路径
-server:
-  port: 8081
+  # 国际化文件配置
+  messages:
+    basename: i18n.login
 
 # mybatis配置
 mybatis-plus:
@@ -27,32 +21,16 @@ mybatis-plus:
     #log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
+# Log配置
 logging:
   level:
     root: info
   pattern:
     console: "%d{yyyy-MM-dd} [%thread] %-5level %logger{50} - %msg%n"
-#    file:
-#    com.scuec: trace
-#  path: springbootlog
-#  file: D:/springboot.log
 
+# swagger配置
 swagger:
   title: "项目服务说明"
-  description: "律师管理系统"
+  description: "餐饮管理系统"
   version: "1.0"
-  author: "zc"
-
-# 使用@PropertySource(value = {"classpath:person.properties"})获取配置参数示例
-person:
-  lastName: zhangsan
-  age: ${random.int}
-  boss: false
-  birth: 2017/12/12
-  maps: {k1: v1,k2: v2}
-  lists:
-    - lisi
-    - ${person.hello:default}
-  dog:
-    name: ${person.lastName}的狗
-    age: ${random.int}}
+  author: "Zc"
