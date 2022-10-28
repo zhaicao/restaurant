@@ -9,25 +9,37 @@ import java.util.List;
 @Repository
 public interface UserDao {
     /**
-     *
+     * 新增用户
      * @return
      */
-    int insertPerson();
+    int insertUser();
 
-    int updatePerson();
+    /**
+     * 更新用户
+     * @return
+     */
+    int updateUser();
 
-    int deletePerson();
+    /**
+     * 物理删除用户
+     * @return
+     */
+    int deleteUser();
 
     /**
      * 根据id查询用户信息
      */
-    User getPersonById();
+    User getUserById(int userId);
 
     /**
      * 获取所有用户
      * @return
      */
-    List<User> getAllPerson();
+    List<User> getAllUser();
 
-    Integer getPersonCount();
+    /**
+     * 获取所有用户数
+     * @return
+     */
+    Integer getUserCount();
 }

@@ -16,11 +16,17 @@ import java.util.Date;
 @Data
 @Component
 public class User {
-    //    @Value("${person.lastName}")
-    private String lastName;
-    //    @Value("#{11*2}")
-    private Integer age;
-    //    @Value("true")
-    private Boolean boss;
-    private Date birth;
+    private Integer uId;
+
+    private String loginName;
+
+    private String password;
+
+    private String realName;
+
+    private int role;
+
+    private String phone;
+
+    private int idDel;
 }

@@ -37,11 +37,11 @@ class RestaurantApplicationTests {
 
     @Test
     public void testEnumApi(){
-        User person =new User();
-        person.setLastName("zhangsan");
-        person.setAge(20);
+        User user =new User();
+        user.setLoginName("zhangsan");
+        user.setLoginName("20");
         System.out.println(ResponseResult.success("成功"));
-        System.out.println(ResponseResult.success(person));
+        System.out.println(ResponseResult.success(user));
         System.out.println(ResponseResult.error("成功"));
     }
 
