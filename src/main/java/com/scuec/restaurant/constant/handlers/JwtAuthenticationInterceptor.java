@@ -3,7 +3,8 @@ package com.scuec.restaurant.constant.handlers;
 import com.scuec.restaurant.constant.exception.GlobalException;
 import com.scuec.restaurant.constant.response.ResponseCode;
 import com.scuec.restaurant.constant.annotation.PassToken;
-import com.scuec.restaurant.service.LawyerInfoService;
+import com.scuec.restaurant.entities.User;
+import com.scuec.restaurant.service.UserService;
 import com.scuec.restaurant.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ import java.lang.reflect.Method;
 @Slf4j
 public class JwtAuthenticationInterceptor implements HandlerInterceptor {
     @Autowired
-    LawyerInfoService lawyerInfoService;
+    UserService userService;
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object object) throws Exception {
@@ -49,7 +50,7 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
             }
             // 获取 token 中的 user Name
             String userId = JwtUtils.getAudience(token);
-            LawyerInfo lawyer = lawyerInfoService.getLawyerInfo();
+            User user = userService.userLogin();
 
 //            if (lawyer == null)
 //                throw new ResException(ResultCode.ERROR, "JWT用户不存在");

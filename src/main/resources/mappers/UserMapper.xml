@@ -35,12 +35,12 @@
     resultType：默认实体映射关系
     resultMap：自定义的映射关系,字段不一样，只需要自定义的resultMap的id即可
     -->
-    <select id="getPersonById" resultType="com.scuec.restaurant.entities.Person">
+    <select id="getPersonById" resultType="com.scuec.restaurant.entities.User">
         select * from person where id=2;
     </select>
 
     <!--List<User> getAllPerson();-->
-    <select id="getAllPerson" resultType="com.scuec.restaurant.entities.Person">
+    <select id="getAllPerson" resultType="com.scuec.restaurant.entities.User">
         select * from person;
     </select>
 

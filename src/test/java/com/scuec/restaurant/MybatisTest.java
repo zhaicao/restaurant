@@ -1,7 +1,7 @@
 package com.scuec.restaurant;
 
-import com.scuec.restaurant.dao.PersonDao;
-import com.scuec.restaurant.entities.Person;
+import com.scuec.restaurant.dao.UserDao;
+import com.scuec.restaurant.entities.User;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,41 +14,41 @@ import java.util.List;
 public class MybatisTest {
 
     @Resource
-    private PersonDao personMapper;
+    private UserDao userDao;
 
     @Test
     public void testInsert(){
-        int res  = personMapper.insertPerson();
+        int res  = userDao.insertPerson();
         log.warn(String.valueOf("insert:" + res));
     }
 
     @Test
     public void testUpdate(){
-        int res  = personMapper.updatePerson();
+        int res  = userDao.updatePerson();
         log.warn(String.valueOf("update:" + res));
     }
 
     @Test
     public void testDelete(){
-        int res  = personMapper.deletePerson();
+        int res  = userDao.deletePerson();
         log.warn(String.valueOf("delete:" + res));
     }
 
     @Test
     public void testSeachById(){
-        Person person  = personMapper.getPersonById();
-        log.warn(String.valueOf("seachOne:" + person.toString()));
+        User user  = userDao.getPersonById();
+        log.warn(String.valueOf("seachOne:" + user.toString()));
     }
 
     @Test
     public void testAllSeach(){
-        List<Person> persons  = personMapper.getAllPerson();
+        List<User> persons  = userDao.getAllPerson();
         persons.forEach(person -> log.warn(String.valueOf("searchAll:" + person)));
     }
 
     @Test
     public void testGetPersonCount(){
-        int count = personMapper.getPersonCount();
+        int count = userDao.getPersonCount();
         log.warn("searchCount:" + count);
     }
 }
