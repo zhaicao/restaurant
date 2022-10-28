@@ -1,7 +1,7 @@
 package com.scuec.restaurant;
 
 import com.scuec.restaurant.constant.response.ResponseResult;
-import com.scuec.restaurant.entities.Person;
+import com.scuec.restaurant.entities.User;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -14,13 +14,13 @@ import java.util.Locale;
 
 @SpringBootTest
 @Slf4j
-class LawyersysApplicationTests {
+class RestaurantApplicationTests {
 
     //定义日志记录器
     Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private Person person;
+    private User user;
 
     @Autowired
     private MessageSource messageSource;
@@ -32,22 +32,17 @@ class LawyersysApplicationTests {
 
     @Test
     public void testPerson() {
-        System.out.println(person);
+        System.out.println(user);
     }
 
     @Test
     public void testEnumApi(){
-        Person person =new Person();
+        User person =new User();
         person.setLastName("zhangsan");
         person.setAge(20);
         System.out.println(ResponseResult.success("成功"));
         System.out.println(ResponseResult.success(person));
         System.out.println(ResponseResult.error("成功"));
-
-
-//        logger.info(String.valueOf(ResponseResult.success("成功")));
-//        logger.info(ResponseResult.success(person));
-//        logger.error(ResponseResult.error("账号或密码错误").toString());
     }
 
     /**
