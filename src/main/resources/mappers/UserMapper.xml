@@ -39,17 +39,53 @@
     resultMap：自定义的映射关系,字段不一样，只需要自定义的resultMap的id即可
     -->
     <select id="getUserById" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.User">
-        select * from `employee` where empid= #{userId};
+        select
+        <include refid="BaseColumnList"></include>
+        from `employee` where empid= #{userId};
     </select>
 
-    <!--List<User> getAllUser();-->
-    <select id="getAllUser" resultType="com.scuec.restaurant.entities.User">
-        select * from `employee`;
+    <!--    List<User> getAllUser(int uId,
+                          String loginName,
+                          String realName,
+                          int role,
+                          String phone);-->
+    <select id="getAllUser" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.User">
+        select <include refid="BaseColumnList"></include> from `employee` where isdel=0
+        <if test="uId != null and uId !=-1">
+            and empid=#{uId}
+        </if>
+        <if test="loginName != null and loginName !=''">
+            and loginname=#{loginName}
+        </if>
+        <if test="realName != null and realName !=''">
+            and realname like '%${realName}%'
+        </if>
+        <if test="role != null and role !=-1">
+            and position=#{role}
+        </if>
+        <if test="phone != null and phone !=''">
+            and phone=#{phone}
+        </if>
     </select>
 
     <!--Integer getUserCount();-->
     <select id="getUserCount" resultType="java.lang.Integer">
-        select count(*) from `employee`;
+        select count(1) from `employee` where isdel=0
+        <if test="uId != null and uId !=-1">
+            and empid=#{uId}
+        </if>
+        <if test="loginName != null and loginName !=''">
+            and loginname=#{loginName}
+        </if>
+        <if test="realName != null and realName !=''">
+            and realname like '%${realName}%'
+        </if>
+        <if test="role != null and role !=-1">
+            and position=#{role}
+        </if>
+        <if test="phone != null and phone !=''">
+            and phone=#{phone}
+        </if>
     </select>
 
 </mapper>

@@ -43,13 +43,13 @@ public class UserDaoTest {
 
     @Test
     public void testGetAllUser(){
-        List<User> users  = userDao.getAllUser();
+        List<User> users  = userDao.getAllUser(-1, "", "", 1, "");
         users.forEach(person -> log.warn(String.valueOf("searchAll:" + person)));
     }
 
     @Test
     public void testGetUserCount(){
-        int count = userDao.getUserCount();
+        int count = userDao.getUserCount(-1, "", "", -1, "");
         log.warn("searchCount:" + count);
     }
 }
