@@ -2,6 +2,7 @@ package com.scuec.restaurant.dao;
 
 
 import com.scuec.restaurant.entities.User;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,7 +13,11 @@ public interface UserDao {
      * 新增用户
      * @return
      */
-    int insertUser();
+    int insertUser(@Param("userName") String userLoginName,
+                   @Param ("userPassword") String userPwd,
+                   String userRealName,
+                   int userRole,
+                   String userPhone);
 
     /**
      * 更新用户

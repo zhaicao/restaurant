@@ -3,6 +3,7 @@ package com.scuec.restaurant;
 import com.scuec.restaurant.dao.UserDao;
 import com.scuec.restaurant.entities.User;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,7 +19,7 @@ public class UserDaoTest {
 
     @Test
     public void testInsert(){
-        int res  = userDao.insertUser();
+        int res  = userDao.insertUser("ZhangSan", "123456", "张三", 1, "15888888888");
         log.warn(String.valueOf("insert:" + res));
     }
 

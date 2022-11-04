@@ -18,9 +18,9 @@
         empid, loginname, pwd, realname, position, phone, isdel
     </sql>
 
-    <!--int insertUser();-->
+    <!--int insertUser(@Param("userName") String userLoginName, @Param ("userPassword") String userPwd, String userRealName, int userRole, String userPhone);-->
     <insert id="insertUser">
-        insert into `employee` value(null, "testzs", "zhangsan", "zhangsan", 1, "13000000000", 0)
+        insert into `employee` value(null, #{userName}, #{userPassword}, #{userRealName}, #{userRole}, #{userPhone}, 0)
     </insert>
 
     <!--int updateUser();-->

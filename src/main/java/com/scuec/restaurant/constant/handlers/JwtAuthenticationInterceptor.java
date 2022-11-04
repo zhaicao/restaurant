@@ -51,10 +51,8 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
             // 获取 token 中的 user Name
             String userId = JwtUtils.getAudience(token);
             User user = userService.userLogin();
-
 //            if (lawyer == null)
 //                throw new ResException(ResultCode.ERROR, "JWT用户不存在");
-
             // 验证 token
             JwtUtils.verifyToken(token, userId);
             //获取载荷内容

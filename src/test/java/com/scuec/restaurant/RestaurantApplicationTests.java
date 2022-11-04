@@ -53,4 +53,12 @@ class RestaurantApplicationTests {
         String message = messageSource.getMessage("login.tip", new String[0], Locale.CHINA);
         log.info("获取的值：【" + message + "】");
     }
+
+    /**
+     * 用户服务测试
+     */
+    @Test
+    public void testUserService(){
+
+    }
 }
