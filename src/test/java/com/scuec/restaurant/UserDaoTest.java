@@ -1,5 +1,7 @@
 package com.scuec.restaurant;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.scuec.restaurant.dao.UserDao;
 import com.scuec.restaurant.entities.User;
 import lombok.extern.slf4j.Slf4j;
@@ -37,19 +39,32 @@ public class UserDaoTest {
 
     @Test
     public void testGetUserById(){
-        User user  = userDao.getUserById(4);
+        User user  = userDao.getUserById("4");
         log.warn(String.valueOf("seachOne:" + user.toString()));
     }
 
     @Test
     public void testGetAllUser(){
-        List<User> users  = userDao.getAllUser(-1, "", "", 1, "");
-        users.forEach(person -> log.warn(String.valueOf("searchAll:" + person)));
+        int current = 1;
+        int size = 10;
+        IPage<User> users  = userDao.getAllUser(new Page<>(current, size), "", "", "", 1, "");
+        users.getRecords().forEach(person -> log.warn(String.valueOf("searchAll:" + person)));
+        // 打印分页数据
+        System.out.println("TotalPages："+users.getPages());
+        System.out.println("Total："+users.getTotal());
+        System.out.println("Current："+users.getCurrent());
+        System.out.println("Size："+users.getSize());
     }
 
     @Test
     public void testGetUserCount(){
-        int count = userDao.getUserCount(-1, "", "", -1, "");
+        int count = userDao.getUserCount("", "", "", -1, "");
         log.warn("searchCount:" + count);
+    }
+
+    @Test
+    public void testGetUserByLoginName(){
+        User user = userDao.getUserByLoginName("admin");
+        log.info(user.toString());
     }
 }

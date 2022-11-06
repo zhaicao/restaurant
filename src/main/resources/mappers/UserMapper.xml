@@ -33,7 +33,7 @@
         delete from `employee` where empid = 7;
     </delete>
 
-    <!--User getUserById();-->
+    <!--User getUserById(int userId);-->
     <!--
     resultType：默认实体映射关系
     resultMap：自定义的映射关系,字段不一样，只需要自定义的resultMap的id即可
@@ -44,6 +44,13 @@
         from `employee` where empid= #{userId};
     </select>
 
+    <!--User getUserByLoginName(String loginName);-->
+    <select id="getUserByLoginName" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.User">
+        select
+        <include refid="BaseColumnList"></include>
+        from `employee` where loginname= #{loginName};
+    </select>
+
     <!--    List<User> getAllUser(int uId,
                           String loginName,
                           String realName,
@@ -51,7 +58,7 @@
                           String phone);-->
     <select id="getAllUser" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.User">
         select <include refid="BaseColumnList"></include> from `employee` where isdel=0
-        <if test="uId != null and uId !=-1">
+        <if test="uId != null and uId !=''">
             and empid=#{uId}
         </if>
         <if test="loginName != null and loginName !=''">

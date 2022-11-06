@@ -27,15 +27,19 @@ import java.util.Map;
 public class UserController {
 
     @Autowired
-    private UserService UserService;
+    private UserService userService;
 
     @PassToken
     @GetMapping("/login")
-    public Map<String, Object> login(HttpServletRequest request, String username, String password, int loginType) {
-//        LawyerInfo lawyerInfo = lawyerInfoService.getLawyerInfo();
+    public Map<String, Object> login(HttpServletRequest request, String loginName, String password, int loginType) {
         Map<String, Object> map = new HashMap<>();
-        map.put("token", JwtUtils.createToken(username, password));
-//        return ResponseResult.success(map);
+        User user = userService.userLogin(loginName, password);
+        if (user != null) {
+            user.setPassword(""); //设置密码为空，安全
+            map.put("user", user);
+            map.put("token", JwtUtils.createToken(String.valueOf(user.getUId()), password));
+        }else
+            throw new GlobalException(ResponseCode.ERROR, "用户不存在或密码错误");
         return map;
     }
 

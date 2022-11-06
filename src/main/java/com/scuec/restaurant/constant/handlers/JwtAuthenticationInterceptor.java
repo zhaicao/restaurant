@@ -48,17 +48,17 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
             if (token == null) {
                 throw new GlobalException(ResponseCode.ERROR, "JWT登录失效");
             }
-            // 获取 token 中的 user Name
-            String userId = JwtUtils.getAudience(token);
-            User user = userService.userLogin();
-//            if (lawyer == null)
-//                throw new ResException(ResultCode.ERROR, "JWT用户不存在");
+            // 获取 token 中的 userId
+            String userIdByToken = JwtUtils.getAudience(token);
+            User user = userService.getUserById(userIdByToken);
+            if (user == null)
+                throw new GlobalException(ResponseCode.ERROR, "JWT用户不存在");
             // 验证 token
-            JwtUtils.verifyToken(token, userId);
+            JwtUtils.verifyToken(token, userIdByToken+user.getPassword());
             //获取载荷内容
-            String userName = JwtUtils.getClaimByName(token, "userName").asString();
+            String userId = JwtUtils.getClaimByName(token, "userId").asString();
             //放入attribute以便后面调用
-            httpServletRequest.setAttribute("userName", userName);
+            httpServletRequest.setAttribute("userId", userId);
             return true;
         }
         return true;

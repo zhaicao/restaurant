@@ -25,21 +25,21 @@ public class JwtUtils {
      载荷内容：暂时设计为：这个人的名字，这个人的昵称
      加密密钥：个人id加上一串字符串
      */
-    public static String createToken(String userId, String userPwd) {
+    public static String createToken(String userId, String Password) {
 
         Calendar nowTime = Calendar.getInstance();
         nowTime.add(Calendar.MINUTE,30);  //有效时间
         Date expiresDate = nowTime.getTime();
 
-        return JWT.create().withAudience(userId, userPwd)   //签发对象
+        return JWT.create().withAudience(userId, Password)   //签发对象
                 .withIssuedAt(new Date())                   //发行时间
                 .withExpiresAt(expiresDate)                 //有效时间
-                .withClaim("userName", "admin")      //载荷
-                .sign(Algorithm.HMAC256(userId));   //个人ID+密码一起加密
+                .withClaim("userId", userId)      //载荷
+                .sign(Algorithm.HMAC256(userId+Password));   //个人ID+密码一起加密
     }
 
     /**
-     * 检验合法性，其中secret参数就应该传入的是用户的id
+     * 检验合法性，其中secret参数是用户的id+password
      * @param token
      * @throws GlobalException 校验失败异常
      */
@@ -70,7 +70,7 @@ public class JwtUtils {
     /**
      * 通过载荷名字获取载荷的值
      */
-    public static Claim getClaimByName(String token, String name){
-        return JWT.decode(token).getClaim(name);
+    public static Claim getClaimByName(String token, String userId){
+        return JWT.decode(token).getClaim(userId);
     }
 }

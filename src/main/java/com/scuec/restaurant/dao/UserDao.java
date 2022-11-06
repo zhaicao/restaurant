@@ -1,6 +1,9 @@
 package com.scuec.restaurant.dao;
 
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.scuec.restaurant.entities.User;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -8,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface UserDao {
+public interface UserDao extends BaseMapper<User> {
     /**
      * 新增用户
      * @return
@@ -34,7 +37,12 @@ public interface UserDao {
     /**
      * 根据id查询用户信息
      */
-    User getUserById(int userId);
+    User getUserById(String userId);
+
+    /**
+     * 根据loginName查询用户信息
+     */
+    User getUserByLoginName(String loginName);
 
     /**
      * 获取所有用户,混合查询
@@ -45,11 +53,12 @@ public interface UserDao {
      * @param phone 用户手机，精确
      * @return
      */
-    List<User> getAllUser(int uId,
-                          String loginName,
-                          String realName,
-                          int role,
-                          String phone);
+    IPage<User> getAllUser(@Param("page") Page<User> page,
+                           String uId,
+                           String loginName,
+                           String realName,
+                           int role,
+                           String phone);
 
     /**
      * 获取所有用户数,混合查询
@@ -60,7 +69,7 @@ public interface UserDao {
      * @param phone 用户手机，精确
      * @return
      */
-    Integer getUserCount(int uId,
+    Integer getUserCount(String uId,
                          String loginName,
                          String realName,
                          int role,
