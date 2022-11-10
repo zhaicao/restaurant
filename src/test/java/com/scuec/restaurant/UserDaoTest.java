@@ -27,13 +27,19 @@ public class UserDaoTest {
 
     @Test
     public void testUpdate(){
-        int res  = userDao.updateUser();
+        int res  = userDao.updateUser("6",
+                null,
+                null,
+                null,
+                -1,
+                null,
+                0);
         log.warn(String.valueOf("update:" + res));
     }
 
     @Test
     public void testDelete(){
-        int res  = userDao.deleteUser();
+        int res  = userDao.deleteActualUser("6");
         log.warn(String.valueOf("delete:" + res));
     }
 
@@ -47,7 +53,7 @@ public class UserDaoTest {
     public void testGetAllUser(){
         int current = 1;
         int size = 10;
-        IPage<User> users  = userDao.getAllUser(new Page<>(current, size), "", "", "", 1, "");
+        IPage<User> users  = userDao.getUserList(new Page<>(current, size), "", "", "", 1, "");
         users.getRecords().forEach(person -> log.warn(String.valueOf("searchAll:" + person)));
         // 打印分页数据
         System.out.println("TotalPages："+users.getPages());

@@ -31,10 +31,11 @@ public class JwtUtils {
         nowTime.add(Calendar.MINUTE,30);  //有效时间
         Date expiresDate = nowTime.getTime();
 
-        return JWT.create().withAudience(userId, Password)   //签发对象
+        return JWT.create()
+                .withAudience(userId, Password)             //签发对象
                 .withIssuedAt(new Date())                   //发行时间
                 .withExpiresAt(expiresDate)                 //有效时间
-                .withClaim("userId", userId)      //载荷
+                .withClaim("userId", userId)          //载荷
                 .sign(Algorithm.HMAC256(userId+Password));   //个人ID+密码一起加密
     }
 

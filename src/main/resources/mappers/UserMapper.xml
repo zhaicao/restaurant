@@ -18,20 +18,51 @@
         empid, loginname, pwd, realname, position, phone, isdel
     </sql>
 
-    <!--int insertUser(@Param("userName") String userLoginName, @Param ("userPassword") String userPwd, String userRealName, int userRole, String userPhone);-->
+    <!--int insertUser(String loginName,
+                   @Param ("userPassword") String password,
+                   String realName,
+                   int userRole,
+                   String userPhone);-->
     <insert id="insertUser">
-        insert into `employee` value(null, #{userName}, #{userPassword}, #{userRealName}, #{userRole}, #{userPhone}, 0)
+        <selectKey keyProperty="userId" resultType="String" order="BEFORE">
+            select REPLACE(UUID(),'-','')
+        </selectKey>
+        insert into `employee` value(#{userId}, #{loginName}, #{userPassword}, #{realName}, #{userRole}, #{userPhone}, 0)
     </insert>
 
-    <!--int updateUser();-->
+    <!--    int updateUser(String userId,
+                   String loginName,
+                   @Param ("userPassword") String password,
+                   String realName,
+                   int userRole,
+                   String userPhone,
+                   int isDel);-->
     <update id="updateUser">
-        update `employee` set realname = '张三' where empid = 7;
-    </update>
+        update `employee`
+        set
+        <trim suffixOverrides=",">
+            <if test="loginName != null and loginName != ''">
+                loginname=#{loginName},
+            </if>
+            <if test="userPassword != null and userPassword != ''">
+                pwd = #{userPassword},
+            </if>
+            <if test="realName != null and realName != ''">
+                realname = #{realName},
+            </if>
+            <if test="userRole != null and userRole != -1">
+                position = #{userRole},
+            </if>
+            <if test="userPhone != null and userPhone != ''">
+                phone = #{userPhone},
+            </if>
+            <if test="isDel != null and isDel != -1">
+                isdel = #{isDel}
+            </if>
+        </trim>
+            where empid = #{userId};
 
-    <!--int deleteUser();-->
-    <delete id="deleteUser">
-        delete from `employee` where empid = 7;
-    </delete>
+    </update>
 
     <!--User getUserById(int userId);-->
     <!--
@@ -51,15 +82,18 @@
         from `employee` where loginname= #{loginName};
     </select>
 
-    <!--    List<User> getAllUser(int uId,
-                          String loginName,
-                          String realName,
-                          int role,
-                          String phone);-->
-    <select id="getAllUser" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.User">
-        select <include refid="BaseColumnList"></include> from `employee` where isdel=0
-        <if test="uId != null and uId !=''">
-            and empid=#{uId}
+    <!--IPage<User> getUserList(@Param("page") Page<User> page,
+                           String userId,
+                           String loginName,
+                           String realName,
+                           int role,
+                           String phone);-->
+    <select id="getUserList" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.User">
+        select
+        <include refid="BaseColumnList"></include>
+        from `employee` where isdel=0
+        <if test="userId != null and userId !=''">
+            and empid=#{userId}
         </if>
         <if test="loginName != null and loginName !=''">
             and loginname=#{loginName}
@@ -78,8 +112,8 @@
     <!--Integer getUserCount();-->
     <select id="getUserCount" resultType="java.lang.Integer">
         select count(1) from `employee` where isdel=0
-        <if test="uId != null and uId !=-1">
-            and empid=#{uId}
+        <if test="userId != null and userId !=-1">
+            and empid=#{userId}
         </if>
         <if test="loginName != null and loginName !=''">
             and loginname=#{loginName}

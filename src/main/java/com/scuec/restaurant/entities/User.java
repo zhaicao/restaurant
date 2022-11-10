@@ -16,7 +16,7 @@ import java.util.Date;
 @Data
 @Component
 public class User {
-    private int uId;
+    private String uId;
 
     private String loginName;
 
@@ -33,7 +33,7 @@ public class User {
     public User() {
     }
 
-    public User(int uId, String loginName, String password, String realName, int role, String phone, int idDel) {
+    public User(String uId, String loginName, String password, String realName, int role, String phone, int idDel) {
         this.uId = uId;
         this.loginName = loginName;
         this.password = password;
