@@ -1,4 +1,4 @@
-package com.scuec.restaurant.config;
+package com.scuec.restaurant.config.mybatis;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;

@@ -34,7 +34,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PassToken
     @GetMapping("/login")
     @ApiOperation(value = "用户登录", notes = "用户登录")
     @ApiImplicitParams({

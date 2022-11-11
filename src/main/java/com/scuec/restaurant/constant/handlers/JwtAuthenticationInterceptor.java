@@ -8,6 +8,7 @@ import com.scuec.restaurant.service.UserService;
 import com.scuec.restaurant.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,17 +18,21 @@ import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
 
 /**
- * JWT拦截器
+ * JWT拦截实现
  */
 @Slf4j
 public class JwtAuthenticationInterceptor implements HandlerInterceptor {
+
+    @Value("${jwt.header}")
+    private String JWTHeader;
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object object) throws Exception {
+        log.info(JWTHeader);
         // 从请求头中取出token
-        String token = httpServletRequest.getHeader("token");
+        String token = httpServletRequest.getHeader(JWTHeader);
         // 如果不是映射到方法直接通过
         if (!(object instanceof HandlerMethod)) {
             return true;
@@ -43,7 +48,8 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
         }
         //默认全部检查
         else {
-            log.info("被jwt拦截需验证");
+            String requestURL = httpServletRequest.getRequestURI();
+            log.info("RequestURL： {} 被jwt拦截需验证", requestURL);
             // 执行认证
             if (token == null) {
                 throw new GlobalException(ResponseCode.ERROR, "JWT登录失效");

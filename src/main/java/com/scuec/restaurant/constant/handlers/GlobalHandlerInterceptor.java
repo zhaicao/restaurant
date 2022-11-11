@@ -6,9 +6,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
- * 登录拦截器
+ * 全局拦截器
  */
 @Slf4j
 public class GlobalHandlerInterceptor implements HandlerInterceptor {

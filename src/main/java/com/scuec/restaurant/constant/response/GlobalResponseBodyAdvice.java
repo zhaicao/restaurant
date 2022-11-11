@@ -13,7 +13,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 /**
  * 重写ResponseBodyAdvice，对controller返回的值做包装加工
- * @author Ricky
+ * @author Zc
  * @date 2022/10/26
  *
  * comment:RestControllerAdvice对@RestController做增强
@@ -21,7 +21,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
  * 2. 全局数据绑定
  * 3. 全局数据预处理
  */
-@RestControllerAdvice
+@RestControllerAdvice(basePackages = "com.scuec.restaurant.controller")
 public class GlobalResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 
     @Autowired
