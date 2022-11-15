@@ -102,7 +102,7 @@ public class UserController {
         if (result == 1)
             return "successful";
         else if (result == -1)
-            throw new GlobalException(ResponseCode.ERROR, "UserLoginName exist, userName:" + user.getLoginName());
+            throw new GlobalException(ResponseCode.ERROR, "UserLoginName already exists, userName:" + user.getLoginName());
         else
             throw new GlobalException(ResponseCode.ERROR, "Add User Error");
     }
