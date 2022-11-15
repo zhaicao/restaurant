@@ -63,4 +63,15 @@ public interface UserService {
      * @return
      */
     int updateUserPassword(String userId, String oldPassword, String newPassword);
+
+    /**
+     *
+     * @param loginName 登录名
+     * @param realName  真实姓名
+     * @param password 登录密码
+     * @param role 角色
+     * @param phone 联系电话
+     * @return
+     */
+    int addUser(String loginName, String realName, String password, int role, String phone);
 }

@@ -92,6 +92,21 @@ public class UserController {
         return userService.getUsersList(currentPage, pageSize, userId, loginName, realName, role, phone);
     }
 
+    @PostMapping("/addUser")
+    @ApiOperation(value = "新增单个用户", notes = "新增一个用户")
+    public String addUser(@RequestBody User user){
+        int result = userService.addUser(user.getLoginName(),
+                                        user.getRealName(),
+                                        user.getPassword(),
+                                        user.getRole(), user.getPhone());
+        if (result == 1)
+            return "successful";
+        else if (result == -1)
+            throw new GlobalException(ResponseCode.ERROR, "UserLoginName exist, userName:" + user.getLoginName());
+        else
+            throw new GlobalException(ResponseCode.ERROR, "Add User Error");
+    }
+
 
     @DeleteMapping("/deleteUserById")
     @ApiOperation(value = "通过用户Id删除（更新isdel）用户", notes = "通过用户Id删除（更新isdel）用户")

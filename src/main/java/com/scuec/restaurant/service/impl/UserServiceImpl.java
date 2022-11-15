@@ -9,6 +9,8 @@ import com.scuec.restaurant.utils.EncryptUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -56,13 +58,21 @@ public class UserServiceImpl implements UserService {
     public int updateUserPassword(String userId, String oldPassword, String newPassword) {
         User user = userDao.getUserById(userId);
         if (user != null){
-            String encodeAlgorithm = "MD5";
-            if (user.getPassword().equals(EncryptUtil.encrypt(oldPassword, encodeAlgorithm))){
-                int res = userDao.updateUser(userId, null, EncryptUtil.encrypt(newPassword,encodeAlgorithm),null,-1,null,-1);
+            if (user.getPassword().equals(EncryptUtil.md5(oldPassword))){
+                int res = userDao.updateUser(userId, null, EncryptUtil.md5(newPassword),null,-1,null,-1);
                 return res;
             }else
                 return -1;
         }else
             return -1;
+    }
+
+    @Override
+    public int addUser(String loginName, String realName, String password, int role, String phone) {
+        User user = userDao.getUserByLoginName(loginName);
+        if ( user!=null )
+            return -1;
+        else
+            return userDao.insertUser(loginName, EncryptUtil.md5(password), realName, role, phone);
     }
 }
