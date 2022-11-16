@@ -30,16 +30,4 @@ public class User {
 
     private int idDel;
 
-    public User() {
-    }
-
-    public User(String uId, String loginName, String password, String realName, int role, String phone, int idDel) {
-        this.uId = uId;
-        this.loginName = loginName;
-        this.password = password;
-        this.realName = realName;
-        this.role = role;
-        this.phone = phone;
-        this.idDel = idDel;
-    }
 }

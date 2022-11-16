@@ -98,7 +98,8 @@ public class UserController {
         int result = userService.addUser(user.getLoginName(),
                                         user.getRealName(),
                                         user.getPassword(),
-                                        user.getRole(), user.getPhone());
+                                        user.getRole(),
+                                        user.getPhone());
         if (result == 1)
             return "successful";
         else if (result == -1)

@@ -1,0 +1,103 @@
+package com.scuec.restaurant.controller;
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.scuec.restaurant.constant.exception.GlobalException;
+import com.scuec.restaurant.constant.response.ResponseCode;
+import com.scuec.restaurant.entities.Table;
+import com.scuec.restaurant.entities.User;
+import com.scuec.restaurant.service.TableService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping(value = "/table")
+@ApiOperation(value = "餐桌管理", notes = "餐桌管理相关业务")
+@Slf4j
+public class TableController {
+    @Autowired
+    private TableService tableService;
+
+//    @GetMapping("/getTableList")
+//    public List<Table> getTableList(){
+//        tableService.list();
+//        return list;
+//  }
+
+    @GetMapping("/getTableById")
+    @ApiOperation(value = "通过Id获取餐桌信息", notes = "通过Id获取餐桌信息")
+    @ApiImplicitParam(name = "tableId", value = "桌号ID", required = true, dataType = "String", paramType = "query")
+    public Table getTableById(String tableId){
+        Table table = tableService.getTableById(tableId);
+        return table;
+    }
+
+
+    @DeleteMapping("/deleteTableById")
+    @ApiOperation(value = "通过桌号Id删除（更新isdel）用户", notes = "通过桌号Id删除（更新isdel）用户")
+    @ApiImplicitParam(name = "tableId", value = "桌号ID", required = true, dataType = "String", paramType = "query")
+    public String deleteTableById(String tableId){
+        int res = tableService.deleteTableById(tableId);
+        if (res != 0 )
+            return "successful";
+        else
+            throw new GlobalException(ResponseCode.ERROR, "Delete Table Error, tableId:" + tableId);
+    }
+
+    @PutMapping("/updateTable")
+    @ApiOperation(value = "通过餐号Id更新餐桌信息", notes = "桌号，人数和orderid可修改")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "tableId", value = "桌号ID", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "tableNo", value = "桌号", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "tPeople", value = "人数", required = true, dataType = "int", paramType = "query"),
+            @ApiImplicitParam(name = "tOrderid", value = "orderid", required = true, dataType = "String", paramType = "query")
+    })
+    public String updateTable(String tableId, String tableNo, String tPeople, String tOrderid){
+        int res = tableService.updateTable(tableId, tableNo, tPeople, tOrderid);
+        if (res == 1)
+            return "successful";
+        else
+            throw new GlobalException(ResponseCode.ERROR, "Update Table Error, tableId:" + tableId);
+    }
+
+    /**
+     * 获取餐桌list
+     * @param currentPage
+     * @param pageSize
+     * @return
+     */
+    @GetMapping("/getTableList")
+    @ApiOperation(value = "分页显示table列表", notes = "分页显示table列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "currentPage", value = "当前页", required = true, dataType = "int", paramType = "query"),
+            @ApiImplicitParam(name = "pageSize", value = "每页显示多少条记录", required = true, dataType = "int", paramType = "query"),
+            @ApiImplicitParam(name = "tableId", value = "餐桌ID，精确查询", required = true, dataType = "String", paramType = "query"),
+    })
+    public IPage<User> getTableList(int currentPage,
+                                   int pageSize,
+                                   String tableId){
+
+        return tableService.getTableList(currentPage, pageSize,tableId);
+    }
+
+    @PostMapping("/addTable")
+    @ApiOperation(value = "添加餐桌信息", notes = "桌号，人数和orderid")
+    public String addTable(@RequestBody Table table){
+        int result = tableService.addTable(table.getTNo(),
+                table.getTPeople(),
+                table.getTOrderid());
+        if (result == 1)
+            return "successful";
+        else if (result == -1)
+            throw new GlobalException(ResponseCode.ERROR, "TableNo already exists, TableNo:" + table.getTNo());
+        else
+            throw new GlobalException(ResponseCode.ERROR, "Add User Error");
+    }
+}
+
+

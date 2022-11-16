@@ -225,7 +225,7 @@ public class EncryptUtil {
 
     public static void main(String[] args) {
 
-        String encrypt = EncryptUtil.encrypt("888888", "MD5");
+        String encrypt = EncryptUtil.encrypt("123456", "MD5");
         System.out.println(encrypt);
         String decrypt = EncryptUtil.decrypt(encrypt);
         System.out.println(decrypt);

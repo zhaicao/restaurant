@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.scuec.restaurant.dao.TableDao">
+
+    <!-- 定义的映射关系 -->
+    <resultMap id="BaseResultMap" type="com.scuec.restaurant.entities.Table">
+        <id column="t_id" property="tId"/>
+        <result column="t_no"  property="tNo"/>
+        <result column="t_people"  property="tPeople"/>
+        <result column="t_orderid"  property="tOrderid"/>
+        <result column="t_isuse"  property="tableUse"/>
+        <result column="t_isdel"  property="tableDel"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="BaseColumnList">
+        t_id, t_no, t_people, t_orderid, t_isuse, t_isdel
+    </sql>
+
+
+<!--    int insertTable(String tableNo,-->
+<!--    String tPeople,-->
+<!--    String tOrderid);-->
+    <insert id="insertTable">
+        <selectKey keyProperty="tableId" resultType="String" order="BEFORE">
+            select REPLACE(UUID(),'-','')
+        </selectKey>
+        insert into `table_rest` value(#{tableId}, #{tableNo}, #{tPeople}, #{tOrderid}, 0 , 0)
+    </insert>
+
+
+<!--    int updateTable(String tableId,-->
+<!--    String tableNo,-->
+<!--    String tPeople,-->
+<!--    String tOrderid,-->
+<!--    int tableUse,-->
+<!--    int tableDel);-->
+    <update id="updateTable">
+        update `table_rest`
+        set
+        <trim suffixOverrides=",">
+            <if test="tableNo != null and tableNo != ''">
+                t_no=#{tableNo},
+            </if>
+            <if test="tPeople != null and tPeople != ''">
+                t_people = #{tPeople},
+            </if>
+            <if test="tOrderid != null and tOrderid != ''">
+                t_orderid = #{tOrderid},
+            </if>
+            <if test="tableUse != null and tableUse != -1">
+                t_isuse = #{tableUse},
+            </if>
+            <if test="tableDel != null and tableDel != ''">
+                t_isdel = #{tableDel},
+            </if>
+
+        </trim>
+        where t_id = #{tableId};
+
+    </update>
+
+    <select id="getTableById" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Table">
+        select
+        <include refid="BaseColumnList"></include>
+        from `table_rest` where t_id= #{tableId};
+    </select>
+
+<!--    IPage<User> getTableList(@Param("page") Page<User> page,-->
+<!--    String tableId);-->
+    <select id="getTableList" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Table">
+        select
+        <include refid="BaseColumnList"></include>
+        from `table_rest` where t_isdel=0
+        <if test="tableId != null and tableId !=''">
+            and t_id=#{tableId}
+        </if>
+    </select>
+
+</mapper>
