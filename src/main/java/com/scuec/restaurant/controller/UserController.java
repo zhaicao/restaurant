@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping(value = "/user")
 @ApiOperation(value = "用户管理", notes = "用户管理相关业务")
