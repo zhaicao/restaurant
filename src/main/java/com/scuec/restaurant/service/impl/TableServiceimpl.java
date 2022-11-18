@@ -4,9 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.scuec.restaurant.dao.TableDao;
 import com.scuec.restaurant.entities.Table;
-import com.scuec.restaurant.entities.User;
 import com.scuec.restaurant.service.TableService;
-import javafx.scene.control.Tab;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +30,7 @@ public class TableServiceimpl implements TableService {
     }
 
     @Override
-    public IPage<User> getTableList(int currentPage, int pageSize,String tableId) {
+    public IPage<Table> getTableList(int currentPage, int pageSize, String tableId) {
         return tableDao.getTableList(new Page<>(currentPage, pageSize),tableId);
     }
 

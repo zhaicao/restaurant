@@ -1,5 +1,12 @@
 package com.scuec.restaurant.dao;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.scuec.restaurant.entities.Menu;
+import com.scuec.restaurant.entities.Table;
+import com.scuec.restaurant.entities.User;
+import javafx.scene.control.Tab;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -7,13 +14,18 @@ public interface MenuDao {
     int updateMenu(String foodId,
                     String menuType,
                     String menuName,
-                    Character menuPrice,
+                    double menuPrice,
                     String menuImg,
                     int menuPopular,
                     int menuDel);
 
-    int addTable(String menuType,
+    int addMenu(String menuType,
                  String menuName,
-                 Character menuPrice,
+                 double menuPrice,
                  String menuImg);
+
+    IPage<Menu> getMenuList(@Param("page") Page<Menu> page,
+                             String menuName);
+
+    Menu getMenuById(String foodId);
 }

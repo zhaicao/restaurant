@@ -2,7 +2,6 @@ package com.scuec.restaurant.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.scuec.restaurant.entities.Table;
-import com.scuec.restaurant.entities.User;
 
 public interface TableService {
     /**
@@ -16,7 +15,7 @@ public interface TableService {
 
     int updateTable(String tableId, String tableNo, String tPeople, String tOrderid);
 
-    IPage<User> getTableList(int currentPage, int pageSize, String tableId);
+    IPage<Table> getTableList(int currentPage, int pageSize, String tableId);
 
     int addTable( String tableNo, String tPeople, String tOrderid);
 }

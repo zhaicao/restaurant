@@ -3,7 +3,7 @@
 <mapper namespace="com.scuec.restaurant.dao.MenuDao">
     <!-- 定义的映射关系 -->
     <resultMap id="BaseResultMap" type="com.scuec.restaurant.entities.Menu">
-        <id column="foodid" property="foodID"/>
+        <id column="foodid" property="foodId"/>
         <result column="m_type"  property="menuType"/>
         <result column="m_name"  property="menuName"/>
         <result column="m_price"  property="menuPrice"/>
@@ -18,15 +18,21 @@
     </sql>
 
 
-<!--    int addTable(String menuType,-->
+    <select id="getMenuById" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Menu">
+        select
+        <include refid="BaseColumnList"></include>
+        from `menu` where foodid= #{foodId};
+    </select>
+
+<!--    int addMenu(String menuType,-->
 <!--    String menuName,-->
-<!--    Character menuPrice,-->
+<!--    double menuPrice,-->
 <!--    String menuImg);-->
-    <insert id="addTable">
-        <selectKey keyProperty="foodID" resultType="String" order="BEFORE">
+    <insert id="addMenu">
+        <selectKey keyProperty="foodId" resultType="String" order="BEFORE">
             select REPLACE(UUID(),'-','')
         </selectKey>
-        insert into `menu` value(#{foodID}, #{menuType}, #{menuName}, #{menuPrice}, #{menuImg}, 0 , 0)
+        insert into `menu` value(#{foodId}, #{menuType}, #{menuName}, #{menuPrice}, #{menuImg}, 0 , 0)
     </insert>
 
 
@@ -58,6 +64,18 @@
         where foodid = #{foodId};
 
     </update>
+
+
+<!--    IPage<Menu> getMenuList(@Param("page") Page<Menu> page,-->
+<!--    String menuName);-->
+    <select id="getMenuList" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Menu">
+        select
+        <include refid="BaseColumnList"></include>
+        from `menu` where isdel=0
+        <if test="menuName != null and menuName !=''">
+            and m_name like '%${menuName}%'
+        </if>
+    </select>
 
 
 </mapper>

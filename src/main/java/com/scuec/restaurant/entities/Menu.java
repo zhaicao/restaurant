@@ -6,13 +6,13 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 public class Menu {
-    private int foodID;
+    private String foodId;
 
     private String menuType;
 
     private String menuName;
 
-    private Character menuPrice;
+    private double menuPrice;
 
     private String menuImg;
 

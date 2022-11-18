@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.scuec.restaurant.constant.exception.GlobalException;
 import com.scuec.restaurant.constant.response.ResponseCode;
 import com.scuec.restaurant.entities.Table;
-import com.scuec.restaurant.entities.User;
 import com.scuec.restaurant.service.TableService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping(value = "/table")
 @ApiOperation(value = "餐桌管理", notes = "餐桌管理相关业务")
@@ -78,7 +78,7 @@ public class TableController {
             @ApiImplicitParam(name = "pageSize", value = "每页显示多少条记录", required = true, dataType = "int", paramType = "query"),
             @ApiImplicitParam(name = "tableId", value = "餐桌ID，精确查询", required = true, dataType = "String", paramType = "query"),
     })
-    public IPage<User> getTableList(int currentPage,
+    public IPage<Table> getTableList(int currentPage,
                                    int pageSize,
                                    String tableId){
 
@@ -96,7 +96,7 @@ public class TableController {
         else if (result == -1)
             throw new GlobalException(ResponseCode.ERROR, "TableNo already exists, TableNo:" + table.getTNo());
         else
-            throw new GlobalException(ResponseCode.ERROR, "Add User Error");
+            throw new GlobalException(ResponseCode.ERROR, "Add Table Error");
     }
 }
 

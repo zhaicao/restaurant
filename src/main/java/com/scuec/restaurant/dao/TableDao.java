@@ -32,6 +32,6 @@ public interface TableDao extends BaseMapper<Table> {
 
     Table getTableById(String tableId);
 
-    IPage<User> getTableList(@Param("page") Page<User> page,
-                            String tableId);
+    IPage<Table> getTableList(@Param("page") Page<Table> page,
+                              String tableId);
 }
