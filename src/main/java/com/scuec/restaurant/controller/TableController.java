@@ -39,7 +39,7 @@ public class TableController {
 
 
     @DeleteMapping("/deleteTableById")
-    @ApiOperation(value = "通过桌号Id删除（更新isdel）用户", notes = "通过桌号Id删除（更新isdel）用户")
+    @ApiOperation(value = "通过桌号Id删除（逻辑删除）餐桌", notes = "通过桌号Id删除（逻辑删除）餐桌")
     @ApiImplicitParam(name = "tableId", value = "桌号ID", required = true, dataType = "String", paramType = "query")
     public String deleteTableById(String tableId){
         int res = tableService.deleteTableById(tableId);
@@ -99,5 +99,6 @@ public class TableController {
             throw new GlobalException(ResponseCode.ERROR, "Add Table Error");
     }
 }
+
 
 

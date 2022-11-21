@@ -13,13 +13,19 @@ import java.util.Date;
 public class Message {
     private String messageId;
 
-    private String tNo;
+    private String messageUserid;
+
+    private String messageOrderid;
 
     private String messageContent;
 
-    @ApiModelProperty(value = "创建时间")
+    private int messageType;
+
+//    @ApiModelProperty(value = "创建时间")
 //    @TableField(fill = FieldFill.INSERT)
     private Date gmtCreate;
+
+    private int messageComplete;
 
     private int messageDel;
 
