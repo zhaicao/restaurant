@@ -7,7 +7,7 @@ import com.scuec.restaurant.entities.Menu;
 public interface MenuService {
     int deleteMenuById(String foodId);
 
-//    int addMenu(String menuType, String menuName, double menuPrice, String menuImg);
+
 
     IPage<Menu> getMenuList(int currentPage, int pageSize, String menuName);
 

@@ -69,22 +69,6 @@ public class MenuController {
             throw new GlobalException(ResponseCode.ERROR, "Delete User Error, foodId:" + foodId);
     }
 
-//    @PostMapping("/addMenu")
-//    @ApiOperation(value = "新增菜品", notes = "新增一个菜品")
-//    public String addMenu(@RequestBody Menu menu,@RequestParam(value = "file") MultipartFile file,HttpServletResponse response){
-//        String newFileName = commonService.upload(file);
-//        commonService.download(newFileName,response);
-//        int result = menuService.addMenu(menu.getMenuType(),
-//                menu.getMenuName(),
-//                menu.getMenuPrice(),
-//                menu.getMenuImg());
-//        if (result == 1)
-//            return "successful"+newFileName;
-//        else if (result == -1)
-//            throw new GlobalException(ResponseCode.ERROR, "MenuName already exists, menuName:" + menu.getMenuName());
-//        else
-//            throw new GlobalException(ResponseCode.ERROR, "Add Menu Error");
-//    }
 
 
     @PostMapping("/addMenu")
@@ -99,34 +83,6 @@ public class MenuController {
             throw new GlobalException(ResponseCode.ERROR, "Add Menu Error");
     }
 
-//    @PostMapping("/addMenu00")
-//    @ApiOperation(value = "新增菜品00", notes = "新增一个菜品00")
-//    public String addMenu00(@RequestBody Menu menu){
-//        int result = menuService.addMenu(menu.getMenuType(),
-//                menu.getMenuName(),
-//                menu.getMenuPrice(),
-//                menu.getMenuImg());
-//        if (result == 1)
-//            return "successful";
-//        else if (result == -1)
-//            throw new GlobalException(ResponseCode.ERROR, "MenuName already exists, menuName:" + menu.getMenuName());
-//        else
-//            throw new GlobalException(ResponseCode.ERROR, "Add Menu Error");
-//    }
-
-//    @PostMapping("/upload")
-//    @ApiOperation(value = "上传", notes = "上传图片")
-//    public String upLoad(@RequestParam(value = "file") MultipartFile file,HttpServletResponse response) {
-//        String newFileName = commonService.upload(file);
-//         return newFileName;
-//    }
-
-//        @PostMapping("/upload1")
-//    @ApiOperation(value = "上传", notes = "上传图片")
-//    public String upload1(@RequestParam(value = "file") MultipartFile file) {
-//        String filename = commonService.upload1(file);//上传图片
-//        return filename;
-//    }
 
 
     @PostMapping("/updateMenu")
