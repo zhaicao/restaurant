@@ -22,9 +22,11 @@ public class MessageController {
 
 
     @PostMapping("/addMessage")
-    @ApiOperation(value = "新增消息", notes = "新增一个消息")
+    @ApiOperation(value = "新增信息", notes = "新增一条信息")
     public String addMessage(@RequestBody Message message){
-        int result = messageService.addMessage(message.getMessageContent());
+        int result = messageService.addMessage(message.getMessageUserid(),
+                message.getMessageOrderid(),
+                message.getMessageContent());
         if (result == 1)
             return "successful";
         else

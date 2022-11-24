@@ -8,6 +8,8 @@ import com.scuec.restaurant.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 public class MessageServiceimpl implements MessageService {
     @Autowired
@@ -15,8 +17,8 @@ public class MessageServiceimpl implements MessageService {
 
 
     @Override
-    public int addMessage(String messageContent) {
-        return messageDao.addMessage(messageContent);
+    public int addMessage(String messageUserid, String messageOrderid, String messageContent) {
+        return messageDao.addMessage(messageUserid,messageOrderid,messageContent);
     }
 
     @Override
@@ -36,6 +38,7 @@ public class MessageServiceimpl implements MessageService {
 
     @Override
     public int updateMessageState(String messageId) {
+
         return messageDao.updateMessage(messageId,null,1,0);
     }
 }

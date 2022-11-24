@@ -19,4 +19,5 @@ public class Menu {
     private int menuPopular;
 
     private int menuDel;
+
 }

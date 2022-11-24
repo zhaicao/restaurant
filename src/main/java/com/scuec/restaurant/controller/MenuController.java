@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.scuec.restaurant.constant.exception.GlobalException;
 import com.scuec.restaurant.constant.response.ResponseCode;
 import com.scuec.restaurant.entities.Menu;
+import com.scuec.restaurant.service.CommonService;
 import com.scuec.restaurant.service.MenuService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -11,6 +12,10 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -20,6 +25,9 @@ import org.springframework.web.bind.annotation.*;
 public class MenuController {
     @Autowired
     private MenuService menuService;
+
+    @Autowired
+    private CommonService commonService;
 
     @GetMapping("/getMenuId")
     @ApiOperation(value = "通过Id获取菜品信息", notes = "通过Id获取菜品信息")
@@ -61,32 +69,77 @@ public class MenuController {
             throw new GlobalException(ResponseCode.ERROR, "Delete User Error, foodId:" + foodId);
     }
 
+//    @PostMapping("/addMenu")
+//    @ApiOperation(value = "新增菜品", notes = "新增一个菜品")
+//    public String addMenu(@RequestBody Menu menu,@RequestParam(value = "file") MultipartFile file,HttpServletResponse response){
+//        String newFileName = commonService.upload(file);
+//        commonService.download(newFileName,response);
+//        int result = menuService.addMenu(menu.getMenuType(),
+//                menu.getMenuName(),
+//                menu.getMenuPrice(),
+//                menu.getMenuImg());
+//        if (result == 1)
+//            return "successful"+newFileName;
+//        else if (result == -1)
+//            throw new GlobalException(ResponseCode.ERROR, "MenuName already exists, menuName:" + menu.getMenuName());
+//        else
+//            throw new GlobalException(ResponseCode.ERROR, "Add Menu Error");
+//    }
+
+
     @PostMapping("/addMenu")
     @ApiOperation(value = "新增菜品", notes = "新增一个菜品")
-    public String addMenu(@RequestBody Menu menu){
-        int result = menuService.addMenu(menu.getMenuType(),
-                menu.getMenuName(),
-                menu.getMenuPrice(),
-                menu.getMenuImg());
+    public String addMenu(String menuType , String menuName , double menuPrice ,@RequestParam(value = "file") MultipartFile file){
+        String menuImg = commonService.upload(file);
+//        commonService.download(menuImg,response);
+        int result = menuService.addMenu(menuType, menuName, menuPrice, menuImg);
         if (result == 1)
             return "successful";
-        else if (result == -1)
-            throw new GlobalException(ResponseCode.ERROR, "MenuName already exists, menuName:" + menu.getMenuName());
         else
             throw new GlobalException(ResponseCode.ERROR, "Add Menu Error");
     }
 
+//    @PostMapping("/addMenu00")
+//    @ApiOperation(value = "新增菜品00", notes = "新增一个菜品00")
+//    public String addMenu00(@RequestBody Menu menu){
+//        int result = menuService.addMenu(menu.getMenuType(),
+//                menu.getMenuName(),
+//                menu.getMenuPrice(),
+//                menu.getMenuImg());
+//        if (result == 1)
+//            return "successful";
+//        else if (result == -1)
+//            throw new GlobalException(ResponseCode.ERROR, "MenuName already exists, menuName:" + menu.getMenuName());
+//        else
+//            throw new GlobalException(ResponseCode.ERROR, "Add Menu Error");
+//    }
 
-    @PutMapping("/updateMenu")
+//    @PostMapping("/upload")
+//    @ApiOperation(value = "上传", notes = "上传图片")
+//    public String upLoad(@RequestParam(value = "file") MultipartFile file,HttpServletResponse response) {
+//        String newFileName = commonService.upload(file);
+//         return newFileName;
+//    }
+
+//        @PostMapping("/upload1")
+//    @ApiOperation(value = "上传", notes = "上传图片")
+//    public String upload1(@RequestParam(value = "file") MultipartFile file) {
+//        String filename = commonService.upload1(file);//上传图片
+//        return filename;
+//    }
+
+
+    @PostMapping("/updateMenu")
     @ApiOperation(value = "通过菜品Id更新菜品信息", notes = "类型，菜品名，价格和图片可修改")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "foodId", value = "菜品ID", required = true, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "menuType", value = "菜品类型", required = true, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "menuName", value = "菜品名", required = true, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "menuPrice", value = "菜品价格", required = true, dataType = "double", paramType = "query"),
-            @ApiImplicitParam(name = "menuImg", value = "图片", required = true, dataType = "String", paramType = "query"),
+//            @ApiImplicitParam(name = "menuImg", value = "图片", required = true, dataType = "String", paramType = "query"),
     })
-    public String updateMenu(String foodId, String menuType , String menuName , double menuPrice , String menuImg ){
+    public String updateMenu(String foodId, String menuType , String menuName , double menuPrice , @RequestParam(value = "file") MultipartFile file ){
+        String menuImg = commonService.upload(file);
         int res = menuService.updateMenu(foodId, menuType, menuName, menuPrice, menuImg);
         if (res == 1)
             return "successful";

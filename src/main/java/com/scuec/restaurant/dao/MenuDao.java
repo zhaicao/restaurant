@@ -19,10 +19,17 @@ public interface MenuDao {
                     int menuPopular,
                     int menuDel);
 
+//    int addMenu(String menuType,
+//                 String menuName,
+//                 double menuPrice,
+//                 String menuImg);
+
     int addMenu(String menuType,
                  String menuName,
                  double menuPrice,
-                 String menuImg);
+                 String menuImg,
+                 int menuPopular,
+                 int menuDel);
 
     IPage<Menu> getMenuList(@Param("page") Page<Menu> page,
                              String menuName);

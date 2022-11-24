@@ -20,10 +20,10 @@ public class MenuServiceimpl implements MenuService {
         return menuDao.updateMenu(foodId,null,null,0,null,0,1);
     }
 
-    @Override
-    public int addMenu(String menuType, String menuName, double menuPrice, String menuImg) {
-        return menuDao.addMenu(menuType, menuName, menuPrice,menuImg);
-    }
+//    @Override
+//    public int addMenu(String menuType, String menuName, double menuPrice, String menuImg) {
+//        return menuDao.addMenu(menuType, menuName, menuPrice,menuImg);
+//    }
 
     @Override
     public IPage<Menu> getMenuList(int currentPage, int pageSize, String menuName) {
@@ -38,5 +38,10 @@ public class MenuServiceimpl implements MenuService {
     @Override
     public Menu getMenuById(String foodId) {
         return menuDao.getMenuById(foodId);
+    }
+
+    @Override
+    public int addMenu( String menuType, String menuName, double menuPrice, String menuImg) {
+        return menuDao.addMenu(menuType,menuName,menuPrice,menuImg,0,0);
     }
 }

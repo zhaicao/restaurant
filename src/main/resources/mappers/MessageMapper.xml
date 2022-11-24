@@ -23,7 +23,7 @@
         <selectKey keyProperty="messageId" resultType="String" order="BEFORE">
             select REPLACE(UUID(),'-','')
         </selectKey>
-        insert into `message` value(#{messageId}, #{messageUserid}, #{messageOrderid}, #{messageContent}, #{messageType},#{gmtCreate}, 0 , 0)
+        insert into `message` value(#{messageId}, #{messageUserid}, #{messageOrderid},0, #{messageContent}, now(),0, 0)
     </insert>
 
 

@@ -64,7 +64,7 @@ public class UserDaoTest {
 
     @Test
     public void testGetUserCount(){
-        int count = userDao.getUserCount("", "", "", -1, "");
+        int count = userDao.getUserCount("-1", "", "", -1, "");
         log.warn("searchCount:" + count);
     }
 

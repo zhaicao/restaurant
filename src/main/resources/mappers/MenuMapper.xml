@@ -24,17 +24,28 @@
         from `menu` where foodid= #{foodId};
     </select>
 
-<!--    int addMenu(String menuType,-->
-<!--    String menuName,-->
-<!--    double menuPrice,-->
-<!--    String menuImg);-->
+<!--&lt;!&ndash;    int addMenu(String menuType,&ndash;&gt;-->
+<!--&lt;!&ndash;    String menuName,&ndash;&gt;-->
+<!--&lt;!&ndash;    double menuPrice,&ndash;&gt;-->
+<!--&lt;!&ndash;    String menuImg);&ndash;&gt;-->
+<!--    <insert id="addMenu">-->
+<!--        <selectKey keyProperty="foodId" resultType="String" order="BEFORE">-->
+<!--            select REPLACE(UUID(),'-','')-->
+<!--        </selectKey>-->
+<!--        insert into `menu` value(#{foodId}, #{menuType}, #{menuName}, #{menuPrice}, #{menuImg}, 0 , 0)-->
+<!--    </insert>-->
+
+
+    <!--    int addMenu(String menuType,-->
+    <!--    String menuName,-->
+    <!--    double menuPrice,-->
+    <!--    String menuImg);-->
     <insert id="addMenu">
         <selectKey keyProperty="foodId" resultType="String" order="BEFORE">
             select REPLACE(UUID(),'-','')
         </selectKey>
         insert into `menu` value(#{foodId}, #{menuType}, #{menuName}, #{menuPrice}, #{menuImg}, 0 , 0)
     </insert>
-
 
 
     <update id="updateMenu">
@@ -50,7 +61,7 @@
             <if test="menuPrice != null and menuPrice != ''">
                 m_price = #{menuPrice},
             </if>
-            <if test="menuImg != null and menuImg != -1">
+            <if test="menuImg != null">
                 m_img = #{menuImg},
             </if>
             <if test="menuPopular != null and menuPopular != -1">

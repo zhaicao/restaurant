@@ -7,9 +7,13 @@ import com.scuec.restaurant.entities.Table;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
+
 @Repository
 public interface MessageDao {
-    int addMessage(String messageContent);
+    int addMessage(String messageUserid,
+            String messageOrderid,
+            String messageContent);
 
     IPage<Message> getMessageList(@Param("page") Page<Table> page);
 

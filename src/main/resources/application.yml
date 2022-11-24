@@ -40,6 +40,6 @@ swagger:
 jwt:
   header: "token"
 
-#菜单图片地址
-reggie:
-  path: D:\java_workspace\restaurant\download_photos\
+##菜单图片地址
+#reggie:
+#  path: D:\java_workspace\restaurant\download_photos\
