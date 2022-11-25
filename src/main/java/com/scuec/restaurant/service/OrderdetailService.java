@@ -1,4 +1,4 @@
 package com.scuec.restaurant.service;
 
-public interface OrderDetaliService {
+public interface OrderdetailService {
 }

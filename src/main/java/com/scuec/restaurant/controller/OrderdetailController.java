@@ -1,6 +1,7 @@
 package com.scuec.restaurant.controller;
 
-import com.scuec.restaurant.service.OrderService;
+
+import com.scuec.restaurant.service.OrderdetailService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping(value = "/order")
-@ApiOperation(value = "订单", notes = "订单管理相关业务")
+@RequestMapping(value = "/orderdetail")
+@ApiOperation(value = "订单详情管理", notes = "订单详情管理相关业务")
 @Slf4j
-public class OrderController {
+public class OrderdetailController {
 
     @Autowired
-    private OrderService orderService;
-
+    private OrderdetailService orderdetailService;
 }
