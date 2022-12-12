@@ -144,4 +144,13 @@ public class CommonServiceimpl implements CommonService {
             throw new GlobalException(ResponseCode.ERROR, "上传文件失败");
         }
 
+
+
+
+        public String getId(){
+
+            return UUID.randomUUID().toString().replaceAll("-","");
+        }
+
+
 }

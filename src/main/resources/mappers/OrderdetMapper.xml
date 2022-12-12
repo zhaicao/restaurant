@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.scuec.restaurant.dao.OrderdetDao">
+
+    <!-- 定义的映射关系 -->
+    <resultMap id="BaseResultMap" type="com.scuec.restaurant.entities.Orderdetail">
+        <id column="mdid" property="odId"/>
+        <result column="orderid"  property="orderId"/>
+        <result column="foodid"  property="foodId"/>
+        <result column="md_amount"  property="odAmount"/>
+        <result column="md_price"  property="odPrice"/>
+        <result column="md_status"  property="odStatus"/>
+        <result column="isdel"  property="odDel"/>
+    </resultMap>
+
+    <update id="deleteOrderdetId">
+        update `md_relation`
+        <trim suffixOverrides=",">
+            set isdel=1,
+        </trim>
+        where orderid = #{orderId};
+
+    </update>
+
+<!--    <insert id="addOrderdet">-->
+<!--        insert into `md_relation` value(#{odId},#{orderId}, #{foodId}, #{odAmount}, #{odPrice}, #{odStatus}, 0)-->
+<!--    </insert>-->
+
+    <insert id="addOrderdet">
+        <selectKey keyProperty="odId" resultType="String" order="BEFORE">
+            select REPLACE(UUID(),'-','')
+        </selectKey>
+        insert into `md_relation` value(#{odId},#{orderId}, #{foodId}, #{odAmount}, #{odPrice}, #{odStatus}, 0)
+    </insert>
+</mapper>

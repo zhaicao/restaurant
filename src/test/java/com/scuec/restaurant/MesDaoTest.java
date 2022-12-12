@@ -21,7 +21,7 @@ public class MesDaoTest {
     public void testAddMessage(){
         int res  = messageDao.addMessage("1",
                 "1",
-                "777"
+                "555"
         );
         log.warn(String.valueOf("insert:" + res));
     }

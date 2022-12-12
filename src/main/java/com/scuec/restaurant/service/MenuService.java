@@ -8,7 +8,6 @@ public interface MenuService {
     int deleteMenuById(String foodId);
 
 
-
     IPage<Menu> getMenuList(int currentPage, int pageSize, String menuName);
 
     int updateMenu(String foodId, String menuType, String menuName, double menuPrice, String menuImg);

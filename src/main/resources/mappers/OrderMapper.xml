@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.scuec.restaurant.dao.OrderDao">
+
+    <!-- 定义的映射关系 -->
+    <resultMap id="BaseResultMap" type="com.scuec.restaurant.entities.Order">
+        <id column="orderid" property="orderId"/>
+        <result column="tableno"  property="tableNo"/>
+        <result column="o_status"  property="orderStatus"/>
+        <result column="price"  property="orderPrice"/>
+        <result column="orderdate"  property="orderDate"/>
+    </resultMap>
+
+
+    <update id="updateOrdersta">
+        update `m_order`
+        <trim suffixOverrides=",">
+            set o_status="已上菜",
+        </trim>
+        where orderid = #{orderId};
+
+    </update>
+
+
+    <update id="updateOrdersta1">
+        update `m_order`
+        <trim suffixOverrides=",">
+            set o_status="已付款",
+        </trim>
+        where orderid = #{orderId};
+
+    </update>
+
+    <insert id="addOrder">
+        insert into `m_order` value(#{orderId}, #{tableNo}, #{orderStatus}, #{orderPrice}, now())
+    </insert>
+
+
+    <select id="getOrderList" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Order">
+        select
+        <include refid="BaseColumnList"></include>
+        from `m_order` where
+        <if test="orderStatus != null and orderStatus !=''">
+            o_status like '%${orderStatus}%'
+        </if>
+    </select>
+
+
+    <select id="getOrderById" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Order">
+        select
+        <include refid="BaseColumnList"></include>
+        from `m_order` where orderid= #{orderId};
+    </select>
+
+</mapper>
