@@ -4,7 +4,6 @@ package com.scuec.restaurant.dao;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.scuec.restaurant.entities.Order;
-import com.scuec.restaurant.entities.Table;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -20,7 +19,7 @@ public interface OrderDao {
     int updateOrdersta1(String orderId);
 
     IPage<Order> getOrderList(@Param("page") Page<Order> page,
-                              String orderStatus);
+                               String orderStatus);
 
 
     int addOrder(String orderId, String tableNo, double orderPrice, String orderStatus);

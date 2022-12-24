@@ -41,6 +41,14 @@ swagger:
 jwt:
   header: "token"
 
-##菜单图片地址
-#reggie:
-#  path: D:\java_workspace\restaurant\download_photos\
+
+
+
+# 配置上传图片的路径和访问图片图片的路径
+upload.file.location: file:D:/java_workspace/restaurant/Tools/
+upload.file.path: /temp-image/**
+
+
+
+spring.servlet.multipart.max-file-size: 50MB
+spring.servlet.multipart.max-request-size: 50MB

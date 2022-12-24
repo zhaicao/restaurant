@@ -3,10 +3,7 @@ package com.scuec.restaurant.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.scuec.restaurant.constant.exception.GlobalException;
 import com.scuec.restaurant.constant.response.ResponseCode;
-import com.scuec.restaurant.entities.Message;
 import com.scuec.restaurant.entities.Order;
-import com.scuec.restaurant.entities.Table;
-import com.scuec.restaurant.service.AttendanceService;
 import com.scuec.restaurant.service.CommonService;
 import com.scuec.restaurant.service.OrderService;
 import com.scuec.restaurant.service.OrderdetailService;
@@ -16,11 +13,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -69,8 +61,8 @@ public class OrderController {
             @ApiImplicitParam(name = "orderStatus", value = "订单状态", required = true, dataType = "String", paramType = "query"),
     })
     public IPage<Order> getOrderList(int currentPage,
-                                     int pageSize,
-                                     String orderStatus){
+                                      int pageSize,
+                                      String orderStatus){
 
         return orderService.getOrderList(currentPage, pageSize,orderStatus);
     }

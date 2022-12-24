@@ -3,8 +3,6 @@ package com.scuec.restaurant.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.scuec.restaurant.entities.Order;
 
-import javax.servlet.http.HttpServletRequest;
-
 public interface OrderService {
 
     int deleteOrderById(String orderId);

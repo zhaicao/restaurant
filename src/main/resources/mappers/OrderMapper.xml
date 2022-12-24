@@ -10,7 +10,10 @@
         <result column="price"  property="orderPrice"/>
         <result column="orderdate"  property="orderDate"/>
     </resultMap>
-
+    <!-- 通用查询结果列 -->
+    <sql id="BaseColumnList">
+        orderid, tableno, o_status, price, orderdate
+    </sql>
 
     <update id="updateOrdersta">
         update `m_order`
@@ -39,10 +42,7 @@
     <select id="getOrderList" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Order">
         select
         <include refid="BaseColumnList"></include>
-        from `m_order` where
-        <if test="orderStatus != null and orderStatus !=''">
-            o_status like '%${orderStatus}%'
-        </if>
+        from `m_order` where o_status like '%${orderStatus}%'
     </select>
 
 
@@ -51,5 +51,7 @@
         <include refid="BaseColumnList"></include>
         from `m_order` where orderid= #{orderId};
     </select>
+
+
 
 </mapper>

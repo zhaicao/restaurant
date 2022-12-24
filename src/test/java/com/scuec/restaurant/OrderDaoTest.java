@@ -24,16 +24,16 @@ public class OrderDaoTest {
 //        log.warn(String.valueOf("insert:" + res));
 //    }
 
-    @Test
-    public void testGetAllOrder(){
-        int current = 1;
-        int size = 10;
-        IPage<Order> order  = orderDao.getOrderList(new Page<>(current, size), "");
-        order.getRecords().forEach(person -> log.warn(String.valueOf("searchAll:" + person)));
-        // 打印分页数据
-        System.out.println("TotalPages："+order.getPages());
-        System.out.println("Total："+order.getTotal());
-        System.out.println("Current："+order.getCurrent());
-        System.out.println("Size："+order.getSize());
-    }
+//    @Test
+//    public void testGetAllOrder(){
+//        int current = 1;
+//        int size = 10;
+//        IPage<Order> order  = orderDao.getOrderList(new Page<>(current, size), "");
+//        order.getRecords().forEach(person -> log.warn(String.valueOf("searchAll:" + person)));
+//        // 打印分页数据
+//        System.out.println("TotalPages："+order.getPages());
+//        System.out.println("Total："+order.getTotal());
+//        System.out.println("Current："+order.getCurrent());
+//        System.out.println("Size："+order.getSize());
+//    }
 }
