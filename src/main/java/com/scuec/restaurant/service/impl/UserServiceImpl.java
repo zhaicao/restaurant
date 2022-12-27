@@ -75,4 +75,14 @@ public class UserServiceImpl implements UserService {
         else
             return userDao.insertUser(loginName, EncryptUtil.md5(password), realName, role, phone);
     }
+
+    @Override
+    public int resetUserPassword(String userId) {
+        User user = userDao.getUserById(userId);
+        if (user != null) {
+            int res = userDao.updateUser(userId, null, EncryptUtil.md5("123456"),null,-1,null,-1);
+            return res;
+        } else
+            return -1;
+    }
 }

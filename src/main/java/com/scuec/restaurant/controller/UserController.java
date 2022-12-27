@@ -1,11 +1,9 @@
 package com.scuec.restaurant.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.scuec.restaurant.constant.annotation.PassToken;
 import com.scuec.restaurant.constant.exception.GlobalException;
 import com.scuec.restaurant.constant.response.ResponseCode;
-import com.scuec.restaurant.dao.UserDao;
 import com.scuec.restaurant.entities.User;
 import com.scuec.restaurant.service.UserService;
 import com.scuec.restaurant.utils.JwtUtils;
@@ -13,15 +11,10 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -41,6 +34,7 @@ public class UserController {
             @ApiImplicitParam(name = "loginName", value = "用户登录名", required = true, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "password", value = "用户登录密码", required = true, dataType = "String", paramType = "query")
     })
+    @PassToken
     public Map<String, Object> login(String loginName, String password) {
         Map<String, Object> map = new HashMap<>();
         User user = userService.userLogin(loginName, password);
@@ -102,7 +96,7 @@ public class UserController {
                                         user.getRole(),
                                         user.getPhone());
         if (result == 1)
-            return "successful";
+            return "success";
         else if (result == -1)
             throw new GlobalException(ResponseCode.ERROR, "UserLoginName already exists, userName:" + user.getLoginName());
         else
@@ -116,7 +110,7 @@ public class UserController {
     public String deleteUserById(@PathVariable String userId){
         int res = userService.deleteUserById(userId);
         if (res != 0 )
-            return "successful";
+            return "success";
         else
             throw new GlobalException(ResponseCode.ERROR, "Delete User Error, userId:" + userId);
     }
@@ -127,10 +121,9 @@ public class UserController {
             @ApiImplicitParam(name = "userId", value = "用户ID", required = true, dataType = "String", paramType = "query"),
     })
     public String updateUser(@PathVariable(value = "userId") String userId, User user){
-        System.out.println(user);
         int res = userService.updateUser(userId, null, null, user.getRealName(), user.getRole(), user.getPhone());
         if (res == 1)
-            return "successful";
+            return "success";
         else
             throw new GlobalException(ResponseCode.ERROR, "Update User Error, userId:" + userId);
     }
@@ -145,9 +138,20 @@ public class UserController {
     public String updateUserPassword(String userId, String oldPassword, String newPassword){
         int res = userService.updateUserPassword(userId, oldPassword, newPassword);
         if (res == 1)
-            return "successful";
+            return "success";
         else
             throw new GlobalException(ResponseCode.ERROR, "Update UserPassword Error, userId:" + userId);
+    }
+
+    @PutMapping("/resetUserPassword/{userId}")
+    @ApiOperation(value = "通过用户Id重置用户密码", notes = "密码重置为123456")
+    @ApiImplicitParam(name = "userId", value = "用户ID", required = true, dataType = "String", paramType = "query")
+    public String resetUserPassword(@PathVariable String userId){
+        int res = userService.resetUserPassword(userId);
+        if (res == 1)
+            return "success";
+        else
+            throw new GlobalException(ResponseCode.ERROR, "Reset UserPassword Error, userId:" + userId);
     }
 
 

@@ -74,4 +74,11 @@ public interface UserService {
      * @return
      */
     int addUser(String loginName, String realName, String password, int role, String phone);
+
+    /**
+     * 重置用户密码
+     * @param userId 用户Id
+     * @return 成功返回1，失败返回-1
+     */
+    int resetUserPassword(String userId);
 }
