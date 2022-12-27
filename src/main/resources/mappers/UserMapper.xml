@@ -72,14 +72,14 @@
     <select id="getUserById" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.User">
         select
         <include refid="BaseColumnList"></include>
-        from `employee` where empid= #{userId};
+        from `employee` where empid= #{userId} and isdel = 0;
     </select>
 
     <!--User getUserByLoginName(String loginName);-->
     <select id="getUserByLoginName" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.User">
         select
         <include refid="BaseColumnList"></include>
-        from `employee` where loginname= #{loginName};
+        from `employee` where loginname= #{loginName} and isdel = 0;
     </select>
 
     <!--IPage<User> getUserList(@Param("page") Page<User> page,

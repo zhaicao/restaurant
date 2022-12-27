@@ -30,7 +30,6 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object object) throws Exception {
-        log.info(JWTHeader);
         // 从请求头中取出token
         String token = httpServletRequest.getHeader(JWTHeader);
         // 如果不是映射到方法直接通过

@@ -110,10 +110,10 @@ public class UserController {
     }
 
 
-    @DeleteMapping("/deleteUserById")
+    @DeleteMapping("/deleteUserById/{userId}")
     @ApiOperation(value = "通过用户Id删除（更新isdel）用户", notes = "通过用户Id删除（更新isdel）用户")
     @ApiImplicitParam(name = "userId", value = "用户ID", required = true, dataType = "String", paramType = "query")
-    public String deleteUserById(String userId){
+    public String deleteUserById(@PathVariable String userId){
         int res = userService.deleteUserById(userId);
         if (res != 0 )
             return "successful";
@@ -121,16 +121,14 @@ public class UserController {
             throw new GlobalException(ResponseCode.ERROR, "Delete User Error, userId:" + userId);
     }
 
-    @PutMapping("/updateUser")
+    @PutMapping("/updateUser/{userId}")
     @ApiOperation(value = "通过用户Id更新用户信息", notes = "真实姓名，角色和联系方式可修改")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userId", value = "用户ID", required = true, dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "realName", value = "用户真实姓名", required = true, dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "role", value = "用户角色", required = true, dataType = "int", paramType = "query"),
-            @ApiImplicitParam(name = "phone", value = "用户联系方式", required = true, dataType = "String", paramType = "query")
     })
-    public String updateUser(String userId, String realName, int role, String phone){
-        int res = userService.updateUser(userId, null, null, realName,role,phone);
+    public String updateUser(@PathVariable(value = "userId") String userId, User user){
+        System.out.println(user);
+        int res = userService.updateUser(userId, null, null, user.getRealName(), user.getRole(), user.getPhone());
         if (res == 1)
             return "successful";
         else
