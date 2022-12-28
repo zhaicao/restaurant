@@ -91,7 +91,7 @@ public class CommonServiceimpl implements CommonService {
             }
 
             // 判断大小
-            boolean mb = UpoadUtil.checkFileSize(multipartFile.getSize(), 10, "mb");
+            boolean mb = UpoadUtil.checkFileSize(multipartFile.getSize(), 1, "mb");
             if (!mb) {
                 throw new GlobalException(ResponseCode.ERROR, "上传文件大小超出范围");
             }
@@ -138,7 +138,9 @@ public class CommonServiceimpl implements CommonService {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
             }
+
             throw new GlobalException(ResponseCode.ERROR, "上传文件失败");
         }
 

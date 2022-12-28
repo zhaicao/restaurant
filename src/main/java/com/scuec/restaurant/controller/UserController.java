@@ -29,6 +29,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/login")
+    @PassToken
     @ApiOperation(value = "用户登录", notes = "用户登录")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "loginName", value = "用户登录名", required = true, dataType = "String", paramType = "query"),

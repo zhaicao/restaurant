@@ -18,7 +18,7 @@ public class JwtInterceptorConfig implements WebMvcConfigurer {
         //排除登录
         registry.addInterceptor(authenticationInterceptor())
                 .addPathPatterns("/**")
-                .excludePathPatterns("/user/login")
+                .excludePathPatterns("/*")
                 //配置不拦截Swagger
                 .excludePathPatterns("/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**", "/doc.html", "/error");
     }

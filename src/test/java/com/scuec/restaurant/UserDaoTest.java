@@ -18,7 +18,6 @@ public class UserDaoTest {
 
     @Autowired
     private UserDao userDao;
-
     @Test
     public void testInsert(){
         int res  = userDao.insertUser("ZhangSan", "123456", "张三", 1, "15888888888");

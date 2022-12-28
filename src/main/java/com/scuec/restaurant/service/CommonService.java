@@ -13,4 +13,6 @@ public interface CommonService {
 //    String uploadImg(String uploadPath, int cacheSize, HttpServletRequest request);
 
     String upload(MultipartFile file);
+
+    String getId();
 }
