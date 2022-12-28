@@ -35,7 +35,6 @@ public class UserController {
             @ApiImplicitParam(name = "loginName", value = "用户登录名", required = true, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "password", value = "用户登录密码", required = true, dataType = "String", paramType = "query")
     })
-    @PassToken
     public Map<String, Object> login(String loginName, String password) {
         Map<String, Object> map = new HashMap<>();
         User user = userService.userLogin(loginName, password);
