@@ -16,8 +16,8 @@ spring:
   # 配置上传图片大小
   servlet:
     multipart:
-      max-file-size: 5MB
-      max-request-size: 5MB
+      max-file-size: 10MB
+      max-request-size: 10MB
 
 # mybatis配置
 mybatis-plus:
@@ -45,6 +45,8 @@ swagger:
 jwt:
   header: "token"
 
-##菜单图片地址
-#reggie:
-#  path: D:\java_workspace\restaurant\download_photos\
+# 配置上传图片的路径和访问图片图片的路径
+upload:
+  file:
+    base-path: "upload_file"
+    suffix: ".png,.jpg,.jpeg"
