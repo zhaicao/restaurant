@@ -18,6 +18,7 @@ public class Attendance {
 
     private String userId;
 
+
     private Date attendanceStart;
 
     private Date attendanceFinish;

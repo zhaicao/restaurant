@@ -3,6 +3,8 @@ package com.scuec.restaurant.entities;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Data
 @Component
 public class Orderdetail {
@@ -20,5 +22,7 @@ public class Orderdetail {
         private int odStatus;
 
         private int odDel;
+
+        private Order order;
 
 }

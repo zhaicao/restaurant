@@ -9,10 +9,20 @@
         <result column="o_status"  property="orderStatus"/>
         <result column="price"  property="orderPrice"/>
         <result column="orderdate"  property="orderDate"/>
+        <collection property="orderdetail" ofType="com.scuec.restaurant.entities.Orderdetail">
+            <!--封装orderdetailr的数据-->
+            <id column="mdid" property="odId"/>
+            <result column="orderid"  property="orderId"/>
+            <result column="foodid"  property="foodId"/>
+            <result column="md_amount"  property="odAmount"/>
+            <result column="md_price"  property="odPrice"/>
+            <result column="md_status"  property="odStatus"/>
+            <result column="isdel"  property="odDel"/>
+        </collection>
     </resultMap>
     <!-- 通用查询结果列 -->
     <sql id="BaseColumnList">
-        orderid, tableno, o_status, price, orderdate
+        orderid, tableno, o_status, price, orderdate,foodid
     </sql>
 
     <update id="updateOrdersta">
@@ -42,7 +52,7 @@
     <select id="getOrderList" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Order">
         select
         <include refid="BaseColumnList"></include>
-        from `m_order` where o_status like '%${orderStatus}%'
+        from m_order inner join md_relation on m_order.orderid = md_relation.orderid where o_status like '%${orderStatus}%'
     </select>
 
 
