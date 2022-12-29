@@ -53,7 +53,7 @@
     <update id="updateFinish">
         update `attendance`
         <trim suffixOverrides=",">
-            set a_finish=now(),
+            set a_finish=now(),a_date=now()
         </trim>
         where a_isdel = 0 and DateDiff(a_start,now())= 0 and a_userid = #{userId}
 
@@ -77,6 +77,7 @@
         <if test="attendanceType != null and attendanceType !=-1">
             and a_type=#{attendanceType}
         </if>
+        order by a_date desc
     </select>
 
 
