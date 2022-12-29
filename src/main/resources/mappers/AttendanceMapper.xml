@@ -64,7 +64,7 @@
         select
         <include refid="BaseColumnList"></include>
         from attendance inner join employee on attendance.a_userid = employee.empid where a_isdel=0
---         from 'attendance'  where a_isdel=0
+
         <if test="userId != null and userId !=''">
             and a_userid=#{userId}
         </if>
