@@ -72,4 +72,5 @@ public class UserDaoTest {
         User user = userDao.getUserByLoginName("admin");
         log.info(user.toString());
     }
+
 }

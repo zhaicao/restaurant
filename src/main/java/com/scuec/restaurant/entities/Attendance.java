@@ -23,4 +23,6 @@ public class Attendance {
     private Date attendanceFinish;
 
     private int attendanceDel;
+
+    private User user;
 }

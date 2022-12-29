@@ -8,14 +8,24 @@
         <result column="a_type"  property="attendanceType"/>
         <result column="a_date"  property="attendanceDate"/>
         <result column="a_userid"  property="userId"/>
-        <result column="a_start"  property="attendanceStarte"/>
+        <result column="a_start"  property="attendanceStart"/>
         <result column="a_finish"  property="attendanceFinish"/>
         <result column="a_isdel"  property="attendanceDel"/>
+        <!--配置一对一关系映射，封装user-->
+        <association property="user" column="uid" javaType="com.scuec.restaurant.entities.User">
+            <id column="empid" property="uId"/>
+            <result column="loginname"  property="loginName"/>
+            <result column="pwd"  property="password"/>
+            <result column="realname"  property="realName"/>
+            <result column="position"  property="role"/>
+            <result column="phone"  property="phone"/>
+            <result column="isdel"  property="idDel"/>
+        </association>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="BaseColumnList">
-        a_id, a_type, a_date, a_userid, a_start, a_finish, a_isdel
+        a_id, a_type, a_date, a_userid, a_start, a_finish, a_isdel,loginname,realname
     </sql>
 
 
@@ -30,7 +40,7 @@
     </insert>
 
 
-    <update id="updateFinish">
+    <update id="deleteAttendance">
         update `attendance`
         <trim suffixOverrides=",">
         set a_isdel=1,
@@ -40,13 +50,37 @@
     </update>
 
 
-    <update id="deleteAttendance">
+    <update id="updateFinish">
         update `attendance`
         <trim suffixOverrides=",">
             set a_finish=now(),
         </trim>
-        where a_id = #{attendanceId};
+        where a_isdel = 0 and DateDiff(a_start,now())= 0 and a_userid = #{userId}
 
     </update>
 
+
+    <select id="getAttendanceList" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Attendance">
+        select
+        <include refid="BaseColumnList"></include>
+        from attendance inner join employee on attendance.a_userid = employee.empid where a_isdel=0
+--         from 'attendance'  where a_isdel=0
+        <if test="userId != null and userId !=''">
+            and a_userid=#{userId}
+        </if>
+        <if test="loginName != null and loginName !=''">
+            and loginname=#{loginName}
+        </if>
+        <if test="realName != null and realName !=''">
+            and realname like '%${realName}%'
+        </if>
+        <if test="attendanceType != null and attendanceType !=-1">
+            and a_type=#{attendanceType}
+        </if>
+    </select>
+
+
+    <select id="getAttendanceById" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Attendance">
+        select a_id, a_type, a_date, a_userid, a_start, a_finish, a_isdel from `attendance` where a_isdel = 0 and DateDiff(a_start,now())= 0 and a_userid = #{userId};
+    </select>
 </mapper>
