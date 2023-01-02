@@ -4,15 +4,19 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.scuec.restaurant.dao.MenuDao;
 import com.scuec.restaurant.entities.Menu;
+import com.scuec.restaurant.service.CommonService;
 import com.scuec.restaurant.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class MenuServiceimpl implements MenuService {
 
     @Autowired
     private MenuDao menuDao;
+    @Autowired
+    private CommonService commonService;
 
     @Override
     public int deleteMenuById(String foodId) {
@@ -38,7 +42,9 @@ public class MenuServiceimpl implements MenuService {
     }
 
     @Override
-    public int addMenu( String menuType, String menuName, double menuPrice, String menuImg) {
-        return menuDao.addMenu(menuType,menuName,menuPrice,menuImg,0,0);
+    public int addMenu(String menuType, String menuName, double menuPrice, MultipartFile file) {
+        // 上传图片
+        String menuImg = commonService.upload(file);
+        return menuDao.addMenu(menuType, menuName, menuPrice, menuImg, 0, 0);
     }
 }

@@ -7,7 +7,7 @@ spring:
   # 数据库配置
   datasource:
     username: root
-    password: 230031
+    password: root
     url: jdbc:mysql://localhost:3306/restaurantsys?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
     driver-class-name: com.mysql.cj.jdbc.Driver
   # 国际化文件配置
@@ -49,10 +49,8 @@ swagger:
 jwt:
   header: "token"
 
-# 配置上传图片的路径和访问图片图片的路径
-upload:
-  file:
-    base-path: "upload_file"
-    suffix: ".png,.jpg,.jpeg"
+# 配置上传图片的路径和访问图片图片的路径，需要写成这种格式，否则无法读取
+upload.file.basic-path: "upload_file"
+upload.file.suffix: ".png,.jpg,.jpeg"
 
 

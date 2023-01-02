@@ -21,8 +21,8 @@ public class CommonServiceimpl implements CommonService {
     private String fileLimitSize;
     @Value("${upload.file.suffix}")
     private String suffix;
-    @Value("${upload.file.base-path}")
-    private String basePath;
+    @Value("${upload.file.basic-path}")
+    private String basicPath;
 
     public String upload(MultipartFile multipartFile) {
         // 判断为空
@@ -60,9 +60,9 @@ public class CommonServiceimpl implements CommonService {
                 }
                 // 文件上传到指定路径
                 multipartFile.transferTo(new File(filePath + File.separator + filename));
-                log.info(basePath + File.separator + filename);
+                log.info(basicPath + File.separator + filename);
                 // 返回结果  回显
-                return  (basePath + File.separator + filename);
+                return  filename;
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -74,8 +74,7 @@ public class MenuController {
     @PostMapping("/addMenu")
     @ApiOperation(value = "新增菜品", notes = "新增一个菜品")
     public String addMenu(String menuType , String menuName , double menuPrice ,@RequestParam(value = "file") MultipartFile file){
-        String menuImg = commonService.upload(file);
-        int result = menuService.addMenu(menuType, menuName, menuPrice, menuImg);
+        int result = menuService.addMenu(menuType, menuName, menuPrice, file);
         if (result == 1)
             return "successful";
         else

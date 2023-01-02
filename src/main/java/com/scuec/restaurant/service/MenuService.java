@@ -3,6 +3,7 @@ package com.scuec.restaurant.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.scuec.restaurant.entities.Menu;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 
@@ -16,5 +17,5 @@ public interface MenuService {
 
     Menu getMenuById(String foodId);
 
-    int addMenu(String menuType, String menuName, double menuPrice, String menuImg);
+    int addMenu(String menuType, String menuName, double menuPrice, MultipartFile file);
 }
