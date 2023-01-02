@@ -34,7 +34,8 @@ public interface MenuDao {
                  int menuDel);
 
     IPage<Menu> getMenuList(@Param("page") Page<Menu> page,
-                             String menuName);
+                             String menuName,
+                             String menuType);
 
     Menu getMenuById(String foodId);
 }

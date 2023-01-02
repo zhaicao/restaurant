@@ -11,7 +11,7 @@ public interface MenuService {
     int deleteMenuById(String foodId);
 
 
-    IPage<Menu> getMenuList(int currentPage, int pageSize, String menuName);
+    IPage<Menu> getMenuList(int currentPage, int pageSize, String menuName,String menuType);
 
     int updateMenu(String foodId, String menuType, String menuName, double menuPrice, String menuImg);
 

@@ -50,12 +50,15 @@ public class MenuController {
             @ApiImplicitParam(name = "currentPage", value = "当前页", required = true, dataType = "int", paramType = "query"),
             @ApiImplicitParam(name = "pageSize", value = "每页显示多少条记录", required = true, dataType = "int", paramType = "query"),
             @ApiImplicitParam(name = "menuName", value = "菜品名，模糊查询", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "menuType", value = "菜品类型", required = true, dataType = "String", paramType = "query"),
+
     })
     public IPage<Menu> getMenuList(int currentPage,
                                    int pageSize,
-                                   String menuName){
+                                   String menuName,
+                                   String menuType){
 
-        return menuService.getMenuList(currentPage, pageSize, menuName);
+        return menuService.getMenuList(currentPage, pageSize, menuName,menuType);
     }
 
     @DeleteMapping("/deleteMenuById")

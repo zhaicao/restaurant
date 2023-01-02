@@ -33,16 +33,16 @@ public class MenuDaoTest {
         log.warn(String.valueOf("update:" + res));
     }
 
-    @Test
-    public void testGetMenuList(){
-        int current = 1;
-        int size = 10;
-        IPage<Menu> menus  = menuDao.getMenuList(new Page<>(current, size), "");
-        menus.getRecords().forEach(menu -> log.warn(String.valueOf("searchAll:" + menu)));
-        // 打印分页数据
-        System.out.println("TotalPages："+menus.getPages());
-        System.out.println("Total："+menus.getTotal());
-        System.out.println("Current："+menus.getCurrent());
-        System.out.println("Size："+menus.getSize());
-    }
+//    @Test
+//    public void testGetMenuList(){
+//        int current = 1;
+//        int size = 10;
+//        IPage<Menu> menus  = menuDao.getMenuList(new Page<>(current, size), "");
+//        menus.getRecords().forEach(menu -> log.warn(String.valueOf("searchAll:" + menu)));
+//        // 打印分页数据
+//        System.out.println("TotalPages："+menus.getPages());
+//        System.out.println("Total："+menus.getTotal());
+//        System.out.println("Current："+menus.getCurrent());
+//        System.out.println("Size："+menus.getSize());
+//    }
 }

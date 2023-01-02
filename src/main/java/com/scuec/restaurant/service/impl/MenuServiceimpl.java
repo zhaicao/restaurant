@@ -27,8 +27,8 @@ public class MenuServiceimpl implements MenuService {
 
 
     @Override
-    public IPage<Menu> getMenuList(int currentPage, int pageSize, String menuName) {
-        return menuDao.getMenuList(new Page<>(currentPage, pageSize),menuName);
+    public IPage<Menu> getMenuList(int currentPage, int pageSize, String menuName,String menuType) {
+        return menuDao.getMenuList(new Page<>(currentPage, pageSize),menuName,menuType);
     }
 
     @Override
