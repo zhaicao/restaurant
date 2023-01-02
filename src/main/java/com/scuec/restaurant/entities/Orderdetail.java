@@ -3,6 +3,7 @@ package com.scuec.restaurant.entities;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Data
@@ -23,6 +24,7 @@ public class Orderdetail {
 
         private int odDel;
 
-        private Order order;
+        private Menu menu;
+
 
 }

@@ -3,11 +3,13 @@ package com.scuec.restaurant.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.scuec.restaurant.entities.Order;
 
+import java.math.BigDecimal;
+
 public interface OrderService {
 
-    int deleteOrderById(String orderId);
+    int deleteOrderById(String tableId);
 
-    int updateOrdersta(String orderId);
+    int updateOrdersta(String orderId,String foodId);
 
     int updateOrdersta1(String orderId);
 
@@ -16,5 +18,8 @@ public interface OrderService {
 
     int addOrder(String orderId, String tableNo, double orderPrice, String orderStatus);
 
-    Order getOrderById(String orderId);
+
+    Order getOrderBytableId(String tableId);
+
+    int addOrdermenu(String orderId,double orderPrice);
 }

@@ -8,6 +8,8 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
+
 @Repository
 public interface OrderDao {
 
@@ -24,5 +26,10 @@ public interface OrderDao {
 
     int addOrder(String orderId, String tableNo, double orderPrice, String orderStatus);
 
-    Order getOrderById(String orderId);
+
+    Order getOrderBytableId(String tableId);
+
+    int updateOrderByorderId(String orderId,double sumprice);
+
+    double getOrderPrice(String orderId);
 }

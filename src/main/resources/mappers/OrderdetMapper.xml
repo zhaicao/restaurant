@@ -32,4 +32,9 @@
         </selectKey>
         insert into `md_relation` value(#{odId},#{orderId}, #{foodId}, #{odAmount}, #{odPrice}, #{odStatus}, 0)
     </insert>
+
+
+    <update id="updateOrdermenusta">
+        update `md_relation` set md_status=1 where orderid = #{orderId} and foodid = #{foodId};
+    </update>
 </mapper>

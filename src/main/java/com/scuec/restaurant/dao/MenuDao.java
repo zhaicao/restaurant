@@ -9,12 +9,14 @@ import javafx.scene.control.Tab;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
+
 @Repository
 public interface MenuDao {
     int updateMenu(String foodId,
                     String menuType,
                     String menuName,
-                    double menuPrice,
+                   double menuPrice,
                     String menuImg,
                     int menuPopular,
                     int menuDel);

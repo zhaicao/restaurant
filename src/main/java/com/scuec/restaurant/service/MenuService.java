@@ -4,6 +4,8 @@ package com.scuec.restaurant.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.scuec.restaurant.entities.Menu;
 
+import java.math.BigDecimal;
+
 public interface MenuService {
     int deleteMenuById(String foodId);
 

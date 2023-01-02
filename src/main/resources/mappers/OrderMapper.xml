@@ -18,7 +18,16 @@
             <result column="md_price"  property="odPrice"/>
             <result column="md_status"  property="odStatus"/>
             <result column="isdel"  property="odDel"/>
-        </collection>
+            <association property="menu" javaType="com.scuec.restaurant.entities.Menu">
+                <id column="foodid" property="foodId"/>
+                <result column="m_type"  property="menuType"/>
+                <result column="m_name"  property="menuName"/>
+                <result column="m_price"  property="menuPrice"/>
+                <result column="m_img"  property="menuImg"/>
+                <result column="m_popular"  property="menuPopular"/>
+                <result column="isdel"  property="menuDel"/>
+            </association>
+    </collection>
     </resultMap>
     <!-- 通用查询结果列 -->
     <sql id="BaseColumnList">
@@ -50,18 +59,21 @@
 
 
     <select id="getOrderList" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Order">
-        select
-        <include refid="BaseColumnList"></include>
-        from m_order inner join md_relation on m_order.orderid = md_relation.orderid where o_status like '%${orderStatus}%'
+        select mr.*,md.*,mu.* from m_order mr left join md_relation md on mr.orderid = md.orderid left join menu mu on md.foodid = mu.foodid where o_status like '%${orderStatus}%'
     </select>
 
 
-    <select id="getOrderById" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Order">
-        select
-        <include refid="BaseColumnList"></include>
-        from `m_order` where orderid= #{orderId};
+
+    <select id="getOrderBytableId" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Order">
+        select m.* from m_order m where tableno= #{tableId} and o_status = '未上菜';
     </select>
 
+    <update id="updateOrderByorderId">
+        update m_order set m_order.price=#{orderPrice} where orderid = #{orderId};
+    </update>
 
+    <select id="getOrderPrice" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Order">
+        select m.price from m_order m where orderid= #{orderId};
+    </select>
 
 </mapper>
