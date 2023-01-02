@@ -86,7 +86,7 @@
         <if test="menuName != null and menuName !=''">
             and m_name like '%${menuName}%'
         </if>
-        <if test="menuType != null and menuType !=''">
+        <if test="menuType != null and menuType !='' and menuType !='all'">
             and m_type=#{menuType}
         </if>
     </select>
