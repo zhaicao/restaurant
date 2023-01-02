@@ -1,5 +1,7 @@
 package com.scuec.restaurant.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.scuec.restaurant.constant.exception.GlobalException;
 import com.scuec.restaurant.constant.response.ResponseCode;
@@ -14,8 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -76,15 +78,13 @@ public class MenuController {
 
     @PostMapping("/addMenu")
     @ApiOperation(value = "新增菜品", notes = "新增一个菜品")
-    public String addMenu(String menuType , String menuName , double menuPrice ,@RequestParam(value = "file") MultipartFile file){
-        int result = menuService.addMenu(menuType, menuName, menuPrice, file);
-        if (result == 1)
-            return "successful";
+    public Menu addMenu(String menuType , String menuName , double menuPrice ,@RequestParam(value = "file") MultipartFile file){
+        Menu menu = menuService.addMenu(menuType, menuName, menuPrice, file);
+        if (menu != null)
+            return menu;
         else
             throw new GlobalException(ResponseCode.ERROR, "Add Menu Error");
     }
-
-
 
     @PostMapping("/updateMenu")
     @ApiOperation(value = "通过菜品Id更新菜品信息", notes = "类型，菜品名，价格和图片可修改")

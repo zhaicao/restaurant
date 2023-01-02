@@ -40,11 +40,11 @@
     <!--    String menuName,-->
     <!--    double menuPrice,-->
     <!--    String menuImg);-->
-    <insert id="addMenu">
+    <insert id="addMenu" parameterType="com.scuec.restaurant.entities.Menu">
         <selectKey keyProperty="foodId" resultType="String" order="BEFORE">
             select REPLACE(UUID(),'-','')
         </selectKey>
-        insert into `menu` value(#{foodId}, #{menuType}, #{menuName}, #{menuPrice}, #{menuImg}, 0 , 0)
+        insert into `menu` value(#{foodId}, #{menuType}, #{menuName}, #{menuPrice}, #{menuImg}, #{menuPopular} , #{menuDel})
     </insert>
 
 

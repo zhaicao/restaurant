@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class MenuServiceimpl implements MenuService {
 
@@ -42,9 +45,20 @@ public class MenuServiceimpl implements MenuService {
     }
 
     @Override
-    public int addMenu(String menuType, String menuName, double menuPrice, MultipartFile file) {
+    public Menu addMenu(String menuType, String menuName, double menuPrice, MultipartFile file) {
         // 上传图片
         String menuImg = commonService.upload(file);
-        return menuDao.addMenu(menuType, menuName, menuPrice, menuImg, 0, 0);
+        Menu menu = new Menu();
+        menu.setMenuType(menuType);
+        menu.setMenuName(menuName);
+        menu.setMenuPrice(menuPrice);
+        menu.setMenuImg(menuImg);
+        menu.setMenuPopular(0);
+        menu.setMenuDel(0);
+        int res = menuDao.addMenu(menu);
+        if (res == 1) {
+            return menu;
+        } else
+            return null;
     }
 }

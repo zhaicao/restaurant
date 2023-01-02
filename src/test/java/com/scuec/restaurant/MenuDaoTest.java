@@ -33,6 +33,21 @@ public class MenuDaoTest {
         log.warn(String.valueOf("update:" + res));
     }
 
+    @Test
+    public void testAdd(){
+        Menu menu = new Menu();
+        menu.setMenuType("staple");
+        menu.setMenuName("测试1");
+        menu.setMenuPrice(20.5);
+        menu.setMenuImg("123.jsp");
+        menu.setMenuPopular(0);
+        menu.setMenuDel(0);
+        int res  = menuDao.addMenu(menu);
+        System.out.println(String.valueOf("add:" + res));
+        // 获取selectKey
+        System.out.println(String.valueOf("addMenu:" + menu.getFoodId()));
+    }
+
 //    @Test
 //    public void testGetMenuList(){
 //        int current = 1;
