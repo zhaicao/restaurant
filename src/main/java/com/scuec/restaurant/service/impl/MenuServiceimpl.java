@@ -27,8 +27,6 @@ public class MenuServiceimpl implements MenuService {
         return menuDao.updateMenu(foodId,null,null,0,null,0,1);
     }
 
-
-
     @Override
     public IPage<Menu> getMenuList(int currentPage, int pageSize, String menuName,String menuType) {
         return menuDao.getMenuList(new Page<>(currentPage, pageSize),menuName,menuType);
