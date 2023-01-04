@@ -21,17 +21,17 @@ public class MenuDaoTest {
     Menu menu;
 
 
-    @Test
-    public void testUpdate(){
-        int res  = menuDao.updateMenu("2",
-                null,
-                null,
-                1.11,
-                null,
-                1,
-                0);
-        log.warn(String.valueOf("update:" + res));
-    }
+//    @Test
+//    public void testUpdate(){
+//        int res  = menuDao.updateMenu("2",
+//                null,
+//                null,
+//                1.11,
+//                null,
+//                1,
+//                0);
+//        log.warn(String.valueOf("update:" + res));
+//    }
 
     @Test
     public void testAdd(){

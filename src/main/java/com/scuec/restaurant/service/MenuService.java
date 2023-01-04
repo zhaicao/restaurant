@@ -15,7 +15,7 @@ public interface MenuService {
 
     IPage<Menu> getMenuList(int currentPage, int pageSize, String menuName,String menuType);
 
-    int updateMenu(String foodId, String menuType, String menuName, double menuPrice, String menuImg);
+    Menu updateMenu(String foodId, String menuType, String menuName, double menuPrice, MultipartFile file);
 
     Menu getMenuById(String foodId);
 

@@ -8,13 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MenuDao {
-    int updateMenu(String foodId,
-                    String menuType,
-                    String menuName,
-                   double menuPrice,
-                    String menuImg,
-                    int menuPopular,
-                    int menuDel);
+    int updateMenu(Menu menu);
 
 //    int addMenu(String menuType,
 //                 String menuName,

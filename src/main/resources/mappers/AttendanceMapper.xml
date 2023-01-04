@@ -82,6 +82,7 @@
 
 
     <select id="getAttendanceById" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Attendance">
-        select a_id, a_type, a_date, a_userid, a_start, a_finish, a_isdel from `attendance` where a_isdel = 0 and DateDiff(a_start,now())= 0 and a_userid = #{userId};
+        select a_id, a_type, a_date, a_userid, a_start, a_finish, a_isdel from `attendance`
+         where a_isdel = 0 and DateDiff(a_start,now())= 0 and a_userid = #{userId};
     </select>
 </mapper>

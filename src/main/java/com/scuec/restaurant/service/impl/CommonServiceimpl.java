@@ -25,7 +25,7 @@ public class CommonServiceimpl implements CommonService {
     private String basicPath;
 
     public String upload(MultipartFile multipartFile) {
-        // 判断为空
+         //判断为空
         if (multipartFile.isEmpty()) {
             throw new GlobalException(ResponseCode.ERROR, "文件不能为空");
         }

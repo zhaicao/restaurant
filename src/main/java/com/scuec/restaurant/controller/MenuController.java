@@ -86,6 +86,7 @@ public class MenuController {
             throw new GlobalException(ResponseCode.ERROR, "Add Menu Error");
     }
 
+
     @PostMapping("/updateMenu")
     @ApiOperation(value = "通过菜品Id更新菜品信息", notes = "类型，菜品名，价格和图片可修改")
     @ApiImplicitParams({
@@ -95,11 +96,10 @@ public class MenuController {
             @ApiImplicitParam(name = "menuPrice", value = "菜品价格", required = true, dataType = "double", paramType = "query"),
 //            @ApiImplicitParam(name = "menuImg", value = "图片", required = true, dataType = "String", paramType = "query"),
     })
-    public String updateMenu(String foodId, String menuType , String menuName , double menuPrice , @RequestParam(value = "file") MultipartFile file ){
-        String menuImg = commonService.upload(file);
-        int res = menuService.updateMenu(foodId, menuType, menuName, menuPrice, menuImg);
-        if (res == 1)
-            return "successful";
+    public Menu updateMenu(String foodId, String menuType , String menuName , double menuPrice , @RequestParam(value = "file") MultipartFile file ){
+        Menu menu = menuService.updateMenu(foodId, menuType, menuName, menuPrice, file);
+        if (menu != null)
+            return menu;
         else
             throw new GlobalException(ResponseCode.ERROR, "Update Table Error, foodId:" + foodId);
     }

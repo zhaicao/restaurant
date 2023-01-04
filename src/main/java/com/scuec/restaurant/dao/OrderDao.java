@@ -29,7 +29,7 @@ public interface OrderDao {
 
     Order getOrderBytableId(String tableId);
 
-    int updateOrderByorderId(String orderId,double sumprice);
+    int updateOrderByorderId(String orderId,double orderPrice);
 
     double getOrderPrice(String orderId);
 }

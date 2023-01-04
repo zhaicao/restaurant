@@ -24,7 +24,19 @@ public class MenuServiceimpl implements MenuService {
     @Override
     public int deleteMenuById(String foodId) {
 
-        return menuDao.updateMenu(foodId,null,null,0,null,0,1);
+        Menu menu = new Menu();
+        menu.setFoodId(foodId);
+        menu.setMenuType(null);
+        menu.setMenuName(null);
+        menu.setMenuPrice(0);
+        menu.setMenuImg(null);
+        menu.setMenuPopular(0);
+        menu.setMenuDel(1);
+        int res = menuDao.updateMenu(menu);
+        if (res == 1) {
+            return 1;
+        } else
+            return 0;
     }
 
     @Override
@@ -33,8 +45,38 @@ public class MenuServiceimpl implements MenuService {
     }
 
     @Override
-    public int updateMenu(String foodId, String menuType, String menuName, double menuPrice, String menuImg) {
-        return menuDao.updateMenu(foodId, menuType, menuName, menuPrice, menuImg, 0,0);
+    public Menu updateMenu(
+            String foodId, String menuType, String menuName, double menuPrice,MultipartFile file) {
+        // 上传图片
+        Menu menu = new Menu();
+        if(file.isEmpty()){
+            menu.setFoodId(foodId);
+            menu.setMenuType(menuType);
+            menu.setMenuName(menuName);
+            menu.setMenuPrice(menuPrice);
+            menu.setMenuImg(null);
+            menu.setMenuPopular(0);
+            menu.setMenuDel(0);
+            int res = menuDao.updateMenu(menu);
+            if (res == 1) {
+                return menu;
+            } else
+                return null;
+        }else {
+            String menuImg = commonService.upload(file);
+            menu.setFoodId(foodId);
+            menu.setMenuType(menuType);
+            menu.setMenuName(menuName);
+            menu.setMenuPrice(menuPrice);
+            menu.setMenuImg(menuImg);
+            menu.setMenuPopular(0);
+            menu.setMenuDel(0);
+            int res = menuDao.updateMenu(menu);
+            if (res == 1) {
+                return menu;
+            } else
+                return null;
+        }
     }
 
     @Override

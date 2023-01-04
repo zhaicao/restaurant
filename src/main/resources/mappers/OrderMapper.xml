@@ -59,7 +59,8 @@
 
 
     <select id="getOrderList" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Order">
-        select mr.*,md.*,mu.* from m_order mr left join md_relation md on mr.orderid = md.orderid left join menu mu on md.foodid = mu.foodid where o_status like '%${orderStatus}%'
+        select mr.*,md.*,mu.* from m_order mr left join md_relation md on mr.orderid = md.orderid left join menu mu
+        on md.foodid = mu.foodid where o_status like '%${orderStatus}%'
     </select>
 
 
