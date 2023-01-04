@@ -61,7 +61,7 @@
             <if test="menuPrice != null and menuPrice != ''">
                 m_price = #{menuPrice},
             </if>
-            <if test="menuImg != null">
+            <if test="menuImg != null and menuImg != ''">
                 m_img = #{menuImg},
             </if>
             <if test="menuPopular != null and menuPopular != -1">
@@ -70,10 +70,9 @@
             <if test="menuDel != null and menuDel != ''">
                 isdel = #{menuDel},
             </if>
-
         </trim>
-        where foodid = #{foodId};
-
+        where isdel = 0
+            and foodid = #{foodId};
     </update>
 
 

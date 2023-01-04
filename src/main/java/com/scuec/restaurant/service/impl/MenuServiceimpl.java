@@ -49,34 +49,24 @@ public class MenuServiceimpl implements MenuService {
             String foodId, String menuType, String menuName, double menuPrice,MultipartFile file) {
         // 上传图片
         Menu menu = new Menu();
-        if(file.isEmpty()){
-            menu.setFoodId(foodId);
-            menu.setMenuType(menuType);
-            menu.setMenuName(menuName);
-            menu.setMenuPrice(menuPrice);
-            menu.setMenuImg(null);
-            menu.setMenuPopular(0);
-            menu.setMenuDel(0);
-            int res = menuDao.updateMenu(menu);
-            if (res == 1) {
-                return menu;
-            } else
-                return null;
-        }else {
+        menu.setFoodId(foodId);
+        menu.setMenuType(menuType);
+        menu.setMenuName(menuName);
+        menu.setMenuPrice(menuPrice);
+        menu.setMenuPopular(0);
+        menu.setMenuDel(0);
+        if(file.isEmpty() || file == null)
+            menu.setMenuImg(menuDao.getMenuById(foodId).getMenuImg()); //获取旧图片数据
+        else {
+            // 上传图片
             String menuImg = commonService.upload(file);
-            menu.setFoodId(foodId);
-            menu.setMenuType(menuType);
-            menu.setMenuName(menuName);
-            menu.setMenuPrice(menuPrice);
             menu.setMenuImg(menuImg);
-            menu.setMenuPopular(0);
-            menu.setMenuDel(0);
-            int res = menuDao.updateMenu(menu);
-            if (res == 1) {
-                return menu;
-            } else
-                return null;
         }
+        int res = menuDao.updateMenu(menu);
+        if (res == 1)
+            return menu;
+        else
+            return null;
     }
 
     @Override
