@@ -104,17 +104,17 @@ public class TableController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "currentPage", value = "当前页", required = true, dataType = "int", paramType = "query"),
             @ApiImplicitParam(name = "pageSize", value = "每页显示多少条记录", required = true, dataType = "int", paramType = "query"),
-            @ApiImplicitParam(name = "tableNo", value = "桌号，模糊查询", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "tableName", value = "桌号，模糊查询", required = true, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "tableId", value = "餐桌ID，精确查询", required = true, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "tableUse", value = "餐桌状态", required = true, dataType = "int", paramType = "query")
     })
     public IPage<Table> getTableList(int currentPage,
                                      int pageSize,
                                      String tableId,
-                                     String tableNo,
+                                     String tableName,
                                      int tableUse){
 
-        return tableService.getTableList(currentPage, pageSize,tableId,tableNo,tableUse);
+        return tableService.getTableList(currentPage, pageSize, tableId, tableName, tableUse);
     }
 
     @PostMapping("/addTable")
