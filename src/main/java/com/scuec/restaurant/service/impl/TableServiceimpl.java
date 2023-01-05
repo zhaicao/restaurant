@@ -8,6 +8,8 @@ import com.scuec.restaurant.service.TableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 public class TableServiceimpl implements TableService {
     @Autowired
@@ -35,13 +37,20 @@ public class TableServiceimpl implements TableService {
     }
 
     @Override
-    public int addTable( String tableNo, String tPeople, String tOrderid) {
-        return tableDao.insertTable(tableNo, tPeople, tOrderid);
+    public int addTable( String tableNo, String tPeople) {
+        return tableDao.insertTable(tableNo, tPeople);
     }
 
     @Override
-    public int updateTableuse(String tableId) {
-        return tableDao.updateTableuse(tableId);
+    public int updateTableuse(String tableId,String tOrderid) {
+        Table table = tableDao.getTableById(tableId);
+        String Orderid = table.getTOrderid();
+        if(Objects.equals(Orderid, "")) {
+            return tableDao.updateTableuse(tableId, tOrderid);
+        }
+        else {
+            return 0;
+        }
     }
 
     @Override

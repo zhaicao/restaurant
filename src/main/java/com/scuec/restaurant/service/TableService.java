@@ -17,9 +17,9 @@ public interface TableService {
 
     IPage<Table> getTableList(int currentPage, int pageSize, String tableId,String tableNo,int tableUse);
 
-    int addTable( String tableNo, String tPeople, String tOrderid);
+    int addTable( String tableNo, String tPeople);
 
-    int updateTableuse(String tableId);
+    int updateTableuse(String tableId,String tOrderid);
 
     int updateTableuse1(String tableId);
 }

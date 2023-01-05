@@ -68,10 +68,11 @@ public class TableController {
     @PutMapping("/updateTableuse")
     @ApiOperation(value = "通过餐号Id更新餐桌状态已使用", notes = "通过餐号Id更新餐桌状态")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "tableId", value = "桌号ID", required = true, dataType = "String", paramType = "query")
+            @ApiImplicitParam(name = "tableId", value = "桌号ID", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "tOrderid", value = "orderid", required = true, dataType = "String", paramType = "query")
     })
-    public String updateTableuse(String tableId){
-        int res = tableService.updateTableuse(tableId);
+    public String updateTableuse(String tableId,String tOrderid){
+        int res = tableService.updateTableuse(tableId,tOrderid);
         if (res == 1)
             return "successful";
         else
@@ -119,8 +120,7 @@ public class TableController {
     @ApiOperation(value = "添加餐桌信息", notes = "桌号，人数和orderid")
     public String addTable(@RequestBody Table table){
         int result = tableService.addTable(table.getTNo(),
-                table.getTPeople(),
-                table.getTOrderid());
+                table.getTPeople());
         if (result == 1)
             return "successful";
         else if (result == -1)

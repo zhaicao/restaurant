@@ -15,12 +15,10 @@ public interface TableDao extends BaseMapper<Table> {
      * 新增桌号，TableId由mybatis自动生成
      * @param tableNo 桌号
      * @param tPeople 人数
-     * @param tOrderid 菜单
      * @return
      */
     int insertTable(String tableNo,
-                    String tPeople,
-                    String tOrderid);
+                    String tPeople);
 
 
     int updateTable(String tableId,
@@ -37,7 +35,7 @@ public interface TableDao extends BaseMapper<Table> {
                               String tableNo,
                               int tableUse);
 
-    int updateTableuse(String tableId);
+    int updateTableuse(String tableId,String tOrderid);
 
     int updateTableuse1(String tableId);
 }
