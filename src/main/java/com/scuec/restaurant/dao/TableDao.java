@@ -23,12 +23,7 @@ public interface TableDao extends BaseMapper<Table> {
      * @param tableDel 非必填
      * @return
      */
-    int updateTable(String tableId,
-                   String tableName,
-                   String tableDescription,
-                   String tableOrderId,
-                   int tableUse,
-                   int tableDel);
+    int updateTable(Table table);
 
     Table getTableById(String tableId);
 

@@ -14,7 +14,7 @@ public interface TableService {
 
     Table getTableById(String tableId);
 
-    int updateTable(String tableId, String tableNo, String tPeople, String tOrderid);
+    Table updateTable(Table table);
 
     IPage<Table> getTableList(int currentPage, int pageSize, String tableId,String tableNo,int tableUse);
 

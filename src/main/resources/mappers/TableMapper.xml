@@ -27,24 +27,19 @@
     </insert>
 
 
-<!--    int updateTable(String tableId,
-    String tableName,
-    String tableDescription,
-    String tableOrderId,
-    int tableUse,
-    int tableDel);-->
-    <update id="updateTable">
+<!--    int updateTable(Table table);-->
+    <update id="updateTable" parameterType="com.scuec.restaurant.entities.Table">
         update `table_rest`
         set
         <trim suffixOverrides=",">
             <if test="tableName != null and tableName != ''">
-                t_no=#{tableNo},
+                t_no=#{tableName},
             </if>
             <if test="tableDescription != null and tableDescription != ''">
-                t_people = #{tPeople},
+                t_people = #{tableDescription},
             </if>
             <if test="tableOrderId != null and tableOrderId != ''">
-                t_orderid = #{tOrderid},
+                t_orderid = #{tableOrderId},
             </if>
             <if test="tableUse != null and tableUse != -1">
                 t_isuse = #{tableUse},

@@ -32,8 +32,18 @@ public class TableServiceimpl implements TableService {
     }
 
     @Override
-    public int updateTable(String tableId, String tableNo, String tPeople, String tOrderid) {
-        return tableDao.updateTable(tableId, tableNo, tPeople, tOrderid, 0, 0);
+    public Table updateTable(Table request) {
+        /*String tableId, String tableNo, String tPeople, String tOrderid*/
+        if (tableDao.getTableByName(request.getTableName()) == null) {
+            int res = tableDao.updateTable(request);
+            if (res == 1)
+                return request;
+            else
+                return null;
+        } else
+            // 桌位名存在抛出异常
+            throw new GlobalException(ResponseCode.ERROR, "TableName already exist");
+
     }
 
     @Override
@@ -42,7 +52,7 @@ public class TableServiceimpl implements TableService {
     }
 
     @Override
-    public Table addTable( Table request) {
+    public Table addTable(Table request) {
         // 判断桌位名是否存在
         if (tableDao.getTableByName(request.getTableName()) == null) {
             table.setTableName(request.getTableName());

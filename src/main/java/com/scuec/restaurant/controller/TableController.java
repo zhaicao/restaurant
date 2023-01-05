@@ -46,12 +46,12 @@ public class TableController {
 
     @PutMapping("/updateTable")
     @ApiOperation(value = "通过餐号Id更新餐桌信息", notes = "桌号，人数和orderid可修改，tableId必填")
-    public String updateTable(@RequestBody Table table){
-        int res = tableService.updateTable(table.getTableId(), table.getTableName(), table.getTableDescription(), table.getTableId());
-        if (res == 1)
-            return "successful";
+    public Table updateTable(@RequestBody Table table){
+        Table res = tableService.updateTable(table);
+        if (res != null )
+            return res;
         else
-            throw new GlobalException(ResponseCode.ERROR, "使用中的餐桌不可删除, tableId:" + table.getTableId());
+            throw new GlobalException(ResponseCode.ERROR, "Update Table Error, tableId:" + table.getTableId());
     }
 
     @PutMapping("/updateTableUse")
