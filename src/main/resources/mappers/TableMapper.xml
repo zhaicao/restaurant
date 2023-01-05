@@ -75,6 +75,30 @@
         <if test="tableId != null and tableId !=''">
             and t_id=#{tableId}
         </if>
+        <if test="tableNo != null and tableNo !=''">
+            and t_no like '%${tableNo}%'
+        </if>
+        <if test="tableUse != null and tableUse !=-1">
+            and t_isuse=#{tableUse}
+        </if>
     </select>
 
+    <update id="updateTableuse">
+        update `table_rest`
+        <trim suffixOverrides=",">
+            set t_isuse=1,
+        </trim>
+        where t_id = #{tableId} and t_isuse=0;
+
+    </update>
+
+
+    <update id="updateTableuse1">
+        update `table_rest`
+        <trim suffixOverrides=",">
+            set t_isuse=0,
+        </trim>
+        where t_id = #{tableId} and t_isuse=1;
+
+    </update>
 </mapper>

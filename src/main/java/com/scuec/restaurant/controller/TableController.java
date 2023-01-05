@@ -65,6 +65,32 @@ public class TableController {
             throw new GlobalException(ResponseCode.ERROR, "Update Table Error, tableId:" + tableId);
     }
 
+    @PutMapping("/updateTableuse")
+    @ApiOperation(value = "通过餐号Id更新餐桌状态已使用", notes = "通过餐号Id更新餐桌状态")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "tableId", value = "桌号ID", required = true, dataType = "String", paramType = "query")
+    })
+    public String updateTableuse(String tableId){
+        int res = tableService.updateTableuse(tableId);
+        if (res == 1)
+            return "successful";
+        else
+            throw new GlobalException(ResponseCode.ERROR, "餐桌为已使用状态，tableId：" + tableId);
+    }
+
+    @PutMapping("/updateTableuse1")
+    @ApiOperation(value = "通过餐号Id更新餐桌状态为空闲", notes = "通过餐号Id更新餐桌状态为空闲")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "tableId", value = "桌号ID", required = true, dataType = "String", paramType = "query")
+    })
+    public String updateTableuse1(String tableId){
+        int res = tableService.updateTableuse1(tableId);
+        if (res == 1)
+            return "successful";
+        else
+            throw new GlobalException(ResponseCode.ERROR, "餐桌为空闲状态，tableId：" + tableId);
+    }
+
     /**
      * 获取餐桌list
      * @param currentPage
@@ -76,13 +102,17 @@ public class TableController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "currentPage", value = "当前页", required = true, dataType = "int", paramType = "query"),
             @ApiImplicitParam(name = "pageSize", value = "每页显示多少条记录", required = true, dataType = "int", paramType = "query"),
+            @ApiImplicitParam(name = "tableNo", value = "桌号，模糊查询", required = true, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "tableId", value = "餐桌ID，精确查询", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "tableUse", value = "餐桌状态", required = true, dataType = "int", paramType = "query")
     })
     public IPage<Table> getTableList(int currentPage,
-                                   int pageSize,
-                                   String tableId){
+                                     int pageSize,
+                                     String tableId,
+                                     String tableNo,
+                                     int tableUse){
 
-        return tableService.getTableList(currentPage, pageSize,tableId);
+        return tableService.getTableList(currentPage, pageSize,tableId,tableNo,tableUse);
     }
 
     @PostMapping("/addTable")

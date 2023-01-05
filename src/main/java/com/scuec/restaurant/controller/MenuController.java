@@ -87,7 +87,7 @@ public class MenuController {
     }
 
 
-    @PostMapping("/updateMenu")
+    @PutMapping("/updateMenu")
     @ApiOperation(value = "通过菜品Id更新菜品信息", notes = "类型，菜品名，价格和图片可修改")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "foodId", value = "菜品ID", required = true, dataType = "String", paramType = "query"),

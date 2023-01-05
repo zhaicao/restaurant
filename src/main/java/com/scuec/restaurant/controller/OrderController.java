@@ -100,7 +100,7 @@ public class OrderController {
     }
 
 
-    @PostMapping("/updateOrdersta")
+    @PutMapping("/updateOrdersta")
     @ApiOperation(value = "通过订单id和菜品id对菜品进行上菜", notes = "通过订单id和菜品id对菜品进行上菜")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "orderId", value = "订单ID", required = true, dataType = "String", paramType = "query"),
@@ -115,7 +115,7 @@ public class OrderController {
     }
 
 
-    @PostMapping("/updateOrdersta1")
+    @PutMapping("/updateOrdersta1")
     @ApiOperation(value = "通过订单id更新订单状态已付款", notes = "通过订单id更新订单状态已付款")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "orderId", value = "订单ID", required = true, dataType = "String", paramType = "query")
