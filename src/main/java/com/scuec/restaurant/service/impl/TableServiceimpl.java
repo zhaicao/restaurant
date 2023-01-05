@@ -2,6 +2,8 @@ package com.scuec.restaurant.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.scuec.restaurant.constant.exception.GlobalException;
+import com.scuec.restaurant.constant.response.ResponseCode;
 import com.scuec.restaurant.dao.TableDao;
 import com.scuec.restaurant.entities.Table;
 import com.scuec.restaurant.service.TableService;
@@ -14,6 +16,9 @@ import java.util.Objects;
 public class TableServiceimpl implements TableService {
     @Autowired
     private TableDao tableDao;
+
+    @Autowired
+    private Table table;
 
     @Override
     public int deleteTableById(String tableId) {
@@ -37,26 +42,31 @@ public class TableServiceimpl implements TableService {
     }
 
     @Override
-    public Table addTable( String tableNo, String tPeople) {
-        Table table = new Table();
-        table.setTableNo(tableNo);
-        table.setTPeople(tPeople);
-        table.setTOrderid(null);
-        table.setTableUse(0);
-        table.setTableDel(0);
-        int res = tableDao.insertTable(table);
-        if (res == 1) {
-            return table;
+    public Table addTable( Table request) {
+        // 判断桌位名是否存在
+        if (tableDao.getTableByName(request.getTableName()) == null) {
+            table.setTableName(request.getTableName());
+            table.setTableDescription(request.getTableDescription());
+            table.setTableId(null);
+            table.setTableUse(0);
+            table.setTableDel(0);
+            int res = tableDao.insertTable(table);
+            if (res == 1) {
+                return table;
+            } else
+                return null;
         } else
-            return null;
+            // 桌位名存在抛出异常
+            throw new GlobalException(ResponseCode.ERROR, "TableName already exist");
+
     }
 
     @Override
-    public int updateTableuse(String tableId,String tOrderid) {
+    public int updateTableUse(String tableId, String tableOrderId) {
         Table table = tableDao.getTableById(tableId);
-        String Orderid = table.getTOrderid();
-        if(Orderid==null) {
-            return tableDao.updateTableuse(tableId, tOrderid);
+        String orderId = table.getTableOrderId();
+        if(orderId == null || orderId.equals("")) {
+            return tableDao.updateTableUse(tableOrderId, tableOrderId);
         }
         else {
             return 0;
@@ -64,8 +74,8 @@ public class TableServiceimpl implements TableService {
     }
 
     @Override
-    public int updateTableuse1(String tableId) {
-        return tableDao.updateTableuse1(tableId);
+    public int updateTableUse1(String tableId) {
+        return tableDao.updateTableUse1(tableId);
     }
 
 }

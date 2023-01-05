@@ -73,7 +73,7 @@ public class TableController {
             @ApiImplicitParam(name = "tOrderid", value = "orderid", required = true, dataType = "String", paramType = "query")
     })
     public String updateTableuse(String tableId,String tOrderid){
-        int res = tableService.updateTableuse(tableId,tOrderid);
+        int res = tableService.updateTableUse(tableId,tOrderid);
         if (res == 1)
             return "successful";
         else
@@ -86,7 +86,7 @@ public class TableController {
             @ApiImplicitParam(name = "tableId", value = "桌号ID", required = true, dataType = "String", paramType = "query")
     })
     public String updateTableuse1(String tableId){
-        int res = tableService.updateTableuse1(tableId);
+        int res = tableService.updateTableUse1(tableId);
         if (res == 1)
             return "successful";
         else
@@ -117,27 +117,14 @@ public class TableController {
         return tableService.getTableList(currentPage, pageSize,tableId,tableNo,tableUse);
     }
 
-//    @PostMapping("/addTable")
-//    @ApiOperation(value = "添加餐桌信息", notes = "桌号，人数和orderid")
-//    public String addTable(@RequestBody Table table){
-//        int result = tableService.addTable(table.getTNo(),
-//                table.getTPeople());
-//        if (result == 1)
-//            return "successful";
-//        else if (result == -1)
-//            throw new GlobalException(ResponseCode.ERROR, "TableNo already exists, TableNo:" + table.getTNo());
-//        else
-//            throw new GlobalException(ResponseCode.ERROR, "Add Table Error");
-//    }
-
     @PostMapping("/addTable")
     @ApiOperation(value = "添加餐桌信息", notes = "桌号，人数")
-    public Table addTable(String tableNo , String tPeople){
-        Table table = tableService.addTable(tableNo, tPeople);
-        if (table != null)
-            return table;
+    public Table addTable(@RequestBody Table table){
+        Table response = tableService.addTable(table);
+        if (response != null)
+            return response;
         else
-            throw new GlobalException(ResponseCode.ERROR, "Add Menu Error");
+            throw new GlobalException(ResponseCode.ERROR, "Add Table Error");
     }
 }
 

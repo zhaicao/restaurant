@@ -7,7 +7,7 @@ spring:
   # 数据库配置
   datasource:
     username: root
-    password: 230031
+    password: root
     url: jdbc:mysql://localhost:3306/restaurantsys?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
     driver-class-name: com.mysql.cj.jdbc.Driver
   # 国际化文件配置

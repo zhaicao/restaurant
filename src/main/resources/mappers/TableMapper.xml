@@ -5,9 +5,9 @@
     <!-- 定义的映射关系 -->
     <resultMap id="BaseResultMap" type="com.scuec.restaurant.entities.Table">
         <id column="t_id" property="tableId"/>
-        <result column="t_no"  property="tableNo"/>
-        <result column="t_people"  property="tPeople"/>
-        <result column="t_orderid"  property="tOrderid"/>
+        <result column="t_no"  property="tableName"/>
+        <result column="t_people"  property="tableDescription"/>
+        <result column="t_orderid"  property="tableOrderId"/>
         <result column="t_isuse"  property="tableUse"/>
         <result column="t_isdel"  property="tableDel"/>
     </resultMap>
@@ -18,14 +18,12 @@
     </sql>
 
 
-<!--    int insertTable(String tableNo,-->
-<!--    String tPeople,-->
-<!--    String tOrderid);-->
+<!--    int insertTable(Table table); -->
     <insert id="insertTable" parameterType="com.scuec.restaurant.entities.Table">
         <selectKey keyProperty="tableId" resultType="String" order="BEFORE">
             select REPLACE(UUID(),'-','')
         </selectKey>
-        insert into `table_rest` value(#{tableId}, #{tableNo}, #{tPeople}, #{tOrderid} , #{tableUse} , #{tableDel})
+        insert into `table_rest` value(#{tableId}, #{tableName}, #{tableDescription}, #{tableOrderId} , #{tableUse} , #{tableDel})
     </insert>
 
 
@@ -42,10 +40,10 @@
             <if test="tableNo != null and tableNo != ''">
                 t_no=#{tableNo},
             </if>
-            <if test="tPeople != null and tPeople != ''">
+            <if test="tableDescription != null and tableDescription != ''">
                 t_people = #{tPeople},
             </if>
-            <if test="tOrderid != null and tOrderid != ''">
+            <if test="tableOrderId != null and tableOrderId != ''">
                 t_orderid = #{tOrderid},
             </if>
             <if test="tableUse != null and tableUse != -1">
@@ -60,10 +58,18 @@
 
     </update>
 
+    <!--Table getTableById(String tableId);-->
     <select id="getTableById" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Table">
         select
         <include refid="BaseColumnList"></include>
-         from table_rest where t_id= #{tableId} ;
+         from table_rest where t_isdel = 0 and t_id = #{tableId} ;
+    </select>
+
+    <!--Table getTableByName(String tableName);-->
+    <select id="getTableByName" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Table">
+        select
+        <include refid="BaseColumnList"></include>
+        from table_rest where t_isdel = 0 and t_no= #{tableName} ;
     </select>
 
 <!--    IPage<Table> getTableList(@Param("page") Page<Table> page,-->
@@ -75,7 +81,7 @@
         <if test="tableId != null and tableId !=''">
             and t_id=#{tableId}
         </if>
-        <if test="tableNo != null and tableNo !=''">
+        <if test="tableName != null and tableName !=''">
             and t_no like '%${tableNo}%'
         </if>
         <if test="tableUse != null and tableUse !=-1">
@@ -83,16 +89,16 @@
         </if>
     </select>
 
-    <update id="updateTableuse">
+    <update id="updateTableUse">
         update `table_rest`
         <trim suffixOverrides=",">
-            set t_isuse=1,t_orderid= #{tOrderid},
+            set t_isuse=1,t_orderid= #{tableOrderId},
         </trim>
         where t_id = #{tableId} and t_isuse=0;
     </update>
 
 
-    <update id="updateTableuse1">
+    <update id="updateTableUse1">
         update `table_rest`
         <trim suffixOverrides=",">
             set t_isuse=0,t_orderid= null ,

@@ -23,14 +23,21 @@ public interface TableDao extends BaseMapper<Table> {
 
     Table getTableById(String tableId);
 
+    /**
+     * 通过桌号名查询桌位
+     * @param tableName 桌号名
+     * @return
+     */
+    Table getTableByName(String tableName);
+
     IPage<Table> getTableList(@Param("page") Page<Table> page,
                               String tableId,
                               String tableNo,
                               int tableUse);
 
-    int updateTableuse(String tableId,String tOrderid);
+    int updateTableUse(String tableId,String tableOrderId);
 
-    int updateTableuse1(String tableId);
+    int updateTableUse1(String tableId);
 
     int deleteTableById(String tableId);
 }

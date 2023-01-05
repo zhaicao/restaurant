@@ -8,11 +8,11 @@ import org.springframework.stereotype.Component;
 public class Table {
     private String tableId;
 
-    private String tableNo;
+    private String tableName;
 
-    private String tPeople;
+    private String tableDescription;
 
-    private String tOrderid;
+    private String tableOrderId;
 
     private int tableUse;
 
