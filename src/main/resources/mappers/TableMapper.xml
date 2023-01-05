@@ -27,17 +27,17 @@
     </insert>
 
 
-<!--    int updateTable(String tableId,-->
-<!--    String tableNo,-->
-<!--    String tPeople,-->
-<!--    String tOrderid,-->
-<!--    int tableUse,-->
-<!--    int tableDel);-->
+<!--    int updateTable(String tableId,
+    String tableName,
+    String tableDescription,
+    String tableOrderId,
+    int tableUse,
+    int tableDel);-->
     <update id="updateTable">
         update `table_rest`
         set
         <trim suffixOverrides=",">
-            <if test="tableNo != null and tableNo != ''">
+            <if test="tableName != null and tableName != ''">
                 t_no=#{tableNo},
             </if>
             <if test="tableDescription != null and tableDescription != ''">

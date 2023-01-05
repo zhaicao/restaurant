@@ -13,11 +13,20 @@ public interface TableDao extends BaseMapper<Table> {
 
     int insertTable(Table table);
 
-
+    /**
+     * 修改桌号信息
+     * @param tableId 必填
+     * @param tableName 非必填
+     * @param tableDescription 非必填
+     * @param tableOrderId 非必填
+     * @param tableUse 非必填
+     * @param tableDel 非必填
+     * @return
+     */
     int updateTable(String tableId,
-                   String tableNo,
-                   String tPeople,
-                   String tOrderid,
+                   String tableName,
+                   String tableDescription,
+                   String tableOrderId,
                    int tableUse,
                    int tableDel);
 

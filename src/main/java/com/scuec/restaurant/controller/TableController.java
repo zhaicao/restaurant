@@ -24,12 +24,6 @@ public class TableController {
     @Autowired
     private TableService tableService;
 
-//    @GetMapping("/getTableList")
-//    public List<Table> getTableList(){
-//        tableService.list();
-//        return list;
-//  }
-
     @GetMapping("/getTableById")
     @ApiOperation(value = "通过Id获取餐桌信息", notes = "通过Id获取餐桌信息")
     @ApiImplicitParam(name = "tableId", value = "桌号ID", required = true, dataType = "String", paramType = "query")
@@ -51,22 +45,16 @@ public class TableController {
     }
 
     @PutMapping("/updateTable")
-    @ApiOperation(value = "通过餐号Id更新餐桌信息", notes = "桌号，人数和orderid可修改")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "tableId", value = "桌号ID", required = true, dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "tableNo", value = "桌号", required = true, dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "tPeople", value = "人数", required = true, dataType = "int", paramType = "query"),
-            @ApiImplicitParam(name = "tOrderid", value = "orderid", required = true, dataType = "String", paramType = "query")
-    })
-    public String updateTable(String tableId, String tableNo, String tPeople, String tOrderid){
-        int res = tableService.updateTable(tableId, tableNo, tPeople, tOrderid);
+    @ApiOperation(value = "通过餐号Id更新餐桌信息", notes = "桌号，人数和orderid可修改，tableId必填")
+    public String updateTable(@RequestBody Table table){
+        int res = tableService.updateTable(table.getTableId(), table.getTableName(), table.getTableDescription(), table.getTableId());
         if (res == 1)
             return "successful";
         else
-            throw new GlobalException(ResponseCode.ERROR, "使用中的餐桌不可删除, tableId:" + tableId);
+            throw new GlobalException(ResponseCode.ERROR, "使用中的餐桌不可删除, tableId:" + table.getTableId());
     }
 
-    @PutMapping("/updateTableuse")
+    @PutMapping("/updateTableUse")
     @ApiOperation(value = "通过餐号Id更新餐桌状态已使用", notes = "通过餐号Id更新餐桌状态")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "tableId", value = "桌号ID", required = true, dataType = "String", paramType = "query"),
