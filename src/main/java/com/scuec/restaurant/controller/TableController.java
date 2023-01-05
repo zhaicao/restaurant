@@ -3,6 +3,7 @@ package com.scuec.restaurant.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.scuec.restaurant.constant.exception.GlobalException;
 import com.scuec.restaurant.constant.response.ResponseCode;
+import com.scuec.restaurant.entities.Menu;
 import com.scuec.restaurant.entities.Table;
 import com.scuec.restaurant.service.TableService;
 import io.swagger.annotations.ApiImplicitParam;
@@ -62,7 +63,7 @@ public class TableController {
         if (res == 1)
             return "successful";
         else
-            throw new GlobalException(ResponseCode.ERROR, "Update Table Error, tableId:" + tableId);
+            throw new GlobalException(ResponseCode.ERROR, "使用中的餐桌不可删除, tableId:" + tableId);
     }
 
     @PutMapping("/updateTableuse")
@@ -116,17 +117,27 @@ public class TableController {
         return tableService.getTableList(currentPage, pageSize,tableId,tableNo,tableUse);
     }
 
+//    @PostMapping("/addTable")
+//    @ApiOperation(value = "添加餐桌信息", notes = "桌号，人数和orderid")
+//    public String addTable(@RequestBody Table table){
+//        int result = tableService.addTable(table.getTNo(),
+//                table.getTPeople());
+//        if (result == 1)
+//            return "successful";
+//        else if (result == -1)
+//            throw new GlobalException(ResponseCode.ERROR, "TableNo already exists, TableNo:" + table.getTNo());
+//        else
+//            throw new GlobalException(ResponseCode.ERROR, "Add Table Error");
+//    }
+
     @PostMapping("/addTable")
-    @ApiOperation(value = "添加餐桌信息", notes = "桌号，人数和orderid")
-    public String addTable(@RequestBody Table table){
-        int result = tableService.addTable(table.getTNo(),
-                table.getTPeople());
-        if (result == 1)
-            return "successful";
-        else if (result == -1)
-            throw new GlobalException(ResponseCode.ERROR, "TableNo already exists, TableNo:" + table.getTNo());
+    @ApiOperation(value = "添加餐桌信息", notes = "桌号，人数")
+    public Table addTable(String tableNo , String tPeople){
+        Table table = tableService.addTable(tableNo, tPeople);
+        if (table != null)
+            return table;
         else
-            throw new GlobalException(ResponseCode.ERROR, "Add Table Error");
+            throw new GlobalException(ResponseCode.ERROR, "Add Menu Error");
     }
 }
 

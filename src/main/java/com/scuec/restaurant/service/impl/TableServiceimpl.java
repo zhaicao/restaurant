@@ -18,7 +18,7 @@ public class TableServiceimpl implements TableService {
     @Override
     public int deleteTableById(String tableId) {
 
-        return tableDao.updateTable(tableId,null,null,null,0,1);
+        return tableDao.deleteTableById(tableId);
     }
 
     @Override
@@ -37,15 +37,25 @@ public class TableServiceimpl implements TableService {
     }
 
     @Override
-    public int addTable( String tableNo, String tPeople) {
-        return tableDao.insertTable(tableNo, tPeople);
+    public Table addTable( String tableNo, String tPeople) {
+        Table table = new Table();
+        table.setTableNo(tableNo);
+        table.setTPeople(tPeople);
+        table.setTOrderid(null);
+        table.setTableUse(0);
+        table.setTableDel(0);
+        int res = tableDao.insertTable(table);
+        if (res == 1) {
+            return table;
+        } else
+            return null;
     }
 
     @Override
     public int updateTableuse(String tableId,String tOrderid) {
         Table table = tableDao.getTableById(tableId);
         String Orderid = table.getTOrderid();
-        if(Objects.equals(Orderid, "")) {
+        if(Orderid==null) {
             return tableDao.updateTableuse(tableId, tOrderid);
         }
         else {

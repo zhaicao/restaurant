@@ -4,8 +4,8 @@
 
     <!-- 定义的映射关系 -->
     <resultMap id="BaseResultMap" type="com.scuec.restaurant.entities.Table">
-        <id column="t_id" property="tId"/>
-        <result column="t_no"  property="tNo"/>
+        <id column="t_id" property="tableId"/>
+        <result column="t_no"  property="tableNo"/>
         <result column="t_people"  property="tPeople"/>
         <result column="t_orderid"  property="tOrderid"/>
         <result column="t_isuse"  property="tableUse"/>
@@ -21,11 +21,11 @@
 <!--    int insertTable(String tableNo,-->
 <!--    String tPeople,-->
 <!--    String tOrderid);-->
-    <insert id="insertTable">
+    <insert id="insertTable" parameterType="com.scuec.restaurant.entities.Table">
         <selectKey keyProperty="tableId" resultType="String" order="BEFORE">
             select REPLACE(UUID(),'-','')
         </selectKey>
-        insert into `table_rest` value(#{tableId}, #{tableNo}, #{tPeople}, null , 0 , 0)
+        insert into `table_rest` value(#{tableId}, #{tableNo}, #{tPeople}, #{tOrderid} , #{tableUse} , #{tableDel})
     </insert>
 
 
@@ -99,5 +99,14 @@
         </trim>
         where t_id = #{tableId} and t_isuse=1;
 
+    </update>
+
+
+    <update id="deleteTableById">
+        update `table_rest`
+        <trim suffixOverrides=",">
+            set t_isdel=1,
+        </trim>
+        where t_id = #{tableId} and t_isuse=0;
     </update>
 </mapper>

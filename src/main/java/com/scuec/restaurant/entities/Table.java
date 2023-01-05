@@ -6,9 +6,9 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 public class Table {
-    private String tId;
+    private String tableId;
 
-    private String tNo;
+    private String tableNo;
 
     private String tPeople;
 
