@@ -72,8 +72,10 @@
         from table_rest where t_isdel = 0 and t_no= #{tableName} ;
     </select>
 
-<!--    IPage<Table> getTableList(@Param("page") Page<Table> page,-->
-<!--    String tableId);-->
+<!--    IPage<Table> getTableList(@Param("page") Page<Table> page,
+    String tableId,
+    String tableName,
+    int tableUse);-->
     <select id="getTableList" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Table">
         select
         <include refid="BaseColumnList"></include>
@@ -82,7 +84,7 @@
             and t_id=#{tableId}
         </if>
         <if test="tableName != null and tableName !=''">
-            and t_no like '%${tableNo}%'
+            and t_no like '%${tableName}%'
         </if>
         <if test="tableUse != null and tableUse !=-1">
             and t_isuse=#{tableUse}

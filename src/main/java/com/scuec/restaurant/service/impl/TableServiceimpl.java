@@ -37,8 +37,8 @@ public class TableServiceimpl implements TableService {
     }
 
     @Override
-    public IPage<Table> getTableList(int currentPage, int pageSize, String tableId,String tableNo,int tableUse) {
-        return tableDao.getTableList(new Page<>(currentPage, pageSize),tableId,tableNo,tableUse);
+    public IPage<Table> getTableList(int currentPage, int pageSize, String tableId,String tableName,int tableUse) {
+        return tableDao.getTableList(new Page<>(currentPage, pageSize),tableId, tableName, tableUse);
     }
 
     @Override

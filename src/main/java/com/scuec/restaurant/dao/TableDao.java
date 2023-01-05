@@ -32,7 +32,7 @@ public interface TableDao extends BaseMapper<Table> {
 
     IPage<Table> getTableList(@Param("page") Page<Table> page,
                               String tableId,
-                              String tableNo,
+                              String tableName,
                               int tableUse);
 
     int updateTableUse(String tableId,String tableOrderId);
