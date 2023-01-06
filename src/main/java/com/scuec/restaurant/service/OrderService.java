@@ -13,7 +13,16 @@ public interface OrderService {
 
     int updateOrdersta1(String orderId);
 
-    IPage<Order> getOrderList(int currentPage, int pageSize, String orderStatus);
+    /**
+     * 获取订单列表
+     * @param currentPage
+     * @param pageSize
+     * @param orderStatus 订单状态
+     * @param startDate 检索开始时间
+     * @param endDate 检索结束时间
+     * @return
+     */
+    IPage<Order> getOrderList(int currentPage, int pageSize, String orderStatus, String startDate, String endDate);
 
 
     int addOrder(String orderId, String tableNo, double orderPrice, String orderStatus);

@@ -35,8 +35,7 @@ public class AttendanceController {
      * @param userId 用户UUID，精确
      * @param loginName 用户登录名，精确
      * @param realName 用户真实姓名，模糊查询
-     * @param role 用户角色 0：管理员；1：服务员；2：厨师。-1查询全部
-     * @param phone 用户联系电话，精确
+     * @param attendanceType 考勤类型
      * @return
      */
     @GetMapping("/getAttendanceList")

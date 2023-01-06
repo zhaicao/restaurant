@@ -2,33 +2,42 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.scuec.restaurant.dao.OrderDao">
 
-    <!-- 定义的映射关系 -->
+    <!-- 基础映射关系 -->
     <resultMap id="BaseResultMap" type="com.scuec.restaurant.entities.Order">
         <id column="orderid" property="orderId"/>
         <result column="tableno"  property="tableNo"/>
         <result column="o_status"  property="orderStatus"/>
         <result column="price"  property="orderPrice"/>
         <result column="orderdate"  property="orderDate"/>
-        <collection property="orderdetail" ofType="com.scuec.restaurant.entities.Orderdetail">
-            <!--封装orderdetailr的数据-->
-            <id column="mdid" property="odId"/>
-            <result column="orderid"  property="orderId"/>
-            <result column="foodid"  property="foodId"/>
-            <result column="md_amount"  property="odAmount"/>
-            <result column="md_price"  property="odPrice"/>
-            <result column="md_status"  property="odStatus"/>
-            <result column="isdel"  property="odDel"/>
-            <association property="menu" javaType="com.scuec.restaurant.entities.Menu">
-                <id column="foodid" property="foodId"/>
-                <result column="m_type"  property="menuType"/>
-                <result column="m_name"  property="menuName"/>
-                <result column="m_price"  property="menuPrice"/>
-                <result column="m_img"  property="menuImg"/>
-                <result column="m_popular"  property="menuPopular"/>
-                <result column="isdel"  property="menuDel"/>
-            </association>
-    </collection>
+        <!--订单与订单关联表一对多，collection将被封装成一个List-->
+        <collection property="orderdetail"
+                    ofType="com.scuec.restaurant.entities.Orderdetail"
+                    column="orderId"
+                    select="getOrderDetail">
+        </collection>
     </resultMap>
+
+    <!-- OrderDetail映射关系 -->
+    <resultMap id="OrderDetailResultMap" type="com.scuec.restaurant.entities.Orderdetail">
+        <id column="mdid" property="odId"/>
+        <result column="md_orderid"  property="orderId"/>
+        <result column="md_foodid"  property="foodId"/>
+        <result column="md_amount"  property="odAmount"/>
+        <result column="md_price"  property="odPrice"/>
+        <result column="md_status"  property="odStatus"/>
+        <result column="md_isdel"  property="odDel"/>
+        <!--订单关联表与菜品多对一，association将被封装成一个object，可考虑使用延迟加载从而提高性能-->
+        <association property="menu" javaType="com.scuec.restaurant.entities.Menu">
+            <id column="m_foodid" property="foodId"/>
+            <result column="m_type"  property="menuType"/>
+            <result column="m_name"  property="menuName"/>
+            <result column="m_price"  property="menuPrice"/>
+            <result column="m_img"  property="menuImg"/>
+            <result column="m_popular"  property="menuPopular"/>
+            <result column="m_isdel"  property="menuDel"/>
+        </association>
+    </resultMap>
+
     <!-- 通用查询结果列 -->
     <sql id="BaseColumnList">
         orderid, tableno, o_status, price, orderdate,foodid
@@ -58,11 +67,67 @@
     </insert>
 
 
+    <!--    IPage<Order> getOrderList(@Param("page") Page<Order> page,
+        String orderStatus,
+        String startDate,
+        String endDate);-->
     <select id="getOrderList" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Order">
-        select mr.*,md.*,mu.* from m_order mr left join md_relation md on mr.orderid = md.orderid left join menu mu
-        on md.foodid = mu.foodid where o_status like '%${orderStatus}%'
+        SELECT
+            mr.orderid,
+            mr.tableno,
+            mr.o_status,
+            mr.price,
+            mr.orderdate
+        FROM
+            m_order mr
+        <where>
+            <if test="orderStatus != null and orderStatus != ''">
+                mr.o_status = ${orderStatus}
+            </if>
+            <if test=" startDate != null and startDate != ''">
+                <!--使用<![CDATA[]]>来转义，否则<和>报错-->
+                <![CDATA[and DATE_FORMAT(mr.orderdate,'%Y-%m-%d') >= ${ startDate }]]>
+            </if>
+            <if test="endDate != null and endDate != ''">
+                <![CDATA[and DATE_FORMAT(mr.orderdate,'%Y-%m-%d') <= ${ endDate }]]>
+            </if>
+        </where>
     </select>
 
+    <!-- 查询OrderDetail -->
+    <select id="getOrderDetail" resultMap="OrderDetailResultMap">
+        SELECT
+            md.mdid,
+            md.orderid AS md_orderid,
+            md.foodid AS md_foodid,
+            md.md_amount,
+            md.md_price,
+            md.isdel AS md_isdel,
+            mu.foodid AS m_foodid,
+            mu.m_type,
+            mu.m_name,
+            mu.m_img,
+            mu.m_popular
+        FROM
+            (
+                SELECT
+                    mdid,
+                    orderid,
+                    foodid,
+                    md_amount,
+                    md_price,
+                    isdel
+                FROM
+                    md_relation
+                WHERE
+                    orderid = ${ orderId }
+            ) md
+        LEFT JOIN menu mu ON md.foodid = mu.foodid
+    </select>
+
+    <select id="">
+        select * from
+    </select>
 
 
     <select id="getOrderBytableId" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Order">

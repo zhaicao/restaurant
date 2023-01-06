@@ -21,7 +21,9 @@ public interface OrderDao {
     int updateOrdersta1(String orderId);
 
     IPage<Order> getOrderList(@Param("page") Page<Order> page,
-                               String orderStatus);
+                               String orderStatus,
+                               String startDate,
+                               String endDate);
 
 
     int addOrder(String orderId, String tableNo, double orderPrice, String orderStatus);

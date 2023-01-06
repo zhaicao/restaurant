@@ -79,14 +79,16 @@ public class OrderController {
             @ApiImplicitParam(name = "currentPage", value = "当前页", required = true, dataType = "int", paramType = "query"),
             @ApiImplicitParam(name = "pageSize", value = "每页显示多少条记录", required = true, dataType = "int", paramType = "query"),
             @ApiImplicitParam(name = "orderStatus", value = "订单状态", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "startDate", value = "开始时间", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "endDate", value = "结束时间", required = true, dataType = "String", paramType = "query"),
     })
     public IPage<Order> getOrderList(int currentPage,
-                                      int pageSize,
-                                      String orderStatus){
-
-        return orderService.getOrderList(currentPage, pageSize,orderStatus);
+                                     int pageSize,
+                                     String orderStatus,
+                                     String startDate,
+                                     String endDate){
+        return orderService.getOrderList(currentPage, pageSize,orderStatus, startDate, endDate);
     }
-
 
     @DeleteMapping("/deleteOrder")
     @ApiOperation(value = "根据桌号删除（逻辑删除）订单详情", notes = "根据桌号删除（逻辑删除）订单详情")

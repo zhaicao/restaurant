@@ -64,8 +64,8 @@ public class OrderServiceimpl implements OrderService {
 
 
     @Override
-    public IPage<Order> getOrderList(int currentPage, int pageSize, String orderStatus) {
-        return orderDao.getOrderList(new Page<>(currentPage, pageSize),orderStatus);
+    public IPage<Order> getOrderList(int currentPage, int pageSize, String orderStatus, String startDate, String endDate) {
+        return orderDao.getOrderList(new Page<>(currentPage, pageSize), orderStatus, startDate, endDate);
     }
 
 
