@@ -86,10 +86,10 @@
             </if>
             <if test=" startDate != null and startDate != ''">
                 <!--使用<![CDATA[]]>来转义，否则<和>报错-->
-                <![CDATA[and DATE_FORMAT(mr.orderdate,'%Y-%m-%d') >= ${ startDate }]]>
+                <![CDATA[and DATE_FORMAT(mr.orderdate,'%Y-%m-%d') >= '${ startDate }']]>
             </if>
             <if test="endDate != null and endDate != ''">
-                <![CDATA[and DATE_FORMAT(mr.orderdate,'%Y-%m-%d') <= ${ endDate }]]>
+                <![CDATA[and DATE_FORMAT(mr.orderdate,'%Y-%m-%d') <= '${ endDate }']]>
             </if>
         </where>
     </select>
