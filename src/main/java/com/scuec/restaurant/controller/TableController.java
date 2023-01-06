@@ -41,11 +41,11 @@ public class TableController {
         if (res != 0 )
             return "successful";
         else
-            throw new GlobalException(ResponseCode.ERROR, "Delete Table Error, tableId:" + tableId);
+            throw new GlobalException(ResponseCode.ERROR, "This Table is in use, tableId:" + tableId);
     }
 
     @PutMapping("/updateTable")
-    @ApiOperation(value = "通过餐号Id更新餐桌信息", notes = "桌号，人数和orderid可修改，tableId必填")
+    @ApiOperation(value = "通过餐号Id更新餐桌信息", notes = "桌号，描述和orderId可修改，tableId必填")
     public Table updateTable(@RequestBody Table table){
         Table res = tableService.updateTable(table);
         if (res != null )
