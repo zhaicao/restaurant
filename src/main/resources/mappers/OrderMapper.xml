@@ -82,14 +82,14 @@
             m_order mr
         <where>
             <if test="orderStatus != null and orderStatus != ''">
-                mr.o_status = '${orderStatus}'
+                mr.o_status = #{orderStatus}
             </if>
             <if test=" startDate != null and startDate != ''">
                 <!--使用<![CDATA[]]>来转义，否则<和>报错-->
-                <![CDATA[and DATE_FORMAT(mr.orderdate,'%Y-%m-%d') >= '${ startDate }']]>
+                <![CDATA[and DATE_FORMAT(mr.orderdate,'%Y-%m-%d') >= #{ startDate }]]>
             </if>
             <if test="endDate != null and endDate != ''">
-                <![CDATA[and DATE_FORMAT(mr.orderdate,'%Y-%m-%d') <= '${ endDate }']]>
+                <![CDATA[and DATE_FORMAT(mr.orderdate,'%Y-%m-%d') <= #{ endDate }]]>
             </if>
         </where>
         ORDER BY mr.orderdate DESC
@@ -121,7 +121,7 @@
                 FROM
                     md_relation
                 WHERE
-                    orderid = ${ orderId }
+                    orderid = #{ orderId }
             ) md
         LEFT JOIN menu mu ON md.foodid = mu.foodid
     </select>
