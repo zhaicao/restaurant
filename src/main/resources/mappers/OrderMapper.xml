@@ -82,7 +82,7 @@
             m_order mr
         <where>
             <if test="orderStatus != null and orderStatus != ''">
-                mr.o_status = ${orderStatus}
+                mr.o_status = '${orderStatus}'
             </if>
             <if test=" startDate != null and startDate != ''">
                 <!--使用<![CDATA[]]>来转义，否则<和>报错-->
@@ -92,6 +92,7 @@
                 <![CDATA[and DATE_FORMAT(mr.orderdate,'%Y-%m-%d') <= '${ endDate }']]>
             </if>
         </where>
+        ORDER BY mr.orderdate DESC
     </select>
 
     <!-- 查询OrderDetail -->
