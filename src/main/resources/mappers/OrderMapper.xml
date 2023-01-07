@@ -103,10 +103,12 @@
             md.foodid AS md_foodid,
             md.md_amount,
             md.md_price,
+            md.md_status,
             md.isdel AS md_isdel,
             mu.foodid AS m_foodid,
             mu.m_type,
             mu.m_name,
+            mu.m_price,
             mu.m_img,
             mu.m_popular
         FROM
@@ -117,6 +119,7 @@
                     foodid,
                     md_amount,
                     md_price,
+                    md_status,
                     isdel
                 FROM
                     md_relation
