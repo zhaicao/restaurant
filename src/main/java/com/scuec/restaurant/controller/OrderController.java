@@ -6,6 +6,7 @@ import com.scuec.restaurant.constant.response.ResponseCode;
 import com.scuec.restaurant.entities.Attendance;
 import com.scuec.restaurant.entities.Order;
 import com.scuec.restaurant.entities.Orderdetail;
+import com.scuec.restaurant.entities.vo.FoodVO;
 import com.scuec.restaurant.service.CommonService;
 import com.scuec.restaurant.service.OrderService;
 import com.scuec.restaurant.service.OrderdetailService;
@@ -138,6 +139,25 @@ public class OrderController {
         Order order = orderService.getOrderBytableId(tableId);
         String orderid = order.getOrderId();
         return orderid;
+    }
+
+    @GetMapping("/getNewFoodList")
+    @ApiOperation(value = "获取未上菜的菜品列表", notes = "获取未上菜的菜品列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "currentPage", value = "当前页", required = true, dataType = "int", paramType = "query"),
+            @ApiImplicitParam(name = "pageSize", value = "每页显示多少条记录", required = true, dataType = "int", paramType = "query"),
+            @ApiImplicitParam(name = "menuType", value = "菜品类型", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "menuName", value = "菜品名称", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "startDate", value = "下单开始时间", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "endDate", value = "下单结束时间", required = true, dataType = "String", paramType = "query"),
+    })
+    public IPage<FoodVO> getNewFoodList(int currentPage,
+                                        int pageSize,
+                                        String menuType,
+                                        String menuName,
+                                        String startDate,
+                                        String endDate){
+        return orderService.getNewFoodList(currentPage, pageSize, menuType, menuName, startDate, endDate);
     }
 
 }

@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.scuec.restaurant.dao.OrderDao;
 import com.scuec.restaurant.dao.OrderdetDao;
 import com.scuec.restaurant.entities.Order;
+import com.scuec.restaurant.entities.vo.FoodVO;
 import com.scuec.restaurant.service.OrderService;
 import com.scuec.restaurant.service.OrderdetailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,6 +85,11 @@ public class OrderServiceimpl implements OrderService {
         double price = orderDao.getOrderPrice(orderId);
         orderPrice = price + orderPrice;
         return orderDao.updateOrderByorderId(orderId,orderPrice);
+    }
+
+    @Override
+    public IPage<FoodVO> getNewFoodList(int currentPage, int pageSize, String menuType, String menuName, String startDate, String endDate) {
+        return orderDao.getFoodList(new Page<>(currentPage, pageSize), 0, menuType, menuName, startDate, endDate);
     }
 
 

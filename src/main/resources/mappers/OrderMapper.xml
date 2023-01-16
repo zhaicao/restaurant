@@ -38,6 +38,19 @@
         </association>
     </resultMap>
 
+    <!--菜品列表-->
+    <resultMap id="FoodResultMap" type="com.scuec.restaurant.entities.vo.FoodVO">
+        <id column="mdid" property="mdId"/>
+        <result column="orderid"  property="orderId"/>
+        <result column="foodid"  property="foodId"/>
+        <result column="md_amount"  property="foodAmount"/>
+        <result column="md_status"  property="foodStatus"/>
+        <result column="o_status"  property="orderStatus"/>
+        <result column="orderdate"  property="orderDate"/>
+        <result column="m_type"  property="foodType"/>
+        <result column="m_name"  property="foodName"/>
+    </resultMap>
+
     <!-- 通用查询结果列 -->
     <sql id="BaseColumnList">
         orderid, tableno, o_status, price, orderdate,foodid
@@ -145,5 +158,47 @@
     <select id="getOrderPrice" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Order">
         select m.price from m_order m where orderid= #{orderId};
     </select>
+
+<!--    IPage<FoodVO> getFoodList(@Param("page") Page<Order> page,
+    String menuType,
+    String menuName,
+    String startDate,
+    String endDate);-->
+    <select id="getFoodList" resultMap="FoodResultMap" resultType="com.scuec.restaurant.entities.vo.FoodVO">
+        SELECT
+            md.mdid,
+            md.orderid,
+            md.foodid,
+            md.md_amount,
+            md.md_status,
+            mr.o_status,
+            mr.orderdate,
+            mu.m_type,
+            mu.m_name
+        FROM
+            `md_relation` md
+        INNER JOIN m_order mr ON md.orderid = mr.orderid
+        LEFT JOIN menu mu ON md.foodid = mu.foodid
+        WHERE
+            md.isdel = 0
+        <if test="foodStatus != null and foodStatus != -1">
+            AND md.md_status = #{ foodStatus }
+        </if>
+        <if test="menuType != null and menuType != ''">
+            AND mu.m_type = #{ menuType }
+        </if>
+        <if test="menuName != null and menuName != ''">
+            AND mu.m_name like '%${ menuName }%'
+        </if>
+        <if test=" startDate != null and startDate != ''">
+            <!--使用<![CDATA[]]>来转义，否则<和>报错-->
+            <![CDATA[AND DATE_FORMAT(mr.orderdate,'%Y-%m-%d') >= #{ startDate }]]>
+        </if>
+        <if test="endDate != null and endDate != ''">
+            <![CDATA[AND DATE_FORMAT(mr.orderdate,'%Y-%m-%d') <= #{ endDate }]]>
+        </if>
+        ORDER BY mr.orderdate desc
+    </select>
+
 
 </mapper>

@@ -3,9 +3,8 @@ package com.scuec.restaurant;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.scuec.restaurant.dao.OrderDao;
-import com.scuec.restaurant.dao.UserDao;
 import com.scuec.restaurant.entities.Order;
-import com.scuec.restaurant.entities.User;
+import com.scuec.restaurant.entities.vo.FoodVO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,5 +34,13 @@ public class OrderDaoTest {
         System.out.println("Total："+order.getTotal());
         System.out.println("Current："+order.getCurrent());
         System.out.println("Size："+order.getSize());
+    }
+
+    @Test
+    public void testGetNewFoodList(){
+        int current = 1;
+        int size = 10;
+        IPage<FoodVO> order  = orderDao.getFoodList(new Page<>(current, size), 0, "", "米苏", "2022-11-26", "");
+        order.getRecords().forEach(foods -> log.warn(String.valueOf("searchAll:" + foods)));
     }
 }
