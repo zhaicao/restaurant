@@ -57,13 +57,14 @@
         orderid, tableno, o_status, price, orderdate,foodid
     </sql>
 
-    <update id="updateOrdersta">
-        update `m_order`
+    <!--int updateOrderStatus(String orderId, String orderStatus);-->
+    <update id="updateOrderStatus">
+        UPDATE `m_order`
         <trim suffixOverrides=",">
-            set o_status="已上菜",
+            SET o_status = #{ orderStatus },
         </trim>
-        where orderid = #{orderId};
-
+        WHERE
+            orderid = #{ orderId };
     </update>
 
 

@@ -17,7 +17,13 @@ public interface OrderDao {
     @Delete("delete from `m_order` where orderid = #{orderId}")
     int deleteOrder(String orderId);
 
-    int updateOrdersta(String orderId);
+    /**
+     * 更新订单状态
+     * @param orderId 订单号
+     * @param orderStatus 订单状态
+     * @return
+     */
+    int updateOrderStatus(String orderId, String orderStatus);
 
     int updateOrdersta1(String orderId);
 

@@ -3,9 +3,12 @@ package com.scuec.restaurant.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.scuec.restaurant.constant.exception.GlobalException;
+import com.scuec.restaurant.constant.response.ResponseCode;
 import com.scuec.restaurant.dao.OrderDao;
 import com.scuec.restaurant.dao.OrderdetDao;
 import com.scuec.restaurant.entities.Order;
+import com.scuec.restaurant.entities.Orderdetail;
 import com.scuec.restaurant.entities.vo.FoodVO;
 import com.scuec.restaurant.service.MessageService;
 import com.scuec.restaurant.service.OrderService;
@@ -14,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -58,9 +62,35 @@ public class OrderServiceimpl implements OrderService {
 //    }
 
     @Override
-    public int updateOrdersta(String orderId,String foodId) {
-        orderDao.updateOrdersta(orderId);
-        return orderdetDao.updateOrdermenusta(orderId,foodId);
+    public int serveFoodsByList(List<FoodVO> foodVOList) {
+        int res = 0;
+        List<String> orderList = new ArrayList<String>();
+        // 批量上菜且生成订单号List，减少订单循环
+        // 说明：未使用mubatis-plus的批量更新，后续优化
+        for (FoodVO food: foodVOList) {
+            res =+ orderdetDao.updateOrderFoodStatus(food.getOrderId(), food.getFoodId(), 1);
+            // OrderId去重
+            if (!orderList.contains(food.getFoodId()))
+                orderList.add(food.getOrderId());
+        }
+        if (res == 0)
+            throw new GlobalException(ResponseCode.ERROR, "Serve Food Error");
+        // 遍历所有订单
+        for (String orderId : orderList) {
+            // 获得并检查该订单下所有菜品状态
+            List<Orderdetail> foodList = orderdetDao.getFoodListByOrderId(orderId);
+            int serveFoodsCount = 0;
+            for (Orderdetail food : foodList) {
+                if (food.getOdStatus() == 1)
+                    serveFoodsCount++;
+            }
+            // 更新订单状态为”上菜中“或”已上菜“
+            if (serveFoodsCount == foodList.size())
+                orderDao.updateOrderStatus(orderId, "已上菜");
+            else
+                orderDao.updateOrderStatus(orderId, "上菜中");
+        }
+        return res;
     }
 
     @Override

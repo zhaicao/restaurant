@@ -7,12 +7,18 @@ import com.scuec.restaurant.entities.vo.FoodVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public interface OrderService {
 
     int deleteOrderById(String tableId);
 
-    int updateOrdersta(String orderId,String foodId);
+    /**
+     * 订单菜品批量上菜，支持多订单，多菜品
+     * @param foodVOList FoodVO对象，其中orderId和foodId必填
+     * @return
+     */
+    int serveFoodsByList(List<FoodVO> foodVOList);
 
     int updateOrdersta1(String orderId);
 

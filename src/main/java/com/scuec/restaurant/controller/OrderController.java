@@ -17,6 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping(value = "/order")
@@ -103,18 +105,14 @@ public class OrderController {
     }
 
 
-    @PutMapping("/updateOrdersta")
-    @ApiOperation(value = "通过订单id和菜品id对菜品进行上菜", notes = "通过订单id和菜品id对菜品进行上菜")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "orderId", value = "订单ID", required = true, dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "foodId", value = "菜品ID", required = true, dataType = "String", paramType = "query")
-    })
-    public String updateOrdersta(String orderId,String foodId){
-        int res = orderService.updateOrdersta(orderId,foodId);
+    @PutMapping("/serveFoodsByList")
+    @ApiOperation(value = "通过订单id和菜品id对菜品进行批量上菜", notes = "通过订单id和菜品id对菜品进行批量上菜")
+    public String serveFoodsByList(@RequestBody List<FoodVO> foodList){
+        int res = orderService.serveFoodsByList(foodList);
         if (res == 1)
-            return "successful";
+            return "success";
         else
-            throw new GlobalException(ResponseCode.ERROR, "Update Ordersta Error, orderId:" + orderId);
+            throw new GlobalException(ResponseCode.ERROR, "Update Ordersta Error, orderId:" + foodList);
     }
 
 

@@ -11,6 +11,11 @@
         <result column="md_price"  property="odPrice"/>
         <result column="md_status"  property="odStatus"/>
         <result column="isdel"  property="odDel"/>
+        <association property="menu"
+                     select="com.scuec.restaurant.dao.MenuDao.getMenuById"
+                     column="foodId"
+                     fetchType="lazy">
+        </association>
     </resultMap>
 
     <update id="deleteOrderdetId">
@@ -34,7 +39,30 @@
     </insert>
 
 
-    <update id="updateOrdermenusta">
-        update `md_relation` set md_status=1 where orderid = #{orderId} and foodid = #{foodId};
+    <!--int updateOrderFoodStatus(String orderId, String foodId, int foodStatus);-->
+    <update id="updateOrderFoodStatus">
+        UPDATE `md_relation`
+        SET md_status = #{ foodStatus }
+        WHERE
+            isdel = 0
+          AND orderid = #{ orderId }
+          AND foodid = #{ foodId }
     </update>
+
+    <!--List<Orderdetail> getFoodListByOrderId(String orderId);-->
+    <select id="getFoodListByOrderId" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Orderdetail">
+        SELECT
+            mdid,
+            orderid,
+            foodid,
+            md_amount,
+            md_status,
+            isdel
+        FROM
+            `md_relation`
+        WHERE
+            isdel = 0
+          AND orderid = #{ orderId }
+        GROUP BY mdid desc
+    </select>
 </mapper>
