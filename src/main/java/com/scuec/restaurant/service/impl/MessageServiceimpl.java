@@ -17,13 +17,13 @@ public class MessageServiceimpl implements MessageService {
 
 
     @Override
-    public int addMessage(String messageUserid, String messageOrderid, String messageContent) {
-        return messageDao.addMessage(messageUserid,messageOrderid,messageContent);
+    public int addMessage(String messageUserid, String messageOrderid, int messageType, String messageContent) {
+        return messageDao.addMessage(messageUserid,messageOrderid, messageType, messageContent);
     }
 
     @Override
-    public IPage<Message> getMessageList(int currentPage, int pageSize) {
-        return messageDao.getMessageList(new Page<>(currentPage, pageSize));
+    public IPage<Message> getMessageList(int currentPage, int pageSize, String msgOrderId, int msgType, String startDate, String endDate) {
+        return messageDao.getMessageList(new Page<>(currentPage, pageSize), msgOrderId, msgType, startDate, endDate);
     }
 
     @Override
@@ -37,8 +37,13 @@ public class MessageServiceimpl implements MessageService {
     }
 
     @Override
-    public int updateMessageState(String messageId) {
+    public int solveUrgeMsg(String messageId) {
 
         return messageDao.updateMessage(messageId,null,1,0);
+    }
+
+    @Override
+    public int getMessageSum(String orderId, int msgType) {
+        return messageDao.getMsgCount(orderId, msgType);
     }
 }

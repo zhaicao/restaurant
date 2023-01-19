@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.scuec.restaurant.dao.MessageDao;
 import com.scuec.restaurant.dao.UserDao;
+import com.scuec.restaurant.entities.Message;
 import com.scuec.restaurant.entities.User;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -20,9 +21,16 @@ public class MesDaoTest {
     @Test
     public void testAddMessage(){
         int res  = messageDao.addMessage("1",
-                "1",
-                "555"
+                "28",
+                1,
+                "28号再次催单"
         );
         log.warn(String.valueOf("insert:" + res));
+    }
+
+    @Test
+    public void testGetMsgSum() {
+        int res= messageDao.getMsgCount("1", 2);
+        log.info(String.valueOf(res));
     }
 }

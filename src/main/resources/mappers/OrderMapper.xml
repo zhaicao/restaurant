@@ -45,6 +45,7 @@
         <result column="foodid"  property="foodId"/>
         <result column="md_amount"  property="foodAmount"/>
         <result column="md_status"  property="foodStatus"/>
+        <result column="t_no"  property="tableName"/>
         <result column="o_status"  property="orderStatus"/>
         <result column="orderdate"  property="orderDate"/>
         <result column="m_type"  property="foodType"/>
@@ -171,6 +172,7 @@
             md.foodid,
             md.md_amount,
             md.md_status,
+            tr.t_no,
             mr.o_status,
             mr.orderdate,
             mu.m_type,
@@ -179,6 +181,7 @@
             `md_relation` md
         INNER JOIN m_order mr ON md.orderid = mr.orderid
         LEFT JOIN menu mu ON md.foodid = mu.foodid
+        LEFT JOIN table_rest tr ON mr.tableno = tr.t_id
         WHERE
             md.isdel = 0
         <if test="foodStatus != null and foodStatus != -1">

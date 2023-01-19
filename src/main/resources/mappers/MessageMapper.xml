@@ -5,11 +5,11 @@
     <!-- 定义的映射关系 -->
     <resultMap id="BaseResultMap" type="com.scuec.restaurant.entities.Message">
         <id column="m_id" property="messageId"/>
-        <result column="m_userid"  property="messageUserid"/>
-        <result column="m_orderid"  property="messageOrderid"/>
+        <result column="m_userid"  property="messageUserId"/>
+        <result column="m_orderid"  property="messageOrderId"/>
         <result column="m_content"  property="messageContent"/>
         <result column="m_type"  property="messageType"/>
-        <result column="m_date"  property="gmtCreate"/>
+        <result column="m_date"  property="messageCreateDate"/>
         <result column="m_complete"  property="messageComplete"/>
         <result column="m_isdel"  property="messageDel"/>
     </resultMap>
@@ -23,14 +23,33 @@
         <selectKey keyProperty="messageId" resultType="String" order="BEFORE">
             select REPLACE(UUID(),'-','')
         </selectKey>
-        insert into `message` value(#{messageId}, #{messageUserid}, #{messageOrderid},0, #{messageContent}, now(),0, 0)
+        insert into `message` value(#{messageId}, #{messageUserid}, #{messageOrderid},#{ messageType }, #{messageContent}, now(),0, 0)
     </insert>
 
-
+<!--    IPage<Message> getMessageList(@Param("page") Page<Message> page,
+    String msgOrderId,
+    int msgType,
+    String startDate,
+    String endDate);-->
     <select id="getMessageList" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Message">
         select
         <include refid="BaseColumnList"></include>
-        from `message` where m_isdel=0
+        from `message`
+        where m_isdel=0
+        <if test="msgOrderId != null and msgOrderId != ''">
+            AND m_orderid = #{ msgOrderId }
+        </if>
+        <if test="msgType != null and msgType != -1">
+            AND m_type = #{msgType}
+        </if>
+        <if test=" startDate != null and startDate != ''">
+            <!--使用<![CDATA[]]>来转义，否则<和>报错-->
+            <![CDATA[AND DATE_FORMAT(m_date,'%Y-%m-%d') >= #{ startDate }]]>
+        </if>
+        <if test="endDate != null and endDate != ''">
+            <![CDATA[AND DATE_FORMAT(m_date,'%Y-%m-%d') <= #{ endDate }]]>
+        </if>
+        ORDER BY m_date desc
     </select>
 
 
@@ -52,4 +71,16 @@
         where m_id = #{messageId};
 
     </update>
+
+    <!--int getMsgCount(String orderId, int msgType);-->
+    <select id="getMsgCount" resultType="Integer">
+        SELECT
+            count(1)
+        FROM
+            `message`
+        WHERE
+            m_isdel = 0
+          AND m_orderid = #{ orderId }
+          AND m_type = #{ msgType };
+    </select>
 </mapper>

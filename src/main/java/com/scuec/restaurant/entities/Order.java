@@ -20,6 +20,10 @@ public class Order {
 
     private Date orderDate;
 
+    private int urgeSum; // 催单总数
+
+    private int msgSum; //消息总数
+
     private List<Orderdetail> orderdetail;
 
 }

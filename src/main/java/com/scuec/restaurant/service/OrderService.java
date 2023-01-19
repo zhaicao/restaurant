@@ -43,7 +43,7 @@ public interface OrderService {
      * @param menuName 菜品名
      * @param startDate 下单开始时间
      * @param endDate 下单结束时间
-     * @return
+     * @return FoodVO
      */
     IPage<FoodVO> getNewFoodList(int currentPage,
                                  int pageSize,

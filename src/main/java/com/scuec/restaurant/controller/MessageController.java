@@ -24,8 +24,9 @@ public class MessageController {
     @PostMapping("/addMessage")
     @ApiOperation(value = "新增信息", notes = "新增一条信息")
     public String addMessage(@RequestBody Message message){
-        int result = messageService.addMessage(message.getMessageUserid(),
-                message.getMessageOrderid(),
+        int result = messageService.addMessage(message.getMessageUserId(),
+                message.getMessageOrderId(),
+                message.getMessageType(),
                 message.getMessageContent());
         if (result == 1)
             return "successful";
@@ -44,11 +45,19 @@ public class MessageController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "currentPage", value = "当前页", required = true, dataType = "int", paramType = "query"),
             @ApiImplicitParam(name = "pageSize", value = "每页显示多少条记录", required = true, dataType = "int", paramType = "query"),
+            @ApiImplicitParam(name = "msgOrderId", value = "订单号", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "msgType", value = "消息类型，1：催单，2：普通消息", required = true, dataType = "int", paramType = "query"),
+            @ApiImplicitParam(name = "startDate", value = "每页显示多少条记录", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "endDate", value = "每页显示多少条记录", required = true, dataType = "String", paramType = "query"),
     })
     public IPage<Message> getMessageList(int currentPage,
-                                     int pageSize){
+                                         int pageSize,
+                                         String msgOrderId,
+                                         int msgType,
+                                         String startDate,
+                                         String endDate){
 
-        return messageService.getMessageList(currentPage, pageSize);
+        return messageService.getMessageList(currentPage, pageSize, msgOrderId, msgType, startDate, endDate);
     }
 
     @PutMapping("/updateMessage")
@@ -76,13 +85,13 @@ public class MessageController {
             throw new GlobalException(ResponseCode.ERROR, "Delete Message Error, messageId:" + messageId);
     }
 
-    @PutMapping("/updateMessageState")
-    @ApiOperation(value = "通过信息id更新信息状态", notes = "信息状态修改")
+    @PutMapping("/solveUrgeMsg")
+    @ApiOperation(value = "通过信息id处理催单消息", notes = "处理催单")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "messageId", value = "信息ID", required = true, dataType = "String", paramType = "query")
     })
     public String updateMessageState(String messageId){
-        int res = messageService.updateMessageState(messageId);
+        int res = messageService.solveUrgeMsg(messageId);
         if (res != 0 )
             return "successful";
         else
