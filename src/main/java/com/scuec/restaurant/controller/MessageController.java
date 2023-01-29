@@ -5,12 +5,15 @@ import com.scuec.restaurant.constant.exception.GlobalException;
 import com.scuec.restaurant.constant.response.ResponseCode;
 import com.scuec.restaurant.entities.Message;
 import com.scuec.restaurant.service.MessageService;
+import com.scuec.restaurant.utils.commUtil;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -54,10 +57,11 @@ public class MessageController {
                                          int pageSize,
                                          String msgOrderId,
                                          int msgType,
+                                         int isComplete,
                                          String startDate,
                                          String endDate){
 
-        return messageService.getMessageList(currentPage, pageSize, msgOrderId, msgType, startDate, endDate);
+        return messageService.getMessageList(currentPage, pageSize, msgOrderId, msgType, isComplete, startDate, endDate);
     }
 
     @PutMapping("/updateMessage")
@@ -85,16 +89,16 @@ public class MessageController {
             throw new GlobalException(ResponseCode.ERROR, "Delete Message Error, messageId:" + messageId);
     }
 
-    @PutMapping("/solveUrgeMsg")
-    @ApiOperation(value = "通过信息id处理催单消息", notes = "处理催单")
+    @PutMapping("/completeUrgeMsg")
+    @ApiOperation(value = "通过信息ids批量处理催单消息", notes = "处理催单")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "messageId", value = "信息ID", required = true, dataType = "String", paramType = "query")
+            @ApiImplicitParam(name = "messageIds", value = "信息ID的数组，格式: 0f359886967011ed856902004c4f4f50, 10", required = true, dataType = "String[]", paramType = "query")
     })
-    public String updateMessageState(String messageId){
-        int res = messageService.solveUrgeMsg(messageId);
+    public String completeUrgeMsg(String[] messageIds){
+        int res = messageService.completeUrgeMsg(messageIds);
         if (res != 0 )
-            return "successful";
+            return "success";
         else
-            throw new GlobalException(ResponseCode.ERROR, "updateMessageState Message Error, messageId:" + messageId);
+            throw new GlobalException(ResponseCode.ERROR, "updateMessageState Message Error, messageId:" + messageIds);
     }
 }

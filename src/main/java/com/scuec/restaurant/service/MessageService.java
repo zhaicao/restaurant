@@ -10,7 +10,7 @@ import java.util.Date;
 public interface MessageService {
     int addMessage(String messageUserid, String messageOrderid, int messageType, String messageContent);
 
-    IPage<Message> getMessageList(int currentPage, int pageSize, String msgOrderId, int msgType, String startDate, String endDate);
+    IPage<Message> getMessageList(int currentPage, int pageSize, String msgOrderId, int msgType, int isComplete, String startDate, String endDate);
 
     int updateMessage(String messageId, String messageContent);
 
@@ -18,10 +18,10 @@ public interface MessageService {
 
     /**
      * 处理催单消息
-     * @param messageId 消息Id
+     * @param messageIds 消息Id数组
      * @return
      */
-    int solveUrgeMsg(String messageId);
+    int completeUrgeMsg(String[] messageIds);
 
     /**
      * 获取消息总数

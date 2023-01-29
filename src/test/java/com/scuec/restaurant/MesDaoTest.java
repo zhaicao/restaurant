@@ -33,4 +33,12 @@ public class MesDaoTest {
         int res= messageDao.getMsgCount("1", 2);
         log.info(String.valueOf(res));
     }
+
+    @Test
+    public void testCompleteUrgeMsg() {
+        int res = messageDao.updateMessage("'0f359886967011ed856902004c4f4f50', '2c79d90a9fa911ed945302004c4f4f50'",
+                "",
+                1,
+                -1);
+    }
 }

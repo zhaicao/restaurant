@@ -42,6 +42,9 @@
         <if test="msgType != null and msgType != -1">
             AND m_type = #{msgType}
         </if>
+        <if test="msgType == 1 and isComplete != null and isComplete != -1">
+            AND m_complete = #{isComplete}
+        </if>
         <if test=" startDate != null and startDate != ''">
             <!--使用<![CDATA[]]>来转义，否则<和>报错-->
             <![CDATA[AND DATE_FORMAT(m_date,'%Y-%m-%d') >= #{ startDate }]]>
@@ -52,23 +55,28 @@
         ORDER BY m_date desc
     </select>
 
-
+    <!--
+    int updateMessage(String messageIds,
+    String messageContent,
+    int messageComplete,
+    int messageDel);
+    -->
     <update id="updateMessage">
         update `message`
         set
         <trim suffixOverrides=",">
             <if test="messageContent != null and messageContent != ''">
-                m_content=#{messageContent},
+                m_content = #{messageContent},
             </if>
-            <if test="messageComplete != null and messageComplete != ''">
+            <if test="messageComplete != null and messageComplete != -1">
                 m_complete = #{messageComplete},
             </if>
-            <if test="messageDel != null and messageDel != ''">
+            <if test="messageDel != null and messageDel != -1">
                 m_isdel = #{messageDel},
             </if>
 
         </trim>
-        where m_id = #{messageId};
+        where m_id in (${messageIds});
 
     </update>
 

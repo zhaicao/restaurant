@@ -22,13 +22,32 @@ public interface MessageDao {
             int messageType,
             String messageContent);
 
+    /**
+     * 根据条件查询消息列表
+     * @param page
+     * @param msgOrderId
+     * @param msgType
+     * @param isComplete 仅当msgtype为催单时，该条件生效
+     * @param startDate
+     * @param endDate
+     * @return
+     */
     IPage<Message> getMessageList(@Param("page") Page<Message> page,
                                   String msgOrderId,
                                   int msgType,
+                                  int isComplete,
                                   String startDate,
                                   String endDate);
 
-    int updateMessage(String messageId,
+    /**
+     * 批量更新消息
+     * @param messageIds messageId的集合，若多个，则格式"'1','2','3'"
+     * @param messageContent
+     * @param messageComplete
+     * @param messageDel
+     * @return
+     */
+    int updateMessage(String messageIds,
                    String messageContent,
                    int messageComplete,
                    int messageDel);

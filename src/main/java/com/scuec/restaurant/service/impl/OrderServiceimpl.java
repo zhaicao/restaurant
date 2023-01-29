@@ -74,7 +74,7 @@ public class OrderServiceimpl implements OrderService {
                 orderList.add(food.getOrderId());
         }
         if (res == 0)
-            throw new GlobalException(ResponseCode.ERROR, "Serve Food Error");
+            throw new GlobalException(ResponseCode.ERROR, "Serve Foods Error");
         // 遍历所有订单
         for (String orderId : orderList) {
             // 获得并检查该订单下所有菜品状态

@@ -5,10 +5,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.scuec.restaurant.dao.MessageDao;
 import com.scuec.restaurant.entities.Message;
 import com.scuec.restaurant.service.MessageService;
+import com.scuec.restaurant.utils.commUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
 
 @Service
 public class MessageServiceimpl implements MessageService {
@@ -22,8 +21,8 @@ public class MessageServiceimpl implements MessageService {
     }
 
     @Override
-    public IPage<Message> getMessageList(int currentPage, int pageSize, String msgOrderId, int msgType, String startDate, String endDate) {
-        return messageDao.getMessageList(new Page<>(currentPage, pageSize), msgOrderId, msgType, startDate, endDate);
+    public IPage<Message> getMessageList(int currentPage, int pageSize, String msgOrderId, int msgType, int isComplete, String startDate, String endDate) {
+        return messageDao.getMessageList(new Page<>(currentPage, pageSize), msgOrderId, msgType, isComplete, startDate, endDate);
     }
 
     @Override
@@ -37,9 +36,9 @@ public class MessageServiceimpl implements MessageService {
     }
 
     @Override
-    public int solveUrgeMsg(String messageId) {
-
-        return messageDao.updateMessage(messageId,null,1,0);
+    public int completeUrgeMsg(String[] messageIds) {
+        String ids = commUtil.arr2Str(messageIds); // Arr to Str
+        return messageDao.updateMessage(ids,null,1,0);
     }
 
     @Override
