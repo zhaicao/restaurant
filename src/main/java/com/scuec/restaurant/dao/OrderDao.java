@@ -63,4 +63,8 @@ public interface OrderDao {
     List<Order> getOrderListByTableid(String tableId);
 
     int updateOrderstaByTableid(String tableId);
+
+    int addOrderVO(String orderId,String tableId);
+
+    int updateOrderpriByTableid(String orderId, double price);
 }
