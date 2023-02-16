@@ -3,8 +3,10 @@ package com.scuec.restaurant;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.scuec.restaurant.dao.OrderDao;
+import com.scuec.restaurant.dao.StatisticsDao;
 import com.scuec.restaurant.entities.Order;
 import com.scuec.restaurant.entities.vo.FoodVO;
+import com.scuec.restaurant.entities.vo.RevenueDetailVO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,36 +20,17 @@ import java.util.stream.Stream;
 
 @SpringBootTest
 @Slf4j
-public class OrderDaoTest {
+public class StatisticsDaoTest {
 
     @Autowired
-    private OrderDao orderDao;
-
-//    @Test
-//    public void testInsert(){
-//        int res  = orderDao.addOrder("11", 11, "1");
-//        log.warn(String.valueOf("insert:" + res));
-//    }
+    private StatisticsDao statisticsDao;
 
     @Test
-    public void testGetOrderList(){
+    public void testGetRevenueList(){
         int current = 1;
         int size = 10;
-        IPage<Order> order  = orderDao.getOrderList(new Page<>(current, size), "", "2022-11-25", "");
-        order.getRecords().forEach(detail -> log.warn(String.valueOf("searchAll:" + detail)));
-        // 打印分页数据
-        System.out.println("TotalPages："+order.getPages());
-        System.out.println("Total："+order.getTotal());
-        System.out.println("Current："+order.getCurrent());
-        System.out.println("Size："+order.getSize());
-    }
-
-    @Test
-    public void testGetNewFoodList(){
-        int current = 1;
-        int size = 10;
-        IPage<FoodVO> order  = orderDao.getFoodList(new Page<>(current, size), 0, "", "米苏", "2022-11-26", "");
-        order.getRecords().forEach(foods -> log.warn(String.valueOf("searchAll:" + foods)));
+        IPage<RevenueDetailVO> order  = statisticsDao.getRevenueList(new Page<>(current, size), "", "2022-11-26");
+        order.getRecords().forEach(System.out::println);
     }
 
     @Test

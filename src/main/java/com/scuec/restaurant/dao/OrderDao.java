@@ -67,4 +67,13 @@ public interface OrderDao {
     int addOrderVO(String orderId,String tableId);
 
     int updateOrderpriByTableid(String orderId, double price);
+
+    /**
+     * 通过日期获取当天的订单列表
+     * @param page
+     * @param orderDate 日期时间，格式“2022-01-20”
+     * @return
+     */
+    IPage<Order> getOrderListByDate(@Param("page") Page<Order> page,
+                                    String orderDate);
 }

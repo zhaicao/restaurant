@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.scuec.restaurant.dao.OrderDao">
 
-    <!-- 基础映射关系 -->
+    <!-- 订单-菜品-菜品详情基础映射关系 -->
     <resultMap id="BaseResultMap" type="com.scuec.restaurant.entities.Order">
         <id column="orderid" property="orderId"/>
         <result column="tableno"  property="tableNo"/>
@@ -15,6 +15,15 @@
                     column="orderId"
                     select="getOrderDetail">
         </collection>
+    </resultMap>
+
+    <!-- 订单基本映射关系 -->
+    <resultMap id="OrderResultMap" type="com.scuec.restaurant.entities.Order">
+        <id column="orderid" property="orderId"/>
+        <result column="tableno"  property="tableNo"/>
+        <result column="o_status"  property="orderStatus"/>
+        <result column="price"  property="orderPrice"/>
+        <result column="orderdate"  property="orderDate"/>
     </resultMap>
 
     <!-- OrderDetail映射关系 -->
@@ -64,7 +73,7 @@
             SET o_status = #{ orderStatus },
         </trim>
         WHERE
-            orderid = #{ orderId };
+        orderid = #{ orderId };
     </update>
 
 
@@ -88,13 +97,13 @@
         String endDate);-->
     <select id="getOrderList" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Order">
         SELECT
-            mr.orderid,
-            mr.tableno,
-            mr.o_status,
-            mr.price,
-            mr.orderdate
+        mr.orderid,
+        mr.tableno,
+        mr.o_status,
+        mr.price,
+        mr.orderdate
         FROM
-            m_order mr
+        m_order mr
         <where>
             <if test="orderStatus != null and orderStatus != ''">
                 mr.o_status = #{orderStatus}
@@ -141,7 +150,7 @@
                 WHERE
                     orderid = #{ orderId }
             ) md
-        LEFT JOIN menu mu ON md.foodid = mu.foodid
+                LEFT JOIN menu mu ON md.foodid = mu.foodid
     </select>
 
     <select id="">
@@ -157,39 +166,34 @@
         update m_order set m_order.price=#{orderPrice} where orderid = #{orderId};
     </update>
 
-
-    <update id="updateOrderstaByTableid">
-        update m_order set  o_status="已付款" , tableno='' where tableno = #{tableId};
-    </update>
-
     <select id="getOrderPrice" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Order">
         select m.price from m_order m where orderid= #{orderId};
     </select>
 
-<!--    IPage<FoodVO> getFoodList(@Param("page") Page<Order> page,
-    String menuType,
-    String menuName,
-    String startDate,
-    String endDate);-->
+    <!--    IPage<FoodVO> getFoodList(@Param("page") Page<Order> page,
+        String menuType,
+        String menuName,
+        String startDate,
+        String endDate);-->
     <select id="getFoodList" resultMap="FoodResultMap" resultType="com.scuec.restaurant.entities.vo.FoodVO">
         SELECT
-            md.mdid,
-            md.orderid,
-            md.foodid,
-            md.md_amount,
-            md.md_status,
-            tr.t_no,
-            mr.o_status,
-            mr.orderdate,
-            mu.m_type,
-            mu.m_name
+        md.mdid,
+        md.orderid,
+        md.foodid,
+        md.md_amount,
+        md.md_status,
+        tr.t_no,
+        mr.o_status,
+        mr.orderdate,
+        mu.m_type,
+        mu.m_name
         FROM
-            `md_relation` md
+        `md_relation` md
         INNER JOIN m_order mr ON md.orderid = mr.orderid
         LEFT JOIN menu mu ON md.foodid = mu.foodid
         LEFT JOIN table_rest tr ON mr.tableno = tr.t_id
         WHERE
-            md.isdel = 0
+        md.isdel = 0
         <if test="foodStatus != null and foodStatus != -1">
             AND md.md_status = #{ foodStatus }
         </if>
@@ -209,17 +213,22 @@
         ORDER BY mr.orderdate desc
     </select>
 
-
-    <select id="getOrderListByTableid" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Order">
+    <!--通过日期查询该天的所有已付款订单-->
+    <!--    IPage<Order> getOrderListByDate(@Param("page") Page<Order> page,
+        String orderDate);-->
+    <select id="getOrderListByDate" resultMap="OrderResultMap">
         SELECT
-        mr.orderid,
-        mr.tableno,
-        mr.o_status,
-        mr.price,
-        mr.orderdate
+            orderid,
+            tableno,
+            o_status,
+            price,
+            orderdate
         FROM
-        m_order mr
-        where mr.tableno = #{tableNo} and mr.o_status != '已付款'
+            m_order
+        WHERE
+            o_status = '已付款'
+          AND DATE_FORMAT(orderdate, '%Y-%m-%d') = #{ orderDate }
     </select>
+
 
 </mapper>
