@@ -4,8 +4,11 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.scuec.restaurant.entities.Table;
+import com.scuec.restaurant.entities.vo.TableVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface TableDao extends BaseMapper<Table> {
@@ -44,4 +47,6 @@ public interface TableDao extends BaseMapper<Table> {
     int updateTableUse1(String tableId);
 
     int deleteTableById(String tableId);
+
+    List<TableVO> getTableListAll();
 }

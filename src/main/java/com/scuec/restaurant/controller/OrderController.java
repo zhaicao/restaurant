@@ -3,9 +3,7 @@ package com.scuec.restaurant.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.scuec.restaurant.constant.exception.GlobalException;
 import com.scuec.restaurant.constant.response.ResponseCode;
-import com.scuec.restaurant.entities.Attendance;
 import com.scuec.restaurant.entities.Order;
-import com.scuec.restaurant.entities.Orderdetail;
 import com.scuec.restaurant.entities.vo.FoodVO;
 import com.scuec.restaurant.service.CommonService;
 import com.scuec.restaurant.service.OrderService;
@@ -130,6 +128,18 @@ public class OrderController {
     }
 
 
+    @PutMapping("/updateOrderstaByTableid")
+    @ApiOperation(value = "通过桌号更新订单状态已付款，并去掉桌位号", notes = "通过桌号更新订单状态已付款，并去掉桌位号")
+    @ApiImplicitParam(name = "tableId", value = "桌号ID", required = true, dataType = "String", paramType = "query")
+    public String updateOrderstaByTableid(String tableId){
+        int res = orderService.updateOrderstaByTableid(tableId);
+        if (res == 1)
+            return "successful";
+        else
+            throw new GlobalException(ResponseCode.ERROR, "Update Ordersta Error");
+    }
+
+
     @GetMapping("/getOrderBytableId")
     @ApiOperation(value = "通过桌号Id获取未上菜订单id", notes = "通过桌号Id获取未上菜订单id")
     @ApiImplicitParam(name = "tableId", value = "桌号ID", required = true, dataType = "String", paramType = "query")
@@ -157,5 +167,22 @@ public class OrderController {
                                         String endDate){
         return orderService.getNewFoodList(currentPage, pageSize, menuType, menuName, startDate, endDate);
     }
+
+
+    @GetMapping("/getOrderListByTableid")
+    @ApiOperation(value = "根据桌号查询order详情", notes = "根据桌号查询order详情")
+    @ApiImplicitParam(name = "tableId", value = "桌号ID", required = true, dataType = "String", paramType = "query")
+    public List<Order> getOrderListByTableid(String tableId){
+
+        List<Order> list = orderService.getOrderListByTableid(tableId);
+        if (list != null && !list.isEmpty()) {
+            return list;
+
+        } else {
+            throw new GlobalException(ResponseCode.ERROR, "未找到订单");
+
+        }
+    }
+
 
 }

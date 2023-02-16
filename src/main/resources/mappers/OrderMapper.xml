@@ -157,6 +157,11 @@
         update m_order set m_order.price=#{orderPrice} where orderid = #{orderId};
     </update>
 
+
+    <update id="updateOrderstaByTableid">
+        update m_order set  o_status="已付款" , tableno='' where tableno = #{tableId};
+    </update>
+
     <select id="getOrderPrice" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Order">
         select m.price from m_order m where orderid= #{orderId};
     </select>
@@ -204,5 +209,17 @@
         ORDER BY mr.orderdate desc
     </select>
 
+
+    <select id="getOrderListByTableid" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Order">
+        SELECT
+        mr.orderid,
+        mr.tableno,
+        mr.o_status,
+        mr.price,
+        mr.orderdate
+        FROM
+        m_order mr
+        where mr.tableno = #{tableNo} and mr.o_status != '已付款'
+    </select>
 
 </mapper>

@@ -3,8 +3,8 @@ package com.scuec.restaurant.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.scuec.restaurant.constant.exception.GlobalException;
 import com.scuec.restaurant.constant.response.ResponseCode;
-import com.scuec.restaurant.entities.Menu;
 import com.scuec.restaurant.entities.Table;
+import com.scuec.restaurant.entities.vo.TableVO;
 import com.scuec.restaurant.service.TableService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -113,6 +113,18 @@ public class TableController {
             return response;
         else
             throw new GlobalException(ResponseCode.ERROR, "Add Table Error");
+    }
+
+
+    /**
+     * 获取餐桌list
+     * @return
+     */
+    @GetMapping("/getTableListAll")
+    @ApiOperation(value = "显示table列表", notes = "页显示table列表")
+    public List<TableVO> getTableListAll(){
+
+        return tableService.getTableListAll();
     }
 }
 

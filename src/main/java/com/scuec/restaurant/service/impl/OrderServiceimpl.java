@@ -16,7 +16,6 @@ import com.scuec.restaurant.service.OrderdetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -145,5 +144,16 @@ public class OrderServiceimpl implements OrderService {
             i++;
         }
         return foodList;
+    }
+
+    @Override
+    public List<Order> getOrderListByTableid(String tableId) {
+
+        return orderDao.getOrderListByTableid(tableId);
+    }
+
+    @Override
+    public int updateOrderstaByTableid(String tableId) {
+        return orderDao.updateOrderstaByTableid(tableId);
     }
 }

@@ -2,7 +2,9 @@ package com.scuec.restaurant.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.scuec.restaurant.entities.Table;
-import javafx.scene.control.Tab;
+import com.scuec.restaurant.entities.vo.TableVO;
+
+import java.util.List;
 
 public interface TableService {
     /**
@@ -23,4 +25,6 @@ public interface TableService {
     int updateTableUse(String tableId,String tableOrderId);
 
     int updateTableUse1(String tableId);
+
+    List<TableVO> getTableListAll();
 }

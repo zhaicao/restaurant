@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Repository
 public interface OrderDao {
@@ -58,4 +59,8 @@ public interface OrderDao {
                               String menuName,
                               String startDate,
                               String endDate);
+
+    List<Order> getOrderListByTableid(String tableId);
+
+    int updateOrderstaByTableid(String tableId);
 }

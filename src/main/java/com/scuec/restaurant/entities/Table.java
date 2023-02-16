@@ -17,4 +17,6 @@ public class Table {
     private int tableUse;
 
     private int tableDel;
+
+    private Order order;
 }

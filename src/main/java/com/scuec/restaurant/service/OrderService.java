@@ -1,12 +1,9 @@
 package com.scuec.restaurant.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.scuec.restaurant.entities.Order;
 import com.scuec.restaurant.entities.vo.FoodVO;
-import org.apache.ibatis.annotations.Param;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 public interface OrderService {
@@ -57,4 +54,8 @@ public interface OrderService {
                                  String menuName,
                                  String startDate,
                                  String endDate);
+
+    List<Order> getOrderListByTableid(String tableId);
+
+    int updateOrderstaByTableid(String tableId);
 }

@@ -6,11 +6,13 @@ import com.scuec.restaurant.constant.exception.GlobalException;
 import com.scuec.restaurant.constant.response.ResponseCode;
 import com.scuec.restaurant.dao.TableDao;
 import com.scuec.restaurant.entities.Table;
+import com.scuec.restaurant.entities.vo.FoodVO;
+import com.scuec.restaurant.entities.vo.TableVO;
 import com.scuec.restaurant.service.TableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
+import java.util.List;
 
 @Service
 public class TableServiceimpl implements TableService {
@@ -86,6 +88,13 @@ public class TableServiceimpl implements TableService {
     @Override
     public int updateTableUse1(String tableId) {
         return tableDao.updateTableUse1(tableId);
+    }
+
+    @Override
+    public List<TableVO> getTableListAll() {
+
+        List<TableVO> tables = tableDao.getTableListAll();
+        return tables;
     }
 
 }

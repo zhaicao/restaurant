@@ -10,7 +10,29 @@
         <result column="t_orderid"  property="tableOrderId"/>
         <result column="t_isuse"  property="tableUse"/>
         <result column="t_isdel"  property="tableDel"/>
+        <!--配置一对一关系映射，封装order-->
+        <association property="order"  javaType="com.scuec.restaurant.entities.Order">
+            <id column="orderid" property="orderId"/>
+            <result column="tableno"  property="tableNo"/>
+            <result column="o_status"  property="orderStatus"/>
+            <result column="price"  property="orderPrice"/>
+            <result column="orderdate"  property="orderDate"/>
+        </association>
     </resultMap>
+
+
+    <!--餐桌列表-->
+    <resultMap id="TableResultMap" type="com.scuec.restaurant.entities.vo.TableVO">
+        <id column="t_id" property="tableId"/>
+        <id column="t_id" property="tableId"/>
+        <result column="t_no"  property="tableName"/>
+        <result column="t_people"  property="tableDescription"/>
+        <result column="t_orderid"  property="tableOrderId"/>
+        <result column="t_isuse"  property="tableUse"/>
+        <result column="orderdate"  property="orderDate"/>
+    </resultMap>
+
+
 
     <!-- 通用查询结果列 -->
     <sql id="BaseColumnList">
@@ -112,4 +134,19 @@
         </trim>
         where t_id = #{tableId} and t_isuse=0;
     </update>
+
+
+    <select id="getTableListAll" resultMap="TableResultMap" resultType="com.scuec.restaurant.entities.vo.TableVO">
+        SELECT
+        tr.t_id,
+        tr.t_no,
+        tr.t_people,
+        tr.t_orderid,
+        tr.t_isuse,
+        mr.orderdate
+        FROM table_rest tr LEFT JOIN (select  orderid,tableno,orderdate from m_order  where o_status != '已付款') mr ON mr.tableno = tr.t_id
+        WHERE
+        t_isdel = 0
+
+    </select>
 </mapper>
