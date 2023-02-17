@@ -26,7 +26,6 @@ public interface OrderDao {
      */
     int updateOrderStatus(String orderId, String orderStatus);
 
-    int updateOrdersta1(String orderId);
 
     IPage<Order> getOrderList(@Param("page") Page<Order> page,
                                String orderStatus,
@@ -76,4 +75,11 @@ public interface OrderDao {
      */
     IPage<Order> getOrderListByDate(@Param("page") Page<Order> page,
                                     String orderDate);
+
+    String getOrderstaByTableid(String tableId);
+
+    String getTableIdByorderid(String orderId);
+
+
+    int updateOrderstakong(String orderId);
 }

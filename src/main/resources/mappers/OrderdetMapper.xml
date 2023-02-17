@@ -56,6 +56,7 @@
             orderid,
             foodid,
             md_amount,
+            md_price,
             md_status,
             isdel
         FROM
@@ -65,4 +66,16 @@
           AND orderid = #{ orderId }
         GROUP BY mdid desc
     </select>
+
+
+    <update id="updateOrderamo">
+        UPDATE `md_relation`
+        SET md_amount = #{ odAmount }
+        WHERE
+            isdel = 0
+          AND orderid = #{ orderId }
+          AND foodid = #{ foodId }
+    </update>
+
+
 </mapper>

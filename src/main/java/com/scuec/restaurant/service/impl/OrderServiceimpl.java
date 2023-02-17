@@ -1,27 +1,34 @@
 package com.scuec.restaurant.service.impl;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.scuec.restaurant.constant.exception.GlobalException;
 import com.scuec.restaurant.constant.response.ResponseCode;
 import com.scuec.restaurant.dao.OrderDao;
 import com.scuec.restaurant.dao.OrderdetDao;
+import com.scuec.restaurant.dao.TableDao;
 import com.scuec.restaurant.entities.Order;
 import com.scuec.restaurant.entities.Orderdetail;
 import com.scuec.restaurant.entities.vo.FoodVO;
-import com.scuec.restaurant.service.MessageService;
-import com.scuec.restaurant.service.OrderService;
-import com.scuec.restaurant.service.OrderdetailService;
+import com.scuec.restaurant.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 @Service
 public class OrderServiceimpl implements OrderService {
+
+
+    @Autowired
+    private TableDao tableDao;
 
     @Autowired
     private OrderDao orderDao;
@@ -38,6 +45,11 @@ public class OrderServiceimpl implements OrderService {
     @Autowired
     private MessageService messageService;
 
+    @Autowired
+    private TableService tableService;
+
+    @Autowired
+    private CommonService commonService;
 
     @Override
     public int deleteOrderById(String tableId) {
@@ -92,10 +104,7 @@ public class OrderServiceimpl implements OrderService {
         return res;
     }
 
-    @Override
-    public int updateOrdersta1(String orderId) {
-        return orderDao.updateOrdersta1(orderId);
-    }
+
 
 
     @Override
@@ -154,6 +163,116 @@ public class OrderServiceimpl implements OrderService {
 
     @Override
     public int updateOrderstaByTableid(String tableId) {
+
         return orderDao.updateOrderstaByTableid(tableId);
     }
+
+    @Override
+    public int addOrderVO(String orderId,String tableId) {
+        return orderDao.addOrderVO(orderId,tableId);
+    }
+
+    @Override
+    public int updateOrderpriByTableid(String orderId,double price) {
+        return orderDao.updateOrderpriByTableid(orderId,price);
+    }
+
+    @Override
+    public List<Order> addOrderALL(String order1) {
+        JSONObject jsonObj = JSON.parseObject(order1);
+        String tableId = jsonObj.getString("tableNo");
+        Integer m = tableService.getTablestaById(tableId);
+        if(m==0){
+            String orderId = commonService.getId();
+            tableService.updateTableUse(tableId,orderId);
+            JSONArray foodList = jsonObj.getJSONArray("foodList");
+            System.out.println("foodList：" + foodList);
+            int result = orderService.addOrderVO(orderId,tableId);
+            List<Orderdetail> list = JSONObject.parseArray(foodList.toJSONString(), Orderdetail.class);
+            double price =0;
+            for (int i = 0; i < list.size(); i++) {
+                Orderdetail a=list.get(i);
+                orderdetailService.addOrderdet(
+                        orderId,
+                        a.getFoodId(),
+                        a.getOdAmount(),
+                        a.getOdPrice(),
+                        a.getOdStatus());
+                price = price + a.getOdAmount()*a.getOdPrice();
+            }
+            int res =orderService.updateOrderpriByTableid(orderId,price);
+            List<Order> orderlist = orderService.getOrderListByTableid(tableId);
+            return orderlist;
+
+        } else if(m==1){
+            List<Order> uselist = orderService.getOrderListByTableid(tableId);
+            Order o =uselist.get(0);
+            String orderId = o.getOrderId();
+            List<Orderdetail> usefoodList = orderdetDao.getFoodListByOrderId(orderId);
+//            System.out.println("usefoodList：" + usefoodList);
+            JSONArray foodList = jsonObj.getJSONArray("foodList");
+//            System.out.println("foodList：" + foodList);
+            List<Orderdetail> list = JSONObject.parseArray(foodList.toJSONString(), Orderdetail.class);
+            double price =0;
+//            System.out.println("list：" + list);
+            for (int i = 0; i < list.size(); i++) {
+                Orderdetail a=list.get(i);
+                String foodId=a.getFoodId();
+                int food11 = 0;
+                for (int n = 0; n < usefoodList.size(); n++){
+//                    System.out.println("foodId：" + foodId);
+                    Orderdetail b=usefoodList.get(n);
+                    String usefoodid = b.getFoodId();
+//                    System.out.println("usefoodid：" + usefoodid);
+                    if(Objects.equals(foodId, usefoodid)){
+                        int odAmount =a.getOdAmount()+b.getOdAmount();
+                        food11 = 1;
+//                        System.out.println("有相同的：" + food11);
+                        orderdetDao.updateOrderamo(orderId, foodId, odAmount);//更新订单详情数量
+                    }
+                }
+                if(food11==0){
+                    orderdetailService.addOrderdet(
+                            orderId,
+                            a.getFoodId(),
+                            a.getOdAmount(),
+                            a.getOdPrice(),
+                            a.getOdStatus());
+                }
+//                System.out.println("food11：" + food11);
+            }
+            List<Orderdetail> usefoodList2 = orderdetDao.getFoodListByOrderId(orderId);
+            System.out.println("usefoodList2" + usefoodList2);
+
+            for (int c = 0; c < usefoodList2.size(); c++){
+                Orderdetail q=usefoodList2.get(c);
+                price = price + q.getOdAmount()*q.getOdPrice();
+//                System.out.println("price1" + q.getOdPrice());
+            }
+            System.out.println("price" + price);
+            int res =orderService.updateOrderpriByTableid(orderId,price);
+            List<Order> orderlist = orderService.getOrderListByTableid(tableId);
+            return orderlist;
+        }
+        else {
+
+            throw new GlobalException(ResponseCode.ERROR,"提交订单失败");
+
+        }
+    }
+
+    @Override
+    public String getOrderstaByTableid(String tableId) {
+        return orderDao.getOrderstaByTableid(tableId);
+    }
+
+    @Override
+    public int updateOrderstakong(String orderId) {
+        String tableId=orderDao.getTableIdByorderid(orderId);
+        int res =orderDao.updateOrderstakong(orderId);
+        tableDao.updateTableUse1(tableId);
+        return res;
+    }
+
+
 }

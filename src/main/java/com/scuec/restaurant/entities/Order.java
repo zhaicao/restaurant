@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 @Component
-public class Order {
+public class Order  {
     private String orderId;
 
     private String tableNo;

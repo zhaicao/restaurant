@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.List;
-
+//extends Order
 @Data
 @Component
 public class Orderdetail {

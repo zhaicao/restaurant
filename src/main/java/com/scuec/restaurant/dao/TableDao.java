@@ -49,4 +49,6 @@ public interface TableDao extends BaseMapper<Table> {
     int deleteTableById(String tableId);
 
     List<TableVO> getTableListAll();
+
+    Integer getTablestaById(String tableId);
 }

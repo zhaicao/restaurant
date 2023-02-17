@@ -82,6 +82,14 @@
          from table_rest where t_isdel = 0 and t_id = #{tableId} ;
     </select>
 
+
+    <!--Table getTableById(String tableId);-->
+    <select id="getTablestaById" resultType="Integer">
+        select t_isuse
+        from table_rest where t_isdel = 0 and t_id = #{tableId} ;
+    </select>
+
+
     <!--Table getTableByName(String tableName);-->
     <select id="getTableByName" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Table">
         select

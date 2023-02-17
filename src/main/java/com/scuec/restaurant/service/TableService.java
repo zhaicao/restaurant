@@ -1,6 +1,7 @@
 package com.scuec.restaurant.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.scuec.restaurant.entities.Order;
 import com.scuec.restaurant.entities.Table;
 import com.scuec.restaurant.entities.vo.TableVO;
 
@@ -27,4 +28,8 @@ public interface TableService {
     int updateTableUse1(String tableId);
 
     List<TableVO> getTableListAll();
+
+    Integer getTablestaById(String tableId);
+
+
 }

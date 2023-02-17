@@ -76,9 +76,9 @@ public class TableServiceimpl implements TableService {
     @Override
     public int updateTableUse(String tableId, String tableOrderId) {
         Table table = tableDao.getTableById(tableId);
-        String orderId = table.getTableOrderId();
-        if(orderId == null || orderId.equals("")) {
-            return tableDao.updateTableUse(tableOrderId, tableOrderId);
+        int tableUse = table.getTableUse();
+        if(tableUse == 0) {
+            return tableDao.updateTableUse(tableId, tableOrderId);
         }
         else {
             return 0;
@@ -95,6 +95,11 @@ public class TableServiceimpl implements TableService {
 
         List<TableVO> tables = tableDao.getTableListAll();
         return tables;
+    }
+
+    @Override
+    public Integer getTablestaById(String tableId) {
+        return tableDao.getTablestaById(tableId);
     }
 
 }

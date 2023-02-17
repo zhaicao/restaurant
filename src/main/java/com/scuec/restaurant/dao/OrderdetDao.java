@@ -44,4 +44,7 @@ public interface OrderdetDao {
      * @return List
      */
     List<Orderdetail> getFoodListByOrderId(String orderId);
+
+
+    int updateOrderamo(String orderId, String foodId, int odAmount);
 }

@@ -17,7 +17,6 @@ public interface OrderService {
      */
     int serveFoodsByList(List<FoodVO> foodVOList);
 
-    int updateOrdersta1(String orderId);
 
     /**
      * 获取订单列表
@@ -58,4 +57,15 @@ public interface OrderService {
     List<Order> getOrderListByTableid(String tableId);
 
     int updateOrderstaByTableid(String tableId);
+
+    int addOrderVO(String orderId,String tableId);
+
+    int updateOrderpriByTableid(String orderId,double price);
+
+    List<Order> addOrderALL(String order1);
+
+    String getOrderstaByTableid(String tableId);
+
+
+    int updateOrderstakong(String orderId);
 }

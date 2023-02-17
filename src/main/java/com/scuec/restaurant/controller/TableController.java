@@ -54,7 +54,7 @@ public class TableController {
             throw new GlobalException(ResponseCode.ERROR, "Update Table Error, tableId:" + table.getTableId());
     }
 
-    @PutMapping("/updateTableUse")
+    @PutMapping("/updateTableuse")
     @ApiOperation(value = "通过餐号Id更新餐桌状态已使用", notes = "通过餐号Id更新餐桌状态")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "tableId", value = "桌号ID", required = true, dataType = "String", paramType = "query"),
@@ -125,6 +125,16 @@ public class TableController {
     public List<TableVO> getTableListAll(){
 
         return tableService.getTableListAll();
+    }
+
+
+
+    @GetMapping("/getTablestaById")
+    @ApiOperation(value = "通过tableId判断餐桌状态", notes = "通过tableId判断餐桌状态")
+    @ApiImplicitParam(name = "tableId", value = "桌号ID", required = true, dataType = "String", paramType = "query")
+    public Integer getTablestaById(String tableId){
+         return tableService.getTablestaById(tableId);
+
     }
 }
 

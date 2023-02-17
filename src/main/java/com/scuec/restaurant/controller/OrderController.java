@@ -1,13 +1,19 @@
 package com.scuec.restaurant.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.scuec.restaurant.constant.exception.GlobalException;
 import com.scuec.restaurant.constant.response.ResponseCode;
 import com.scuec.restaurant.entities.Order;
+import com.scuec.restaurant.entities.Orderdetail;
 import com.scuec.restaurant.entities.vo.FoodVO;
+import com.scuec.restaurant.entities.vo.OrderVO;
 import com.scuec.restaurant.service.CommonService;
 import com.scuec.restaurant.service.OrderService;
 import com.scuec.restaurant.service.OrderdetailService;
+import com.scuec.restaurant.service.TableService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -33,6 +39,9 @@ public class OrderController {
     @Autowired
     private CommonService commonService;
 
+    @Autowired
+    private TableService tableService;
+
     @PostMapping("/addOrder")
     @ApiOperation(value = "新增订单", notes = "新增订单")
     public String addOrder(@RequestBody Order order){
@@ -56,22 +65,13 @@ public class OrderController {
     }
 
 
-//    @PostMapping("/addOrdermenu")
-//    @ApiOperation(value = "对订单加菜", notes = "对订单加菜")
-//    public String addOrdermenu(@RequestBody Orderdetail orderdetail){
-//
-//        int result = orderService.addOrdermenu(orderdetail.getOrderId(),
-//                orderdetail.getOdPrice());
-//        orderdetailService.addOrderdet(orderdetail.getOrderId(),
-//                orderdetail.getFoodId(),
-//                orderdetail.getOdAmount(),
-//                orderdetail.getOdPrice(),
-//                orderdetail.getOdStatus());
-//        if (result == 1)
-//            return "successful";
-//        else
-//            throw new GlobalException(ResponseCode.ERROR, "Add Message Error");
-//    }
+    @PostMapping("/addOrderVO")
+    @ApiOperation(value = "新增订单vo", notes = "新增订单vo")
+    public List<Order> addOrderVO(@RequestBody String order1){
+        return orderService.addOrderALL(order1);
+    }
+
+
 
 
     @GetMapping("/getOrderList")
@@ -114,13 +114,13 @@ public class OrderController {
     }
 
 
-    @PutMapping("/updateOrdersta1")
-    @ApiOperation(value = "通过订单id更新订单状态已付款", notes = "通过订单id更新订单状态已付款")
+    @PutMapping("/updateOrderstakong")
+    @ApiOperation(value = "通过订单号更新订单状态已付款，并去掉桌位号，修改桌号为空闲，去掉桌表的订单号", notes = "通过订单号更新订单状态已付款，并去掉桌位号，修改桌号为空闲，去掉桌表的订单号")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "orderId", value = "订单ID", required = true, dataType = "String", paramType = "query")
     })
-    public String updateOrdersta1(String orderId){
-        int res = orderService.updateOrdersta1(orderId);
+    public String updateOrderstakong(String orderId){
+        int res = orderService.updateOrderstakong(orderId);
         if (res == 1)
             return "successful";
         else
@@ -128,16 +128,16 @@ public class OrderController {
     }
 
 
-    @PutMapping("/updateOrderstaByTableid")
-    @ApiOperation(value = "通过桌号更新订单状态已付款，并去掉桌位号", notes = "通过桌号更新订单状态已付款，并去掉桌位号")
-    @ApiImplicitParam(name = "tableId", value = "桌号ID", required = true, dataType = "String", paramType = "query")
-    public String updateOrderstaByTableid(String tableId){
-        int res = orderService.updateOrderstaByTableid(tableId);
-        if (res == 1)
-            return "successful";
-        else
-            throw new GlobalException(ResponseCode.ERROR, "Update Ordersta Error");
-    }
+//    @PutMapping("/updateOrderstaByTableid")
+//    @ApiOperation(value = "通过订单号更新订单状态已付款，并去掉桌位号，修改桌号为空闲，去掉桌表的订单号", notes = "通过订单号更新订单状态已付款，并去掉桌位号，修改桌号为空闲，去掉桌表的订单号")
+//    @ApiImplicitParam(name = "tableId", value = "桌号ID", required = true, dataType = "String", paramType = "query")
+//    public String updateOrderstaByTableid(String tableId){
+//        int res = orderService.updateOrderstaByTableid(tableId);
+//        if (res == 1)
+//            return "successful";
+//        else
+//            throw new GlobalException(ResponseCode.ERROR, "Update Ordersta Error");
+//    }
 
 
     @GetMapping("/getOrderBytableId")
@@ -183,6 +183,21 @@ public class OrderController {
 
         }
     }
+
+
+    @GetMapping("/getOrderstaByTableid")
+    @ApiOperation(value = "根据桌号查询order状态", notes = "根据桌号查询order状态")
+    @ApiImplicitParam(name = "tableId", value = "桌号ID", required = true, dataType = "String", paramType = "query")
+    public String getOrderstaByTableid(String tableId){
+
+        return orderService.getOrderstaByTableid(tableId);
+
+    }
+
+
+
+
+
 
 
 }

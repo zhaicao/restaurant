@@ -77,11 +77,9 @@
     </update>
 
 
-    <update id="updateOrdersta1">
+    <update id="updateOrderstakong">
         update `m_order`
-        <trim suffixOverrides=",">
-            set o_status="已付款",
-        </trim>
+            set o_status="已付款",tableno=null
         where orderid = #{orderId};
 
     </update>
@@ -230,5 +228,47 @@
           AND DATE_FORMAT(orderdate, '%Y-%m-%d') = #{ orderDate }
     </select>
 
+    <insert id="addOrderVO">
+        <!--        <selectKey keyProperty="orderId" resultType="String" order="BEFORE">-->
+        <!--            select REPLACE(UUID(),'-','')-->
+        <!--        </selectKey>-->
+        insert into `m_order` value(#{orderId}, #{tableId}, "未上菜", null, now())
+    </insert>
 
+
+    <update id="updateOrderpriByTableid">
+        update m_order set price=#{price}  where orderid = #{orderId};
+    </update>
+
+
+
+
+    <select id="getOrderListByTableid" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Order">
+        SELECT
+        mr.orderid,
+        mr.tableno,
+        mr.o_status,
+        mr.price,
+        mr.orderdate
+        FROM
+        m_order mr
+        where mr.tableno = #{tableNo} and mr.o_status != '已付款'
+    </select>
+
+    <select id="getOrderstaByTableid" resultType="String">
+        SELECT
+        mr.o_status,
+        FROM
+        m_order mr
+        where mr.tableno = #{tableNo}
+    </select>
+
+
+    <select id="getTableIdByorderid" resultType="String">
+        SELECT
+        tableno
+        FROM
+        m_order
+        where orderid = #{orderId}
+    </select>
 </mapper>
