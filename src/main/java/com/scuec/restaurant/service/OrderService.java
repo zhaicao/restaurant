@@ -7,8 +7,7 @@ import com.scuec.restaurant.entities.vo.FoodVO;
 import java.util.List;
 
 public interface OrderService {
-
-    int deleteOrderById(String tableId);
+    
 
     /**
      * 订单菜品批量上菜，支持多订单，多菜品
@@ -68,4 +67,6 @@ public interface OrderService {
 
 
     int updateOrderstakong(String orderId);
+
+    int deleteOrderbyorderid(String orderId);
 }

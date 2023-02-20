@@ -78,4 +78,12 @@
     </update>
 
 
+    <update id="updateOrderdetSta">
+        UPDATE `md_relation`
+        SET md_status = 1
+        WHERE
+            isdel = 0
+          AND orderid = #{ orderId }
+    </update>
+
 </mapper>

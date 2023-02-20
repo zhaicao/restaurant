@@ -91,15 +91,15 @@ public class OrderController {
         return orderService.getOrderList(currentPage, pageSize,orderStatus, startDate, endDate);
     }
 
-    @DeleteMapping("/deleteOrder")
-    @ApiOperation(value = "根据桌号删除（逻辑删除）订单详情", notes = "根据桌号删除（逻辑删除）订单详情")
-    @ApiImplicitParam(name = "tableId", value = "桌号ID", required = true, dataType = "String", paramType = "query")
-    public String deleteOrderdelById(String tableId){
-        int res = orderService.deleteOrderById(tableId);
-        if (res == 0 )
+    @DeleteMapping("/deleteOrderbyorderid")
+    @ApiOperation(value = "根据订单号进行撤单", notes = "根据订单号进行撤单")
+    @ApiImplicitParam(name = "orderId", value = "订单ID", required = true, dataType = "String", paramType = "query")
+    public String deleteOrderbyorderid(String orderId){
+        int res = orderService.deleteOrderbyorderid(orderId);
+        if (res == 1 )
             return "successful";
         else
-            throw new GlobalException(ResponseCode.ERROR, "不能撤销已上菜的订单，tableId" + tableId);
+            throw new GlobalException(ResponseCode.ERROR, "不能撤销已上菜的订单，orderId" + orderId);
     }
 
 
@@ -124,7 +124,7 @@ public class OrderController {
         if (res == 1)
             return "successful";
         else
-            throw new GlobalException(ResponseCode.ERROR, "Update Ordersta Error, orderId:" + orderId);
+            throw new GlobalException(ResponseCode.ERROR, "未上菜的订单不能结账, orderId:" + orderId);
     }
 
 

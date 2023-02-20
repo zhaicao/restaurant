@@ -80,9 +80,18 @@
     <update id="updateOrderstakong">
         update `m_order`
             set o_status="已付款",tableno=null
-        where orderid = #{orderId};
+        where orderid = #{orderId} and o_status="已上菜";
 
     </update>
+
+
+    <update id="updateOrderstache">
+        update `m_order`
+            set o_status="已撤单",tableno=null
+        where orderid = #{orderId} and o_status="未上菜";
+
+    </update>
+
 
     <insert id="addOrder">
         insert into `m_order` value(#{orderId}, #{tableNo}, #{orderStatus}, #{orderPrice}, now())

@@ -51,26 +51,7 @@ public class OrderServiceimpl implements OrderService {
     @Autowired
     private CommonService commonService;
 
-    @Override
-    public int deleteOrderById(String tableId) {
-        Order order = orderDao.getOrderBytableId(tableId);
-        if (order != null){
-            String orderId = order.getOrderId();
-            orderDao.deleteOrder(orderId);
-            orderdetailService.deleteOrderdetId(orderId);
-            return 0;
-        }else
-            return -1;
-    }
 
-//    @Override
-//    public int deleteOrderById(String orderId,String tableId) {
-//        Order order = orderDao.getOrderBytableId(tableId);
-//        if (order == null){
-//            return orderDao.deleteOrder(orderId);
-//        }else
-//            return -1;
-//    }
 
     @Override
     public int serveFoodsByList(List<FoodVO> foodVOList) {
@@ -270,9 +251,27 @@ public class OrderServiceimpl implements OrderService {
     public int updateOrderstakong(String orderId) {
         String tableId=orderDao.getTableIdByorderid(orderId);
         int res =orderDao.updateOrderstakong(orderId);
-        tableDao.updateTableUse1(tableId);
+        if(res==1){
+            int a =tableDao.updateTableUse1(tableId);
+            if(a!=1){
+                throw new GlobalException(ResponseCode.ERROR, "更新餐桌失败");
+            }
+            int b = orderdetDao.updateOrderdetSta(orderId);
+            if(b!=1){
+                throw new GlobalException(ResponseCode.ERROR, "更新订单详情失败");
+            }
+        }
         return res;
     }
 
+    @Override
+    public int deleteOrderbyorderid(String orderId) {
+        String tableId=orderDao.getTableIdByorderid(orderId);
+        int res =orderDao.updateOrderstache(orderId);
+        if(res==1){
+            tableDao.updateTableUse1(tableId);
+        }
+        return res;
+    }
 
 }

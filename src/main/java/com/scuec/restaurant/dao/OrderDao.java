@@ -82,4 +82,6 @@ public interface OrderDao {
 
 
     int updateOrderstakong(String orderId);
+
+    int updateOrderstache(String orderId);
 }

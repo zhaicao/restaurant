@@ -47,4 +47,6 @@ public interface OrderdetDao {
 
 
     int updateOrderamo(String orderId, String foodId, int odAmount);
+
+    int updateOrderdetSta(String orderId);
 }
