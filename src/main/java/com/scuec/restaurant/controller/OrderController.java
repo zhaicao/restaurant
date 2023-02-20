@@ -1,15 +1,10 @@
 package com.scuec.restaurant.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.scuec.restaurant.constant.exception.GlobalException;
 import com.scuec.restaurant.constant.response.ResponseCode;
 import com.scuec.restaurant.entities.Order;
-import com.scuec.restaurant.entities.Orderdetail;
 import com.scuec.restaurant.entities.vo.FoodVO;
-import com.scuec.restaurant.entities.vo.OrderVO;
 import com.scuec.restaurant.service.CommonService;
 import com.scuec.restaurant.service.OrderService;
 import com.scuec.restaurant.service.OrderdetailService;
@@ -127,17 +122,6 @@ public class OrderController {
             throw new GlobalException(ResponseCode.ERROR, "未上菜的订单不能结账, orderId:" + orderId);
     }
 
-
-//    @PutMapping("/updateOrderstaByTableid")
-//    @ApiOperation(value = "通过订单号更新订单状态已付款，并去掉桌位号，修改桌号为空闲，去掉桌表的订单号", notes = "通过订单号更新订单状态已付款，并去掉桌位号，修改桌号为空闲，去掉桌表的订单号")
-//    @ApiImplicitParam(name = "tableId", value = "桌号ID", required = true, dataType = "String", paramType = "query")
-//    public String updateOrderstaByTableid(String tableId){
-//        int res = orderService.updateOrderstaByTableid(tableId);
-//        if (res == 1)
-//            return "successful";
-//        else
-//            throw new GlobalException(ResponseCode.ERROR, "Update Ordersta Error");
-//    }
 
 
     @GetMapping("/getOrderBytableId")
