@@ -47,6 +47,37 @@
         </association>
     </resultMap>
 
+
+<!--    &lt;!&ndash; 订单-菜品-菜单详情基础映射关系 &ndash;&gt;-->
+<!--    <resultMap id="OrderAllMap" type="com.scuec.restaurant.entities.Order">-->
+<!--        <id column="orderid" property="orderId"/>-->
+<!--        <result column="tableno"  property="tableNo"/>-->
+<!--        <result column="o_status"  property="orderStatus"/>-->
+<!--        <result column="price"  property="orderPrice"/>-->
+<!--        <result column="orderdate"  property="orderDate"/>-->
+<!--        <collection property="orderdetail" ofType="com.scuec.restaurant.entities.Orderdetail">-->
+<!--            <id column="mdid" property="odId"/>-->
+<!--            <result column="md_orderid"  property="orderId"/>-->
+<!--            <result column="md_foodid"  property="foodId"/>-->
+<!--            <result column="md_amount"  property="odAmount"/>-->
+<!--            <result column="md_price"  property="odPrice"/>-->
+<!--            <result column="md_status"  property="odStatus"/>-->
+<!--            <result column="md_isdel"  property="odDel"/>-->
+<!--            &lt;!&ndash;订单关联表与菜品多对一，association将被封装成一个object，可考虑使用延迟加载从而提高性能&ndash;&gt;-->
+<!--            <association property="menu" javaType="com.scuec.restaurant.entities.Menu">-->
+<!--                <id column="m_foodid" property="foodId"/>-->
+<!--                <result column="m_type"  property="menuType"/>-->
+<!--                <result column="m_name"  property="menuName"/>-->
+<!--                <result column="m_price"  property="menuPrice"/>-->
+<!--                <result column="m_img"  property="menuImg"/>-->
+<!--                <result column="m_popular"  property="menuPopular"/>-->
+<!--                <result column="m_isdel"  property="menuDel"/>-->
+<!--            </association>-->
+<!--        </collection>-->
+
+
+<!--    </resultMap>-->
+
     <!--菜品列表-->
     <resultMap id="FoodResultMap" type="com.scuec.restaurant.entities.vo.FoodVO">
         <id column="mdid" property="mdId"/>
@@ -126,6 +157,46 @@
         ORDER BY mr.orderdate DESC
     </select>
 
+
+
+<!--    <select id="getOrderByTableId" resultMap="OrderAllMap" resultType="com.scuec.restaurant.entities.Order">-->
+<!--        SELECT-->
+<!--        mr.orderid,-->
+<!--        mr.tableno,-->
+<!--        mr.o_status,-->
+<!--        mr.price,-->
+<!--        mr.orderdate-->
+<!--        md.mdid,-->
+<!--        md.orderid AS md_orderid,-->
+<!--        md.foodid AS md_foodid,-->
+<!--        md.md_amount,-->
+<!--        md.md_price,-->
+<!--        md.md_status,-->
+<!--        md.isdel,-->
+<!--        mu.foodid,-->
+<!--        mu.m_type,-->
+<!--        mu.m_name,-->
+<!--        mu.m_price,-->
+<!--        mu.m_img,-->
+<!--        mu.m_popular-->
+<!--        FROM m_order mr LEFT JOIN md_relation md ON mr.orderid = md.orderid-->
+<!--                LEFT JOIN menu mu ON md.foodid = mu.foodid-->
+<!--        where tableno = #{tableNo} and o_status != '已付款'-->
+<!--    </select>-->
+
+    <select id="getOrderByTableId" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Order">
+        SELECT
+        mr.orderid,
+        mr.tableno,
+        mr.o_status,
+        mr.price,
+        mr.orderdate
+        FROM
+        m_order mr
+        where mr.tableno = #{tableNo} and mr.o_status != '已付款'
+    </select>
+
+
     <!-- 查询OrderDetail -->
     <select id="getOrderDetail" resultMap="OrderDetailResultMap">
         SELECT
@@ -165,7 +236,7 @@
     </select>
 
 
-    <select id="getOrderBytableId" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Order">
+    <select id="getunOrderBytableId" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Order">
         select m.* from m_order m where tableno= #{tableId} and o_status = '未上菜';
     </select>
 
@@ -252,17 +323,6 @@
 
 
 
-    <select id="getOrderListByTableid" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Order">
-        SELECT
-        mr.orderid,
-        mr.tableno,
-        mr.o_status,
-        mr.price,
-        mr.orderdate
-        FROM
-        m_order mr
-        where mr.tableno = #{tableNo} and mr.o_status != '已付款'
-    </select>
 
     <select id="getOrderstaByTableid" resultType="String">
         SELECT

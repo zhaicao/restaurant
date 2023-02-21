@@ -4,6 +4,7 @@ package com.scuec.restaurant.dao;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.scuec.restaurant.entities.Order;
+import com.scuec.restaurant.entities.Orderdetail;
 import com.scuec.restaurant.entities.vo.FoodVO;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Param;
@@ -36,7 +37,7 @@ public interface OrderDao {
     int addOrder(String orderId, String tableNo, double orderPrice, String orderStatus);
 
 
-    Order getOrderBytableId(String tableId);
+    Order getunOrderBytableId(String tableId);
 
     int updateOrderByorderId(String orderId,double orderPrice);
 
@@ -59,7 +60,7 @@ public interface OrderDao {
                               String startDate,
                               String endDate);
 
-    List<Order> getOrderListByTableid(String tableId);
+    Order getOrderByTableId(String tableId);
 
     int updateOrderstaByTableid(String tableId);
 
@@ -84,4 +85,5 @@ public interface OrderDao {
     int updateOrderstakong(String orderId);
 
     int updateOrderstache(String orderId);
+
 }

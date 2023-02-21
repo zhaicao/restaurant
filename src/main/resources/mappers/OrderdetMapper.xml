@@ -39,6 +39,15 @@
     </insert>
 
 
+    <insert id="addOrderdetlist">
+        insert into `md_relation` (mdid,orderid,foodid,md_amount,md_price,md_status,isdel)
+        value
+        <foreach collection ="orderdetailList" item="orderdetail" separator =",">
+            ((select replace(uuid(), '-', '') as odId), #{orderdetail.orderId}, #{orderdetail.foodId}, #{orderdetail.odAmount}, #{orderdetail.odPrice}, #{orderdetail.odStatus},#{orderdetail.odDel})
+        </foreach >
+
+    </insert>
+
     <!--int updateOrderFoodStatus(String orderId, String foodId, int foodStatus);-->
     <update id="updateOrderFoodStatus">
         UPDATE `md_relation`
@@ -70,7 +79,7 @@
 
     <update id="updateOrderamo">
         UPDATE `md_relation`
-        SET md_amount = #{ odAmount }
+        SET md_amount = #{ odAmount },md_price = #{ odprice }
         WHERE
             isdel = 0
           AND orderid = #{ orderId }
@@ -85,5 +94,6 @@
             isdel = 0
           AND orderid = #{ orderId }
     </update>
+
 
 </mapper>

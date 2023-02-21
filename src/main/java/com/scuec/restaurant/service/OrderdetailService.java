@@ -16,5 +16,5 @@ public interface OrderdetailService {
     void addOrderdet(String orderId, String foodId, int odAmount, double odPrice, int odStatus);
 
 
-    int updateOrderamo(String orderId, String foodId, int odAmount);
+    int updateOrderamo(String orderId, String foodId, int odAmount, double odprice);
 }

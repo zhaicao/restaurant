@@ -27,8 +27,8 @@ public class OrderdetailServiceimpl implements OrderdetailService {
     }
 
     @Override
-    public int updateOrderamo(String orderId, String foodId, int odAmount) {
-        return orderdetDao.updateOrderamo(orderId, foodId, odAmount);
+    public int updateOrderamo(String orderId, String foodId, int odAmount,double odprice) {
+        return orderdetDao.updateOrderamo(orderId, foodId, odAmount,odprice);
     }
 
 

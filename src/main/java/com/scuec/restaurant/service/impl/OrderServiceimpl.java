@@ -110,8 +110,8 @@ public class OrderServiceimpl implements OrderService {
     }
 
     @Override
-    public Order getOrderBytableId(String tableId) {
-        return orderDao.getOrderBytableId(tableId);
+    public Order getunOrderBytableId(String tableId) {
+        return orderDao.getunOrderBytableId(tableId);
     }
 
     @Override
@@ -137,9 +137,9 @@ public class OrderServiceimpl implements OrderService {
     }
 
     @Override
-    public List<Order> getOrderListByTableid(String tableId) {
+    public Order getOrderByTableId(String tableId) {
 
-        return orderDao.getOrderListByTableid(tableId);
+        return orderDao.getOrderByTableId(tableId);
     }
 
     @Override
@@ -159,7 +159,7 @@ public class OrderServiceimpl implements OrderService {
     }
 
     @Override
-    public List<Order> addOrderALL(String order1) {
+    public Order addOrderALL(String order1) {
         JSONObject jsonObj = JSON.parseObject(order1);
         String tableId = jsonObj.getString("tableNo");
         Integer m = tableService.getTablestaById(tableId);
@@ -171,45 +171,61 @@ public class OrderServiceimpl implements OrderService {
             int result = orderService.addOrderVO(orderId,tableId);
             List<Orderdetail> list = JSONObject.parseArray(foodList.toJSONString(), Orderdetail.class);
             double price =0;
-            for (int i = 0; i < list.size(); i++) {
-                Orderdetail a=list.get(i);
-                orderdetailService.addOrderdet(
-                        orderId,
-                        a.getFoodId(),
-                        a.getOdAmount(),
-                        a.getOdPrice(),
-                        a.getOdStatus());
-                price = price + a.getOdAmount()*a.getOdPrice();
+            System.out.println("list：" + list);
+//            for (int i = 0; i < list.size(); i++) {
+//                Orderdetail a=list.get(i);
+//                orderdetailService.addOrderdet(
+//                        orderId,
+//                        a.getFoodId(),
+//                        a.getOdAmount(),
+//                        a.getOdPrice(),
+//                        a.getOdStatus());
+//                price = price + a.getOdAmount()*a.getOdPrice();
+//            }
+            List<Orderdetail> orderdetailList = new ArrayList<>();
+            for (Orderdetail orderdetail : list) {
+                System.out.println("orderdetail555：" + orderdetail);
+                Orderdetail orderdetail1 = new Orderdetail();
+                orderdetail1.setOrderId(orderId);
+                orderdetail1.setFoodId(orderdetail.getFoodId());
+                orderdetail1.setOdAmount(orderdetail.getOdAmount());
+                orderdetail1.setOdPrice(orderdetail.getOdAmount()*orderdetail.getOdPrice());
+                orderdetail1.setOdStatus(orderdetail.getOdStatus());
+                orderdetail1.setOdDel(0);
+                orderdetailList.add(orderdetail1);
+                price = price + orderdetail.getOdAmount()*orderdetail.getOdPrice();
+
             }
+            orderdetDao.addOrderdetlist(orderdetailList);
             int res =orderService.updateOrderpriByTableid(orderId,price);
-            List<Order> orderlist = orderService.getOrderListByTableid(tableId);
-            return orderlist;
+            Order order = orderService.getOrderByTableId(tableId);
+            return order;
 
         } else if(m==1){
-            List<Order> uselist = orderService.getOrderListByTableid(tableId);
-            Order o =uselist.get(0);
-            String orderId = o.getOrderId();
+            Order uselist = orderService.getOrderByTableId(tableId);
+            String orderId = uselist.getOrderId();
             List<Orderdetail> usefoodList = orderdetDao.getFoodListByOrderId(orderId);
-//            System.out.println("usefoodList：" + usefoodList);
+            System.out.println("usefoodList：" + usefoodList);
             JSONArray foodList = jsonObj.getJSONArray("foodList");
-//            System.out.println("foodList：" + foodList);
+            System.out.println("foodList：" + foodList);
             List<Orderdetail> list = JSONObject.parseArray(foodList.toJSONString(), Orderdetail.class);
             double price =0;
-//            System.out.println("list：" + list);
+            System.out.println("list：" + list);
             for (int i = 0; i < list.size(); i++) {
                 Orderdetail a=list.get(i);
                 String foodId=a.getFoodId();
                 int food11 = 0;
                 for (int n = 0; n < usefoodList.size(); n++){
-//                    System.out.println("foodId：" + foodId);
+                    System.out.println("foodId：" + foodId);
                     Orderdetail b=usefoodList.get(n);
                     String usefoodid = b.getFoodId();
-//                    System.out.println("usefoodid：" + usefoodid);
+                    System.out.println("usefoodid：" + usefoodid);
                     if(Objects.equals(foodId, usefoodid)){
                         int odAmount =a.getOdAmount()+b.getOdAmount();
+                        double odprice = b.getOdPrice()+a.getOdAmount()*a.getOdPrice();
                         food11 = 1;
-//                        System.out.println("有相同的：" + food11);
-                        orderdetDao.updateOrderamo(orderId, foodId, odAmount);//更新订单详情数量
+                        System.out.println("有相同的：" + food11);
+                        orderdetDao.updateOrderamo(orderId, foodId, odAmount,odprice);//更新订单详情数量和价格
                     }
                 }
                 if(food11==0){
@@ -220,20 +236,20 @@ public class OrderServiceimpl implements OrderService {
                             a.getOdPrice(),
                             a.getOdStatus());
                 }
-//                System.out.println("food11：" + food11);
+                System.out.println("food11：" + food11);
             }
             List<Orderdetail> usefoodList2 = orderdetDao.getFoodListByOrderId(orderId);
             System.out.println("usefoodList2" + usefoodList2);
 
             for (int c = 0; c < usefoodList2.size(); c++){
                 Orderdetail q=usefoodList2.get(c);
-                price = price + q.getOdAmount()*q.getOdPrice();
-//                System.out.println("price1" + q.getOdPrice());
+                price = price +q.getOdPrice();
+                System.out.println("price1" + q.getOdPrice());
             }
             System.out.println("price" + price);
             int res =orderService.updateOrderpriByTableid(orderId,price);
-            List<Order> orderlist = orderService.getOrderListByTableid(tableId);
-            return orderlist;
+            Order order = orderService.getOrderByTableId(tableId);
+            return order;
         }
         else {
 

@@ -62,7 +62,7 @@ public class OrderController {
 
     @PostMapping("/addOrderVO")
     @ApiOperation(value = "新增订单vo", notes = "新增订单vo")
-    public List<Order> addOrderVO(@RequestBody String order1){
+    public Order addOrderVO(@RequestBody String order1){
         return orderService.addOrderALL(order1);
     }
 
@@ -124,11 +124,11 @@ public class OrderController {
 
 
 
-    @GetMapping("/getOrderBytableId")
+    @GetMapping("/getunOrderBytableId")
     @ApiOperation(value = "通过桌号Id获取未上菜订单id", notes = "通过桌号Id获取未上菜订单id")
     @ApiImplicitParam(name = "tableId", value = "桌号ID", required = true, dataType = "String", paramType = "query")
-    public String getOrderBytableId(String tableId){
-        Order order = orderService.getOrderBytableId(tableId);
+    public String getunOrderBytableId(String tableId){
+        Order order = orderService.getunOrderBytableId(tableId);
         String orderid = order.getOrderId();
         return orderid;
     }
@@ -153,14 +153,14 @@ public class OrderController {
     }
 
 
-    @GetMapping("/getOrderListByTableid")
+    @GetMapping("/getOrderByTableId")
     @ApiOperation(value = "根据桌号查询order详情", notes = "根据桌号查询order详情")
     @ApiImplicitParam(name = "tableId", value = "桌号ID", required = true, dataType = "String", paramType = "query")
-    public List<Order> getOrderListByTableid(String tableId){
+    public Order getOrderByTableId(String tableId){
 
-        List<Order> list = orderService.getOrderListByTableid(tableId);
-        if (list != null && !list.isEmpty()) {
-            return list;
+        Order order = orderService.getOrderByTableId(tableId);
+        if (order != null ) {
+            return order;
 
         } else {
             throw new GlobalException(ResponseCode.ERROR, "未找到订单");

@@ -32,7 +32,7 @@ public interface OrderService {
     int addOrder(String orderId, String tableNo, double orderPrice, String orderStatus);
 
 
-    Order getOrderBytableId(String tableId);
+    Order getunOrderBytableId(String tableId);
 
     int addOrdermenu(String orderId,double orderPrice);
 
@@ -53,7 +53,7 @@ public interface OrderService {
                                  String startDate,
                                  String endDate);
 
-    List<Order> getOrderListByTableid(String tableId);
+    Order getOrderByTableId(String tableId);
 
     int updateOrderstaByTableid(String tableId);
 
@@ -61,7 +61,7 @@ public interface OrderService {
 
     int updateOrderpriByTableid(String orderId,double price);
 
-    List<Order> addOrderALL(String order1);
+    Order addOrderALL(String order1);
 
     String getOrderstaByTableid(String tableId);
 

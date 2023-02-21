@@ -46,7 +46,9 @@ public interface OrderdetDao {
     List<Orderdetail> getFoodListByOrderId(String orderId);
 
 
-    int updateOrderamo(String orderId, String foodId, int odAmount);
+    int updateOrderamo(String orderId, String foodId, int odAmount,double odprice);
 
     int updateOrderdetSta(String orderId);
+
+    void addOrderdetlist(List<Orderdetail> orderdetailList);
 }
