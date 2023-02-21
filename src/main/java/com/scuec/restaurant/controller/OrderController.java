@@ -37,32 +37,12 @@ public class OrderController {
     @Autowired
     private TableService tableService;
 
+
+
     @PostMapping("/addOrder")
     @ApiOperation(value = "新增订单", notes = "新增订单")
-    public String addOrder(@RequestBody Order order){
-        String orderId = commonService.getId();
-        int result = orderService.addOrder(orderId,
-                order.getTableNo(),
-                order.getOrderPrice(),
-                order.getOrderStatus());
+    public Order addOrder(@RequestBody String order1){
 
-//        String odId = commonService.getId();
-        order.getOrderdetail().forEach(u->{orderdetailService.addOrderdet(
-                orderId,
-                u.getFoodId(),
-                u.getOdAmount(),
-                u.getOdPrice(),
-                u.getOdStatus());});
-        if (result == 1)
-            return "successful";
-        else
-            throw new GlobalException(ResponseCode.ERROR, "Add Message Error");
-    }
-
-
-    @PostMapping("/addOrderVO")
-    @ApiOperation(value = "新增订单vo", notes = "新增订单vo")
-    public Order addOrderVO(@RequestBody String order1){
         return orderService.addOrderALL(order1);
     }
 
