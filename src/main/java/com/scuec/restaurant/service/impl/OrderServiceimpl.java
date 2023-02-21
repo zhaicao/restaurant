@@ -187,13 +187,13 @@ public class OrderServiceimpl implements OrderService {
                 System.out.println("orderdetail555：" + orderdetail);
                 Orderdetail orderdetail1 = new Orderdetail();
                 orderdetail1.setOrderId(orderId);
-                orderdetail1.setFoodId(orderdetail.getFoodId());
+                orderdetail1.setFoodId(orderdetail.getMenu().getFoodId());
                 orderdetail1.setOdAmount(orderdetail.getOdAmount());
-                orderdetail1.setOdPrice(orderdetail.getOdAmount()*orderdetail.getOdPrice());
+                orderdetail1.setOdPrice(orderdetail.getOdAmount()*orderdetail.getMenu().getMenuPrice());
                 orderdetail1.setOdStatus(orderdetail.getOdStatus());
                 orderdetail1.setOdDel(0);
                 orderdetailList.add(orderdetail1);
-                price = price + orderdetail.getOdAmount()*orderdetail.getOdPrice();
+                price = price + orderdetail.getOdAmount()*orderdetail.getMenu().getMenuPrice();
 
             }
             orderdetDao.addOrderdetlist(orderdetailList);
@@ -201,7 +201,8 @@ public class OrderServiceimpl implements OrderService {
             Order order = orderService.getOrderByTableId(tableId);
             return order;
 
-        } else if(m==1){
+        }
+        else if(m==1){
             Order uselist = orderService.getOrderByTableId(tableId);
             String orderId = uselist.getOrderId();
             List<Orderdetail> usefoodList = orderdetDao.getFoodListByOrderId(orderId);
@@ -213,7 +214,7 @@ public class OrderServiceimpl implements OrderService {
             System.out.println("list：" + list);
             for (int i = 0; i < list.size(); i++) {
                 Orderdetail a=list.get(i);
-                String foodId=a.getFoodId();
+                String foodId=a.getMenu().getFoodId();
                 int food11 = 0;
                 for (int n = 0; n < usefoodList.size(); n++){
                     System.out.println("foodId：" + foodId);
@@ -222,7 +223,7 @@ public class OrderServiceimpl implements OrderService {
                     System.out.println("usefoodid：" + usefoodid);
                     if(Objects.equals(foodId, usefoodid)){
                         int odAmount =a.getOdAmount()+b.getOdAmount();
-                        double odprice = b.getOdPrice()+a.getOdAmount()*a.getOdPrice();
+                        double odprice = b.getOdPrice()+a.getOdAmount()*a.getMenu().getMenuPrice();
                         food11 = 1;
                         System.out.println("有相同的：" + food11);
                         orderdetDao.updateOrderamo(orderId, foodId, odAmount,odprice);//更新订单详情数量和价格
@@ -231,9 +232,9 @@ public class OrderServiceimpl implements OrderService {
                 if(food11==0){
                     orderdetailService.addOrderdet(
                             orderId,
-                            a.getFoodId(),
+                            a.getMenu().getFoodId(),
                             a.getOdAmount(),
-                            a.getOdPrice(),
+                            a.getOdAmount()*a.getMenu().getMenuPrice(),
                             a.getOdStatus());
                 }
                 System.out.println("food11：" + food11);
