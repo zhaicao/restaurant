@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface OrderDao {
@@ -86,4 +87,12 @@ public interface OrderDao {
 
     int updateOrderstache(String orderId);
 
+    /**
+     * 根据时间获得一段时间内订单数及订单总金额
+     * 两个都无默认查全部
+     * @param startDate 开始时间, 非必填
+     * @param endDate 结束时间, 非必填
+     * @return
+     */
+    Map<String, Object> getOrderSumAndPriceByDate(String startDate, String endDate);
 }

@@ -88,7 +88,19 @@
             `message`
         WHERE
             m_isdel = 0
-          AND m_orderid = #{ orderId }
-          AND m_type = #{ msgType };
+        <if test=" orderId  != null and  orderId  != ''">
+            AND m_orderid = #{ orderId }
+        </if>
+        <if test="  msgType   != null and   msgType   != ''">
+            AND m_type = #{ msgType }
+        </if>
+        <if test=" startDate != null and startDate != ''">
+            <!--使用<![CDATA[]]>来转义，否则<和>报错-->
+            <![CDATA[AND DATE_FORMAT(m_date,'%Y-%m-%d') >= #{ startDate }]]>
+        </if>
+        <if test=" endDate != null and endDate != ''">
+            <!--使用<![CDATA[]]>来转义，否则<和>报错-->
+            <![CDATA[AND DATE_FORMAT(m_date,'%Y-%m-%d') >= #{ startDate }]]>
+        </if>
     </select>
 </mapper>

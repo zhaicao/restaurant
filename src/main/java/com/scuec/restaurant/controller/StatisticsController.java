@@ -3,6 +3,7 @@ package com.scuec.restaurant.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.scuec.restaurant.entities.vo.RevenueChartVO;
 import com.scuec.restaurant.entities.vo.RevenueDetailVO;
+import com.scuec.restaurant.entities.vo.RevenuePanelGroupVO;
 import com.scuec.restaurant.service.StatisticsService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -46,7 +47,16 @@ public class StatisticsController {
             @ApiImplicitParam(name = "endDate", value = "统计查询结束时间", required = true, dataType = "String", paramType = "query")
     })
     public RevenueChartVO getRevenueChart(String startDate, String endDate) {
-        System.out.println(startDate);
         return statisticsService.getRevenueChart(startDate, endDate);
+    }
+
+    @GetMapping("/getRevenuePanelGroup")
+    @ApiOperation(value = "获取主页看板统计数据", notes = "获取主页看板统计数据")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "startDate", value = "统计查询开始时间", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "endDate", value = "统计查询结束时间", required = true, dataType = "String", paramType = "query")
+    })
+    public RevenuePanelGroupVO getRevenuePanelGroup(String startDate, String endDate) {
+        return statisticsService.getRevenuePanelGroup(startDate, endDate);
     }
 }

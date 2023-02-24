@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -71,5 +72,11 @@ public class OrderDaoTest {
                 .collect(Collectors.toList());
 
         System.out.println(result);
+    }
+
+    @Test
+    public void testGetOrderSumAndPrice() {
+        Map<String, Object>  map = orderDao.getOrderSumAndPriceByDate("2023-02-18","2023-02-18");
+        System.out.println(Double.parseDouble(map.get("orderTotalPrice").toString()));
     }
 }

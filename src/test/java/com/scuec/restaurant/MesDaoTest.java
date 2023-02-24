@@ -30,7 +30,7 @@ public class MesDaoTest {
 
     @Test
     public void testGetMsgSum() {
-        int res= messageDao.getMsgCount("1", 2);
+        int res= messageDao.getMsgCount("1", 2, null, null);
         log.info(String.valueOf(res));
     }
 
@@ -40,5 +40,10 @@ public class MesDaoTest {
                 "",
                 1,
                 -1);
+    }
+
+    @Test
+    public void testGetMesSum() {
+        System.out.println(messageDao.getMsgCount(null,1, null, null));
     }
 }

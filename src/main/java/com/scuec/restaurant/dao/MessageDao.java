@@ -54,8 +54,9 @@ public interface MessageDao {
 
     /**
      * 获取消息总数
-     * @param msgType 消息类型，1：催单，2：普通消息
+     * @param orderId 订单编号，非必填
+     * @param msgType 消息类型，1：催单，2：普通消息，非必填
      * @return
      */
-    int getMsgCount(String orderId, int msgType);
+    int getMsgCount(String orderId, int msgType, String startDate, String endDate);
 }

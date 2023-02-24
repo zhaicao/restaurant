@@ -51,4 +51,10 @@ public interface TableDao extends BaseMapper<Table> {
     List<TableVO> getTableListAll();
 
     Integer getTablestaById(String tableId);
+
+    /**
+     * 获取实时使用中的桌位数
+     * @return
+     */
+    int getUsedTableSum();
 }

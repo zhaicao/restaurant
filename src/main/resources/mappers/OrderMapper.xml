@@ -340,4 +340,23 @@
         m_order
         where orderid = #{orderId}
     </select>
+
+    <!--int getOrderSumAndPriceByDate(String startDate, String endDate);-->
+    <select id="getOrderSumAndPriceByDate" resultType="java.util.Map">
+        SELECT
+            count(1) as orderSum,
+            IFNULL(sum(price),0.00) as orderTotalPrice
+        FROM
+            `m_order`
+        <where>
+            <if test=" startDate != null and startDate != ''">
+                <!--使用<![CDATA[]]>来转义，否则<和>报错-->
+                <![CDATA[AND DATE_FORMAT(orderdate,'%Y-%m-%d') >= #{ startDate }]]>
+            </if>
+            <if test=" endDate != null and endDate != ''">
+                <!--使用<![CDATA[]]>来转义，否则<和>报错-->
+                <![CDATA[AND DATE_FORMAT(orderdate,'%Y-%m-%d') <= #{ endDate }]]>
+            </if>
+        </where>
+    </select>
 </mapper>

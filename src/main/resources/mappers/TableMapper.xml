@@ -157,4 +157,16 @@
         t_isdel = 0
 
     </select>
+
+    <!--int getUsedTableSum();-->
+    <select id="getUsedTableSum" resultType="int">
+        # 实时用餐顾客
+        SELECT
+            count(1)
+        FROM
+            table_rest
+        WHERE
+            t_isdel = 0
+          AND t_isuse = 1
+    </select>
 </mapper>

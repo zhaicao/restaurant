@@ -43,6 +43,6 @@ public class MessageServiceimpl implements MessageService {
 
     @Override
     public int getMessageSum(String orderId, int msgType) {
-        return messageDao.getMsgCount(orderId, msgType);
+        return messageDao.getMsgCount(orderId, msgType, null, null);
     }
 }
