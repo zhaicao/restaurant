@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.scuec.restaurant.dao.OrderdetDao">
+
+    <!-- 定义的映射关系 -->
+    <resultMap id="BaseResultMap" type="com.scuec.restaurant.entities.Orderdetail">
+        <id column="mdid" property="odId"/>
+        <result column="orderid"  property="orderId"/>
+        <result column="foodid"  property="foodId"/>
+        <result column="md_amount"  property="odAmount"/>
+        <result column="md_price"  property="odPrice"/>
+        <result column="md_status"  property="odStatus"/>
+        <result column="isdel"  property="odDel"/>
+        <association property="menu"
+                     select="com.scuec.restaurant.dao.MenuDao.getMenuById"
+                     column="foodId"
+                     fetchType="lazy">
+        </association>
+    </resultMap>
+
+    <update id="deleteOrderdetId">
+        update `md_relation`
+        <trim suffixOverrides=",">
+            set isdel=1,
+        </trim>
+        where orderid = #{orderId};
+
+    </update>
+
+<!--    <insert id="addOrderdet">-->
+<!--        insert into `md_relation` value(#{odId},#{orderId}, #{foodId}, #{odAmount}, #{odPrice}, #{odStatus}, 0)-->
+<!--    </insert>-->
+
+    <insert id="addOrderdet">
+        <selectKey keyProperty="odId" resultType="String" order="BEFORE">
+            select REPLACE(UUID(),'-','')
+        </selectKey>
+        insert into `md_relation` value(#{odId},#{orderId}, #{foodId}, #{odAmount}, #{odPrice}, #{odStatus}, 0)
+    </insert>
+
+
+    <insert id="addOrderdetlist">
+        insert into `md_relation` (mdid,orderid,foodid,md_amount,md_price,md_status,isdel)
+        value
+        <foreach collection ="orderdetailList" item="orderdetail" separator =",">
+            ((select replace(uuid(), '-', '') as odId), #{orderdetail.orderId}, #{orderdetail.foodId}, #{orderdetail.odAmount}, #{orderdetail.odPrice}, #{orderdetail.odStatus},#{orderdetail.odDel})
+        </foreach >
+
+    </insert>
+
+    <!--int updateOrderFoodStatus(String orderId, String foodId, int foodStatus);-->
+    <update id="updateOrderFoodStatus">
+        UPDATE `md_relation`
+        SET md_status = #{ foodStatus }
+        WHERE
+            isdel = 0
+          AND orderid = #{ orderId }
+          AND foodid = #{ foodId }
+    </update>
+
+    <!--List<Orderdetail> getFoodListByOrderId(String orderId);-->
+    <select id="getFoodListByOrderId" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Orderdetail">
+        SELECT
+            mdid,
+            orderid,
+            foodid,
+            md_amount,
+            md_price,
+            md_status,
+            isdel
+        FROM
+            `md_relation`
+        WHERE
+            isdel = 0
+          AND orderid = #{ orderId }
+        GROUP BY mdid desc
+    </select>
+
+
+    <update id="updateOrderamo">
+        UPDATE `md_relation`
+        SET md_amount = #{ odAmount },md_price = #{ odprice }
+        WHERE
+            isdel = 0
+          AND orderid = #{ orderId }
+          AND foodid = #{ foodId }
+    </update>
+
+
+    <update id="updateOrderdetSta">
+        UPDATE `md_relation`
+        SET md_status = 1
+        WHERE
+            isdel = 0
+          AND orderid = #{ orderId }
+    </update>
+
+
+</mapper>

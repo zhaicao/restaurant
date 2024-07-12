@@ -1,0 +1,70 @@
+server:
+  port: 8090
+
+spring:
+  profiles:
+    active: dev
+  # 数据库配置
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://localhost:3306/restaurantsys?serverTimezone=GMT%2b8&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  # 国际化文件配置
+  messages:
+    basename: i18n.login
+  # 配置上传图片大小
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  #日期格式化配置
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss #如果使用字符串表示，用这行设置格式
+    timezone: GMT+8
+
+# mybatis配置
+mybatis-plus:
+  # 数据表映射配置文件路径
+  mapper-locations: classpath:mappers/*.xml
+  # 配置日志
+  configuration:
+    #log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# Log配置
+logging:
+  level:
+    root: info
+  pattern:
+    console: "%d{yyyy-MM-dd} [%thread] %-5level %logger{50} - %msg%n"
+
+# swagger配置
+swagger:
+  title: "项目接口说明"
+  description: "餐饮管理系统"
+  version: "1.0"
+  author: "Zc, Yhx"
+
+# JWT配置
+jwt:
+  header: "token"
+
+# 配置上传图片的路径和访问图片图片的路径，需要写成这种格式，否则无法读取
+upload.file.basic-path: "upload_file"
+upload.file.suffix: ".png,.jpg,.jpeg"
+
+# Queue配置
+queue:
+  capacity: 10
+  timeout-threshold: 3
+
+tencent:
+  sms:
+    # 腾讯云账户 secrtId，secretKey
+    secretId: ""
+    secretKey: ""
+    # 短信应用ID：短信SdkAppId
+    smsSdkAppId: ""
+    # 短信签名内容：
+    signName: ""

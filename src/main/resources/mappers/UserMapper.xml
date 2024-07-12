@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.scuec.restaurant.dao.UserDao">
+
+    <!-- 定义的映射关系 -->
+    <resultMap id="BaseResultMap" type="com.scuec.restaurant.entities.User">
+        <id column="empid" property="uId"/>
+        <result column="loginname"  property="loginName"/>
+        <result column="pwd"  property="password"/>
+        <result column="realname"  property="realName"/>
+        <result column="position"  property="role"/>
+        <result column="phone"  property="phone"/>
+        <result column="isdel"  property="idDel"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="BaseColumnList">
+        empid, loginname, pwd, realname, position, phone, isdel
+    </sql>
+
+    <!--int insertUser(String loginName,
+                   @Param ("userPassword") String password,
+                   String realName,
+                   int userRole,
+                   String userPhone);-->
+    <insert id="insertUser">
+        <selectKey keyProperty="userId" resultType="String" order="BEFORE">
+            select REPLACE(UUID(),'-','')
+        </selectKey>
+        insert into `employee` value(#{userId}, #{loginName}, #{userPassword}, #{realName}, #{userRole}, #{userPhone}, 0)
+    </insert>
+
+    <!--    int updateUser(String userId,
+                   String loginName,
+                   @Param ("userPassword") String password,
+                   String realName,
+                   int userRole,
+                   String userPhone,
+                   int isDel);-->
+    <update id="updateUser">
+        update `employee`
+        set
+        <trim suffixOverrides=",">
+            <if test="loginName != null and loginName != ''">
+                loginname=#{loginName},
+            </if>
+            <if test="userPassword != null and userPassword != ''">
+                pwd = #{userPassword},
+            </if>
+            <if test="realName != null and realName != ''">
+                realname = #{realName},
+            </if>
+            <if test="userRole != null and userRole != -1">
+                position = #{userRole},
+            </if>
+            <if test="userPhone != null and userPhone != ''">
+                phone = #{userPhone},
+            </if>
+            <if test="isDel != null and isDel != -1">
+                isdel = #{isDel}
+            </if>
+        </trim>
+            where empid = #{userId};
+
+    </update>
+
+    <!--User getUserById(int userId);-->
+    <!--
+    resultType：默认实体映射关系
+    resultMap：自定义的映射关系,字段不一样，只需要自定义的resultMap的id即可
+    -->
+    <select id="getUserById" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.User">
+        select
+        <include refid="BaseColumnList"></include>
+        from `employee` where empid= #{userId} and isdel = 0;
+    </select>
+
+    <!--User getUserByLoginName(String loginName);-->
+    <select id="getUserByLoginName" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.User">
+        select
+        <include refid="BaseColumnList"></include>
+        from `employee` where loginname= #{loginName} and isdel = 0;
+    </select>
+
+    <!--IPage<User> getUserList(@Param("page") Page<User> page,
+                           String userId,
+                           String loginName,
+                           String realName,
+                           int role,
+                           String phone);-->
+    <select id="getUserList" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.User">
+        select
+        <include refid="BaseColumnList"></include>
+        from `employee` where isdel=0
+        <if test="userId != null and userId !=''">
+            and empid=#{userId}
+        </if>
+        <if test="loginName != null and loginName !=''">
+            and loginname=#{loginName}
+        </if>
+        <if test="realName != null and realName !=''">
+            and realname like '%${realName}%'
+        </if>
+        <if test="role != null and role !=-1">
+            and position=#{role}
+        </if>
+        <if test="phone != null and phone !=''">
+            and phone=#{phone}
+        </if>
+    </select>
+
+    <!--Integer getUserCount();-->
+    <select id="getUserCount" resultType="java.lang.Integer">
+        select count(1) from `employee` where isdel=0
+        <if test="userId != null and userId !=-1">
+            and empid=#{userId}
+        </if>
+        <if test="loginName != null and loginName !=''">
+            and loginname=#{loginName}
+        </if>
+        <if test="realName != null and realName !=''">
+            and realname like '%${realName}%'
+        </if>
+        <if test="role != null and role !=-1">
+            and position=#{role}
+        </if>
+        <if test="phone != null and phone !=''">
+            and phone=#{phone}
+        </if>
+    </select>
+
+</mapper>

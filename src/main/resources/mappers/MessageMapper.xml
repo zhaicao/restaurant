@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.scuec.restaurant.dao.MessageDao">
+
+    <!-- 定义的映射关系 -->
+    <resultMap id="BaseResultMap" type="com.scuec.restaurant.entities.Message">
+        <id column="m_id" property="messageId"/>
+        <result column="m_userid"  property="messageUserId"/>
+        <result column="m_orderid"  property="messageOrderId"/>
+        <result column="m_content"  property="messageContent"/>
+        <result column="m_type"  property="messageType"/>
+        <result column="m_date"  property="messageCreateDate"/>
+        <result column="m_complete"  property="messageComplete"/>
+        <result column="m_isdel"  property="messageDel"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="BaseColumnList">
+        m_id, m_userid, m_orderid, m_type, m_content, m_date, m_complete, m_isdel
+    </sql>
+
+    <insert id="addMessage">
+        <selectKey keyProperty="messageId" resultType="String" order="BEFORE">
+            select REPLACE(UUID(),'-','')
+        </selectKey>
+        insert into `message` value(#{messageId}, #{messageUserid}, #{messageOrderid},#{ messageType }, #{messageContent}, now(),0, 0)
+    </insert>
+
+<!--    IPage<Message> getMessageList(@Param("page") Page<Message> page,
+    String msgOrderId,
+    int msgType,
+    String startDate,
+    String endDate);-->
+    <select id="getMessageList" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Message">
+        select
+        <include refid="BaseColumnList"></include>
+        from `message`
+        where m_isdel=0
+        <if test="msgOrderId != null and msgOrderId != ''">
+            AND m_orderid = #{ msgOrderId }
+        </if>
+        <if test="msgType != null and msgType != -1">
+            AND m_type = #{msgType}
+        </if>
+        <if test="msgType == 1 and isComplete != null and isComplete != -1">
+            AND m_complete = #{isComplete}
+        </if>
+        <if test=" startDate != null and startDate != ''">
+            <!--使用<![CDATA[]]>来转义，否则<和>报错-->
+            <![CDATA[AND DATE_FORMAT(m_date,'%Y-%m-%d') >= #{ startDate }]]>
+        </if>
+        <if test="endDate != null and endDate != ''">
+            <![CDATA[AND DATE_FORMAT(m_date,'%Y-%m-%d') <= #{ endDate }]]>
+        </if>
+        ORDER BY m_date desc
+    </select>
+
+    <!--
+    int updateMessage(String messageIds,
+    String messageContent,
+    int messageComplete,
+    int messageDel);
+    -->
+    <update id="updateMessage">
+        update `message`
+        set
+        <trim suffixOverrides=",">
+            <if test="messageContent != null and messageContent != ''">
+                m_content = #{messageContent},
+            </if>
+            <if test="messageComplete != null and messageComplete != -1">
+                m_complete = #{messageComplete},
+            </if>
+            <if test="messageDel != null and messageDel != -1">
+                m_isdel = #{messageDel},
+            </if>
+
+        </trim>
+        where m_id in (${messageIds});
+
+    </update>
+
+    <!--int getMsgCount(String orderId, int msgType);-->
+    <select id="getMsgCount" resultType="Integer">
+        SELECT
+            count(1)
+        FROM
+            `message`
+        WHERE
+            m_isdel = 0
+        <if test=" orderId  != null and  orderId  != ''">
+            AND m_orderid = #{ orderId }
+        </if>
+        <if test="  msgType   != null and   msgType   != ''">
+            AND m_type = #{ msgType }
+        </if>
+        <if test=" startDate != null and startDate != ''">
+            <!--使用<![CDATA[]]>来转义，否则<和>报错-->
+            <![CDATA[AND DATE_FORMAT(m_date,'%Y-%m-%d') >= #{ startDate }]]>
+        </if>
+        <if test=" endDate != null and endDate != ''">
+            <!--使用<![CDATA[]]>来转义，否则<和>报错-->
+            <![CDATA[AND DATE_FORMAT(m_date,'%Y-%m-%d') >= #{ startDate }]]>
+        </if>
+    </select>
+</mapper>

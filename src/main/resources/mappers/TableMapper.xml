@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.scuec.restaurant.dao.TableDao">
+
+    <!-- 定义的映射关系 -->
+    <resultMap id="BaseResultMap" type="com.scuec.restaurant.entities.Table">
+        <id column="t_id" property="tableId"/>
+        <result column="t_no"  property="tableName"/>
+        <result column="t_people"  property="tableDescription"/>
+        <result column="t_orderid"  property="tableOrderId"/>
+        <result column="t_isuse"  property="tableUse"/>
+        <result column="t_isdel"  property="tableDel"/>
+        <!--配置一对一关系映射，封装order-->
+        <association property="order"  javaType="com.scuec.restaurant.entities.Order">
+            <id column="orderid" property="orderId"/>
+            <result column="tableno"  property="tableNo"/>
+            <result column="o_status"  property="orderStatus"/>
+            <result column="price"  property="orderPrice"/>
+            <result column="orderdate"  property="orderDate"/>
+        </association>
+    </resultMap>
+
+
+    <!--餐桌列表-->
+    <resultMap id="TableResultMap" type="com.scuec.restaurant.entities.vo.TableVO">
+        <id column="t_id" property="tableId"/>
+        <id column="t_id" property="tableId"/>
+        <result column="t_no"  property="tableName"/>
+        <result column="t_people"  property="tableDescription"/>
+        <result column="t_orderid"  property="tableOrderId"/>
+        <result column="t_isuse"  property="tableUse"/>
+        <result column="orderdate"  property="orderDate"/>
+    </resultMap>
+
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="BaseColumnList">
+        t_id, t_no, t_people, t_orderid, t_isuse, t_isdel
+    </sql>
+
+
+<!--    int insertTable(Table table); -->
+    <insert id="insertTable" parameterType="com.scuec.restaurant.entities.Table">
+        <selectKey keyProperty="tableId" resultType="String" order="BEFORE">
+            select REPLACE(UUID(),'-','')
+        </selectKey>
+        insert into `table_rest` value(#{tableId}, #{tableName}, #{tableDescription}, #{tableOrderId} , #{tableUse} , #{tableDel})
+    </insert>
+
+
+<!--    int updateTable(Table table);-->
+    <update id="updateTable" parameterType="com.scuec.restaurant.entities.Table">
+        update `table_rest`
+        set
+        <trim suffixOverrides=",">
+            <if test="tableName != null and tableName != ''">
+                t_no=#{tableName},
+            </if>
+            <if test="tableDescription != null and tableDescription != ''">
+                t_people = #{tableDescription},
+            </if>
+            <if test="tableOrderId != null and tableOrderId != ''">
+                t_orderid = #{tableOrderId},
+            </if>
+            <if test="tableUse != null and tableUse != -1">
+                t_isuse = #{tableUse},
+            </if>
+            <if test="tableDel != null and tableDel != ''">
+                t_isdel = #{tableDel},
+            </if>
+
+        </trim>
+        where t_id = #{tableId};
+
+    </update>
+
+    <!--Table getTableById(String tableId);-->
+    <select id="getTableById" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Table">
+        select
+        <include refid="BaseColumnList"></include>
+         from table_rest where t_isdel = 0 and t_id = #{tableId} ;
+    </select>
+
+
+    <!--Table getTableById(String tableId);-->
+    <select id="getTablestaById" resultType="Integer">
+        select t_isuse
+        from table_rest where t_isdel = 0 and t_id = #{tableId} ;
+    </select>
+
+
+    <!--Table getTableByName(String tableName);-->
+    <select id="getTableByName" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Table">
+        select
+        <include refid="BaseColumnList"></include>
+        from table_rest where t_isdel = 0 and t_no= #{tableName} ;
+    </select>
+
+<!--    IPage<Table> getTableList(@Param("page") Page<Table> page,
+    String tableId,
+    String tableName,
+    int tableUse);-->
+    <select id="getTableList" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Table">
+        select
+        <include refid="BaseColumnList"></include>
+        from `table_rest` where t_isdel=0
+        <if test="tableId != null and tableId !=''">
+            and t_id=#{tableId}
+        </if>
+        <if test="tableName != null and tableName !=''">
+            and t_no like '%${tableName}%'
+        </if>
+        <if test="tableUse != null and tableUse !=-1">
+            and t_isuse=#{tableUse}
+        </if>
+    </select>
+
+    <update id="updateTableUse">
+        update `table_rest`
+        <trim suffixOverrides=",">
+            set t_isuse=1,t_orderid= #{tableOrderId},
+        </trim>
+        where t_id = #{tableId} and t_isuse=0;
+    </update>
+
+
+    <update id="updateTableUse1">
+        update `table_rest`
+        <trim suffixOverrides=",">
+            set t_isuse=0,t_orderid= null ,
+        </trim>
+        where t_id = #{tableId} and t_isuse=1;
+
+    </update>
+
+
+    <update id="deleteTableById">
+        update `table_rest`
+        <trim suffixOverrides=",">
+            set t_isdel=1,
+        </trim>
+        where t_id = #{tableId} and t_isuse=0;
+    </update>
+
+
+    <select id="getTableListAll" resultMap="TableResultMap" resultType="com.scuec.restaurant.entities.vo.TableVO">
+        SELECT
+        tr.t_id,
+        tr.t_no,
+        tr.t_people,
+        tr.t_orderid,
+        tr.t_isuse,
+        mr.orderdate
+        FROM table_rest tr LEFT JOIN (select  orderid,tableno,orderdate from m_order  where o_status != '已付款') mr ON mr.tableno = tr.t_id
+        WHERE
+        t_isdel = 0
+
+    </select>
+
+    <!--int getUsedTableSum();-->
+    <select id="getUsedTableSum" resultType="int">
+        # 实时用餐顾客
+        SELECT
+            count(1)
+        FROM
+            table_rest
+        WHERE
+            t_isdel = 0
+          AND t_isuse = 1
+    </select>
+</mapper>

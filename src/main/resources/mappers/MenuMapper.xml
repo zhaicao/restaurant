@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.scuec.restaurant.dao.MenuDao">
+    <!-- 定义的映射关系 -->
+    <resultMap id="BaseResultMap" type="com.scuec.restaurant.entities.Menu">
+        <id column="foodid" property="foodId"/>
+        <result column="m_type"  property="menuType"/>
+        <result column="m_name"  property="menuName"/>
+        <result column="m_price"  property="menuPrice"/>
+        <result column="m_img"  property="menuImg"/>
+        <result column="m_popular"  property="menuPopular"/>
+        <result column="isdel"  property="menuDel"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="BaseColumnList">
+        foodid, m_type, m_name, m_price, m_img, m_popular ,isdel
+    </sql>
+
+
+    <select id="getMenuById" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Menu">
+        select
+        <include refid="BaseColumnList"></include>
+        from `menu` where foodid= #{foodId};
+    </select>
+
+<!--&lt;!&ndash;    int addMenu(String menuType,&ndash;&gt;-->
+<!--&lt;!&ndash;    String menuName,&ndash;&gt;-->
+<!--&lt;!&ndash;    double menuPrice,&ndash;&gt;-->
+<!--&lt;!&ndash;    String menuImg);&ndash;&gt;-->
+<!--    <insert id="addMenu">-->
+<!--        <selectKey keyProperty="foodId" resultType="String" order="BEFORE">-->
+<!--            select REPLACE(UUID(),'-','')-->
+<!--        </selectKey>-->
+<!--        insert into `menu` value(#{foodId}, #{menuType}, #{menuName}, #{menuPrice}, #{menuImg}, 0 , 0)-->
+<!--    </insert>-->
+
+
+    <!--    int addMenu(String menuType,-->
+    <!--    String menuName,-->
+    <!--    double menuPrice,-->
+    <!--    String menuImg);-->
+    <insert id="addMenu" parameterType="com.scuec.restaurant.entities.Menu">
+        <selectKey keyProperty="foodId" resultType="String" order="BEFORE">
+            select REPLACE(UUID(),'-','')
+        </selectKey>
+        insert into `menu` value(#{foodId}, #{menuType}, #{menuName}, #{menuPrice}, #{menuImg}, #{menuPopular} , #{menuDel})
+    </insert>
+
+
+    <update id="updateMenu">
+        update `menu`
+        set
+        <trim suffixOverrides=",">
+            <if test="menuType != null and menuType != ''">
+                m_type=#{menuType},
+            </if>
+            <if test="menuName != null and menuName != ''">
+                m_name = #{menuName},
+            </if>
+            <if test="menuPrice != null and menuPrice != ''">
+                m_price = #{menuPrice},
+            </if>
+            <if test="menuImg != null and menuImg != ''">
+                m_img = #{menuImg},
+            </if>
+            <if test="menuPopular != null and menuPopular != -1">
+                m_popular = #{menuPopular},
+            </if>
+            <if test="menuDel != null and menuDel != ''">
+                isdel = #{menuDel},
+            </if>
+        </trim>
+        where isdel = 0
+            and foodid = #{foodId};
+    </update>
+
+
+<!--    IPage<Menu> getMenuList(@Param("page") Page<Menu> page,-->
+<!--    String menuName);-->
+    <select id="getMenuList" resultMap="BaseResultMap" resultType="com.scuec.restaurant.entities.Menu">
+        select
+        <include refid="BaseColumnList"></include>
+        from `menu` where isdel=0
+        <if test="menuName != null and menuName !=''">
+            and m_name like '%${menuName}%'
+        </if>
+        <if test="menuType != null and menuType !='' and menuType !='all'">
+            and m_type=#{menuType}
+        </if>
+    </select>
+
+
+</mapper>

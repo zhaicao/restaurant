@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.scuec.restaurant.dao.StatisticsDao">
+
+    <!-- 基础映射关系 -->
+    <resultMap id="BaseResultMap" type="com.scuec.restaurant.entities.vo.RevenueDetailVO">
+        <id column="order_date"  property="orderDate"/>
+        <result column="order_total_price"  property="orderTotalPrice"/>
+        <result column="order_quantity"  property="orderQuantity"/>
+        <!--订单与订单关联表一对多，collection将被封装成一个List-->
+        <!--column一定要填写上述column字段，不能填property-->
+        <collection property="orderList"
+                    ofType="com.scuec.restaurant.entities.Order"
+                    column="{orderDate = order_date }"
+                    select="com.scuec.restaurant.dao.OrderDao.getOrderListByDate">
+        </collection>
+    </resultMap>
+
+    <!--    IPage<Order> getRevenueOrderList(@Param("page") Page<Order> page,
+                              String startDate,
+                              String endDate);-->
+    <select id="getRevenueList" resultMap="BaseResultMap">
+        SELECT
+            order_revenue.order_date,
+            order_revenue.order_total_price,
+            order_revenue.order_quantity
+        FROM
+            (
+            SELECT
+                substring(orderdate, 1, 10) AS order_date,
+                sum(price) AS order_total_price,
+                count(1) AS order_quantity
+            FROM
+                `m_order`
+            WHERE
+                o_status = '已付款'
+                <if test=" startDate != null and startDate != ''">
+                    <!--使用<![CDATA[]]>来转义，否则<和>报错-->
+                    <![CDATA[and DATE_FORMAT(orderdate,'%Y-%m-%d') >= #{ startDate }]]>
+                </if>
+                <if test="endDate != null and endDate != ''">
+                    <![CDATA[and DATE_FORMAT(orderdate,'%Y-%m-%d') <= #{ endDate }]]>
+                </if>
+                GROUP BY substring(orderdate, 1, 10)
+            ) order_revenue
+        ORDER BY order_revenue.order_date desc
+    </select>
+</mapper>
